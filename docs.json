@@ -3,20 +3,20 @@
   "theme": "aspen",
   "appearance": {
     "default": "dark",
-    "isHidden": true
+    "isHidden": false
   },
   "background": {
     "color": {
-      "light": "#0a0a0a",
+      "light": "#ffffff",
       "dark": "#0a0a0a"
     }
   },
   "name": "Snipp.gg",
   "description": "Image and video hosting API for Snipp.gg",
   "colors": {
-    "primary": "#ffffff",
-    "light": "#a3a3a3",
-    "dark": "#171717"
+    "primary": "#171717",
+    "light": "#404040",
+    "dark": "#ffffff"
   },
   "favicon": "https://cdn.snipp.gg/favicon.ico",
   "api": {
@@ -62,19 +62,10 @@
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Snipp.gg",
-          "href": "https://snipp.gg",
-          "icon": "house"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
-    "light": "https://cdn.snipp.gg/logo_light.png",
+    "light": "https://cdn.snipp.gg/logo_dark.png",
     "dark": "https://cdn.snipp.gg/logo_light.png"
   },
   "navbar": {

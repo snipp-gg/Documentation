@@ -16,7 +16,6 @@ main article {
 }
 
 #pagination {
-  margin-bottom: 2rem !important;
   padding-bottom: 2rem !important;
 }
 
@@ -32,10 +31,21 @@ footer span:has(a[href*="mintlify"]) {
   display: none !important;
 }
 
-:root {
-  --color-primary: #ffffff !important;
-  --color-primary-dark: #ffffff !important;
-  --color-primary-light: #a3a3a3 !important;
+:root,
+[data-theme="light"] {
+  --color-primary: #171717 !important;
+  --color-primary-dark: #171717 !important;
+  --color-primary-light: #404040 !important;
+}
+
+html:not([data-theme="dark"]) a[href="https://snipp.gg"],
+[data-theme="light"] a[href="https://snipp.gg"] {
+  color: black !important;
+}
+
+html:not([data-theme="dark"]) a[href="https://snipp.gg"] *,
+[data-theme="light"] a[href="https://snipp.gg"] * {
+  color: black !important;
 }
 
 [data-theme="dark"] {
