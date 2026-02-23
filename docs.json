@@ -18,7 +18,7 @@
     "light": "#a3a3a3",
     "dark": "#171717"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "https://cdn.snipp.gg/favicon.ico",
   "api": {
     "baseUrl": "https://api.snipp.gg",
     "auth": {
@@ -81,7 +81,7 @@
     "links": [],
     "primary": {
       "type": "button",
-      "label": "Open Snipp.gg",
+      "label": "Visit Snipp",
       "href": "https://snipp.gg"
     }
   },

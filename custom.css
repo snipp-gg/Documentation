@@ -1,4 +1,37 @@
-/* Override green theme colors for black/dark appearance */
+main article > div > a[href],
+main article > a[href],
+main article [class*="card"] {
+  margin-bottom: 1.5rem;
+}
+
+main article [class*="grid"],
+main article [class*="CardGroup"],
+main article [class*="cols"],
+main article .card-group-section {
+  margin-bottom: 2rem;
+}
+
+main article {
+  padding-bottom: 3rem;
+}
+
+#pagination {
+  margin-bottom: 2rem !important;
+  padding-bottom: 2rem !important;
+}
+
+main {
+  padding-bottom: 4rem;
+}
+
+
+footer a[href*="mintlify"],
+footer p:has(a[href*="mintlify"]),
+footer div:has(a[href*="mintlify"]),
+footer span:has(a[href*="mintlify"]) {
+  display: none !important;
+}
+
 :root {
   --color-primary: #ffffff !important;
   --color-primary-dark: #ffffff !important;
