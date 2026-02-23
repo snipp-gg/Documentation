@@ -6,7 +6,7 @@
 
 ## About this project
 
-- This is a documentation site built on [Mintlify](https://mintlify.com)
+- This is the Snipp.gg API documentation, built on [Mintlify](https://mintlify.com)
 - Pages are MDX files with YAML frontmatter
 - Configuration lives in `docs.json`
 - Run `mint dev` to preview locally
@@ -14,12 +14,9 @@
 
 ## Terminology
 
-<!-- Add product-specific terms and preferred usage -->
-<!-- Example: Use "workspace" not "project", "member" not "user" -->
+Add product-specific terms and preferred usage (e.g. use "workspace" not "project").
 
 ## Style preferences
-
-<!-- Add any project-specific style rules below -->
 
 - Use active voice and second person ("you")
 - Keep sentences concise — one idea per sentence
@@ -29,5 +26,4 @@
 
 ## Content boundaries
 
-<!-- Define what should and shouldn't be documented -->
-<!-- Example: Don't document internal admin features -->
+Define what should and shouldn't be documented (e.g. don't document internal admin features).

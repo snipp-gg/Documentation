@@ -1,0 +1,38 @@
+---
+title: "File types"
+description: "Supported image and video formats"
+---
+
+## Supported formats
+
+| Type | Formats | MIME types |
+|------|---------|------------|
+| Images | PNG, JPG, WebP | `image/png`, `image/jpeg`, `image/webp` |
+| Animated | GIF | `image/gif` |
+| Video | MP4, MOV, MKV | `video/mp4`, `video/quicktime`, `video/x-matroska` |
+
+## File size limits
+
+Limits depend on your plan:
+
+| Plan | Max file size |
+|------|---------------|
+| Free | 100 MB |
+| Plus | 5 GB |
+| Enterprise | 10 GB |
+
+The global upload limit is 5 GB per request. Files larger than 5 GB return a 413 error.
+
+## Unsupported files
+
+Files that do not match the allowed types return a 400 error:
+
+```json
+{
+  "error": "Unsupported file type. Only .png, .jpg, .webp, .gif, .mov, .mp4, .mkv files are supported."
+}
+```
+
+## Reserved marker
+
+Files that start with the internal encryption marker cannot be uploaded. If you receive an error about a reserved marker, try a different file.

@@ -1,0 +1,28 @@
+---
+title: "Plans"
+description: "Free, Plus, and Enterprise plans"
+---
+
+## Plan tiers
+
+| Plan | Max file size | Upload limit |
+|------|---------------|--------------|
+| Free | 100 MB | 8 uploads/second |
+| Plus | 5 GB | 8 uploads/second |
+| Enterprise | 10 GB | 8 uploads/second |
+
+## Plan features
+
+| Feature | Free | Plus | Enterprise |
+|---------|------|------|------------|
+| File size limit | 100 MB | 5 GB | 10 GB |
+| Discover feed ads | Yes | No | No |
+| API access | Yes | Yes | Yes |
+
+## Checking your plan
+
+Call `GET /users/@me` to see your plan status. The response includes:
+
+- `plus` — `true` if you have Plus
+- `enterprise` — `true` if you have Enterprise
+- `uploads` — total number of uploads

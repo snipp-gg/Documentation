@@ -1,0 +1,40 @@
+---
+title: "Authentication"
+description: "Authenticate API requests with your API key"
+---
+
+## API key authentication
+
+All Snipp.gg API endpoints require authentication. Send your API key in the `api-key` header with every request.
+
+```
+api-key: YOUR_API_KEY
+```
+
+### Example
+
+```bash
+curl -X GET "https://api.snipp.gg/users/@me" \
+  -H "api-key: your-api-key-here"
+```
+
+### Where to find your API key
+
+1. Sign in at [snipp.gg](https://snipp.gg).
+2. Go to **Settings**.
+3. Copy your API key from the API section.
+
+### Security best practices
+
+- **Never expose your API key** in client-side code or public repositories.
+- **Use environment variables** in production: `process.env.SNIPP_API_KEY`.
+- **Rotate your key** if you suspect it has been compromised.
+- **Use keys with limited permissions** when available. Some keys have upload access; others do not.
+
+### Error responses
+
+| Status | Cause |
+|--------|-------|
+| 401 | Missing `api-key` header |
+| 401 | Invalid or expired API key |
+| 403 | Account suspended or insufficient permissions |

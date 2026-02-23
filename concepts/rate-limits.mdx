@@ -1,0 +1,33 @@
+---
+title: "Rate limits"
+description: "Rate limits and throttling"
+---
+
+## General limits
+
+- **15 requests per minute** per user across most endpoints.
+- The rate limit window resets every minute.
+
+## Upload limits
+
+- **8 uploads per second** per user.
+- Exceeding this limit may **suspend your account** temporarily.
+- Uploads and certain features are restricted while suspended.
+
+## Rate limit response
+
+When you exceed the limit, the API returns:
+
+```json
+{
+  "error": "Rate limit exceeded. Please try again later."
+}
+```
+
+HTTP status: **429**
+
+## Best practices
+
+- **Space out uploads** when uploading multiple files.
+- **Cache user data** when possible instead of calling `/users/@me` repeatedly.
+- **Handle 429 responses** by retrying after a short delay with exponential backoff.

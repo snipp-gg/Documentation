@@ -1,0 +1,12 @@
+/* Override green theme colors for black/dark appearance */
+:root {
+  --color-primary: #ffffff !important;
+  --color-primary-dark: #ffffff !important;
+  --color-primary-light: #a3a3a3 !important;
+}
+
+[data-theme="dark"] {
+  --color-primary: #ffffff !important;
+  --color-primary-dark: #ffffff !important;
+  --color-primary-light: #a3a3a3 !important;
+}

@@ -1,13 +1,32 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "theme": "aspen",
+  "appearance": {
+    "default": "dark",
+    "isHidden": true
+  },
+  "background": {
+    "color": {
+      "light": "#0a0a0a",
+      "dark": "#0a0a0a"
+    }
+  },
+  "name": "Snipp.gg",
+  "description": "Image and video hosting API for Snipp.gg",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#ffffff",
+    "light": "#a3a3a3",
+    "dark": "#171717"
   },
   "favicon": "/favicon.svg",
+  "api": {
+    "baseUrl": "https://api.snipp.gg",
+    "auth": {
+      "method": "key",
+      "name": "api-key",
+      "inputPrefix": "api-key"
+    }
+  },
   "navigation": {
     "tabs": [
       {
@@ -15,35 +34,11 @@
         "groups": [
           {
             "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
+            "pages": ["index", "quickstart", "authentication"]
           },
           {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
+            "group": "Concepts",
+            "pages": ["concepts/file-types", "concepts/rate-limits", "concepts/plans"]
           }
         ]
       },
@@ -51,18 +46,18 @@
         "tab": "API reference",
         "groups": [
           {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
+            "group": "Overview",
+            "pages": ["api-reference/introduction"]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Endpoints",
+            "openapi": "api-reference/openapi.json",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
+              "api-reference/endpoint/users",
+              "api-reference/endpoint/upload",
+              "api-reference/endpoint/uploads",
               "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/endpoint/discover"
             ]
           }
         ]
@@ -71,52 +66,29 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Snipp.gg",
+          "href": "https://snipp.gg",
+          "icon": "house"
         }
       ]
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "https://cdn.snipp.gg/logo_light.png",
+    "dark": "https://cdn.snipp.gg/logo_light.png"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
+    "links": [],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Open Snipp.gg",
+      "href": "https://snipp.gg"
     }
   },
   "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+    "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
   },
   "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+    "socials": {}
   }
 }
