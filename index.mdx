@@ -7,90 +7,23 @@ description: "Welcome to the Snipp API Documentation!"
   This is the first version of the Snipp documentation. We're still working on it and it may include inaccuracies or gaps. Pull Requests on our [documentation repository](https://github.com/snipp-gg/docs) are welcome.
 </Warning>
 
-## Share your best moments faster than ever
-
-Upload images and videos in seconds. Get an instant link. Share with anyone. No ads, no clutter — just fast, private file sharing.
-
-<Card
-  title="Quickstart"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
+<Card icon="rocket" horizontal href="/quickstart" title="Quickstart">
   Get your API key and make your first upload in minutes.
 </Card>
-
-## Fast, private, simple
-
-<Columns cols={3}>
-  <Card
-    title="Fast"
-    icon="bolt"
-    href="/api-reference/introduction"
-  >
-    Upload and share instantly. Global edge delivery ensures lightning-fast uploads worldwide.
-  </Card>
-  <Card
-    title="Private"
-    icon="lock"
-    href="/concepts/file-types"
-  >
-    Your links, your control. Private by default with no public galleries or tracking.
-  </Card>
-  <Card
-    title="Simple"
-    icon="link"
-    href="/api-reference/introduction"
-  >
-    No clutter. Just sharing. Compatible with ShareX and XerahS.
-  </Card>
-</Columns>
-
-## Three steps, zero hassle
-
-From upload to share in seconds — it's that simple.
-
-<Steps>
-  <Step title="Upload">
-    Drag & drop, paste, or use the API to upload your images and videos. Supports PNG, JPG, WebP, GIF, MP4, MOV, and MKV.
-  </Step>
-  <Step title="Get a link">
-    Instantly receive a shareable URL. No waiting, no processing delays.
-  </Step>
-  <Step title="Share anywhere">
-    Paste the link on Discord, X, or anywhere else. Your content loads fast on any platform.
-  </Step>
-</Steps>
 
 ## API features
 
 <Columns cols={2}>
-  <Card
-    title="Upload media"
-    icon="cloud-arrow-up"
-    href="/api-reference/introduction"
-  >
+  <Card icon="cloud-arrow-up" href="/api-reference/introduction" title="Upload media">
     Upload images and videos via `POST /upload`. Up to 100 MB free, 5 GB with Plus.
   </Card>
-  <Card
-    title="Manage uploads"
-    icon="list"
-    href="/api-reference/introduction"
-  >
+  <Card icon="list" href="/api-reference/introduction" title="Manage uploads">
     List and delete your uploads programmatically with `GET /uploads` and `DELETE /deleteUpload`.
   </Card>
-  <Card
-    title="User data"
-    icon="user"
-    href="/api-reference/introduction"
-  >
+  <Card icon="user" href="/api-reference/introduction" title="User data">
     Fetch your profile, upload count, and plan status with `GET /users/@me`.
   </Card>
-  <Card
-    title="Discover feed"
-    icon="compass"
-    href="/api-reference/introduction"
-  >
+  <Card icon="compass" href="/api-reference/introduction" title="Discover feed">
     Access public uploads for the discover feed with `GET /discover`.
   </Card>
 </Columns>
@@ -98,12 +31,13 @@ From upload to share in seconds — it's that simple.
 ## Next steps
 
 <div className="card-group-section">
-<CardGroup cols={2}>
-  <Card title="Authentication" icon="key" href="/authentication">
-    Learn how to authenticate with your API key.
-  </Card>
-  <Card title="Visit Snipp" icon="arrow-right" href="https://snipp.gg">
-    Sign up for free and start sharing.
-  </Card>
-</CardGroup>
+  <CardGroup cols={2}>
+    <Card title="Authentication" icon="key" href="/authentication">
+      Learn how to authenticate with your API key.
+    </Card>
+
+    <Card title="Visit Snipp" icon="arrow-right" href="https://snipp.gg">
+      Sign up for free and start sharing.
+    </Card>
+  </CardGroup>
 </div>
