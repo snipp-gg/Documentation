@@ -69,7 +69,7 @@ Upload an image or video to your account:
 ```bash cURL
 curl -X POST "https://api.snipp.gg/upload" \
   -H "api-key: YOUR_API_KEY" \
-  -H "postprivacy: private" \
+  -H "postprivacy: unlisted" \
   -F "file=@/path/to/image.png"
 ```
 
@@ -81,7 +81,7 @@ const res = await fetch("https://api.snipp.gg/upload", {
   method: "POST",
   headers: {
     "api-key": "YOUR_API_KEY",
-    "postprivacy": "private",
+    "postprivacy": "unlisted",
   },
   body: formData,
 });
@@ -97,7 +97,7 @@ with open("image.png", "rb") as f:
         "https://api.snipp.gg/upload",
         headers={
             "api-key": "YOUR_API_KEY",
-            "postprivacy": "private",
+            "postprivacy": "unlisted",
         },
         files={"file": f},
     )
@@ -114,7 +114,7 @@ The response includes a direct URL to your file and a post object with share met
   "post": {
     "code": "AbCd1234",
     "url": "https://snipp.gg/share/AbCd1234",
-    "postPrivacy": "private"
+    "postPrivacy": "unlisted"
   }
 }
 ```
@@ -125,8 +125,8 @@ Control who can see your uploads by setting the `postprivacy` header:
 
 | Value | Visibility |
 |-------|-----------|
-| `private` | Only you can view it (default) |
-| `unlisted` | Anyone with the share link can view it |
+| `private` | Only you can view it |
+| `unlisted` | Anyone with the share link can view it (default) |
 | `public` | Visible to everyone and eligible for the Discover feed |
 
 ## Next steps

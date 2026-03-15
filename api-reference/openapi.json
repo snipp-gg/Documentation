@@ -166,15 +166,15 @@
     "/upload": {
       "post": {
         "summary": "Upload file",
-        "description": "Upload an image or video. Supports PNG, JPG, WebP, GIF, MOV, MP4, MKV. File size limits depend on plan: Free (100 MB), Plus (5 GB), Enterprise (10 GB).",
+        "description": "Upload an image or video file. Supports PNG, JPG, WebP, GIF, MP4, MOV, and MKV. File size limits depend on your plan: Free (100 MB), Plus (5 GB), Enterprise (10 GB).",
         "operationId": "upload",
         "parameters": [
           {
             "name": "postprivacy",
             "in": "header",
             "required": false,
-            "description": "Privacy for the generated post: private (default, owner-only), unlisted, or public",
-            "schema": { "type": "string", "enum": ["public", "unlisted", "private"] }
+            "description": "Privacy for the generated post: unlisted (default, accessible via link), private (owner-only), or public (visible on Discover)",
+            "schema": { "type": "string", "enum": ["public", "unlisted", "private"], "default": "unlisted" }
           }
         ],
         "requestBody": {
@@ -243,7 +243,7 @@
             }
           },
           "413": {
-            "description": "File exceeds 5GB limit",
+            "description": "File exceeds your plan's size limit",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/Error" }
