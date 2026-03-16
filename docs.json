@@ -20,6 +20,13 @@
     "dark": "#ffffff"
   },
   "favicon": "https://cdn.snipp.gg/favicon.ico",
+  "seo": {
+    "metatags": {
+      "twitter:card": "summary_large_image",
+      "og:image": "https://cdn.snipp.gg/banner.png",
+      "twitter:image": "https://cdn.snipp.gg/banner.png"
+    }
+  },
   "api": {
     "baseUrl": "https://api.snipp.gg",
     "auth": {
