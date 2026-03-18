@@ -1,0 +1,95 @@
+---
+title: "Node.js"
+description: "Official Node.js wrapper for the Snipp API"
+---
+
+## Installation
+
+```bash
+npm install @snipp-gg/snipp
+```
+
+Requires Node.js 18 or later. Zero dependencies — uses native `fetch` and `FormData`.
+
+## Getting started
+
+```javascript
+import { SnippClient } from "@snipp-gg/snipp";
+
+const client = new SnippClient({ apiKey: process.env.SNIPP_API_KEY });
+
+const me = await client.getUser("@me");
+console.log(me.user.username);
+```
+
+## Methods
+
+### `getUser(id, options?)`
+
+Fetch a user by ID. Pass `"@me"` for the authenticated user.
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `includePosts` | `boolean` | Include the user's public uploads. |
+| `postsLimit` | `number` | Number of posts to return (1-50). |
+
+```javascript
+const user = await client.getUser("@me", { includePosts: true, postsLimit: 10 });
+```
+
+### `upload(file, options?)`
+
+Upload a file. Accepts a `File`, `Blob`, `Buffer`, or `Uint8Array`.
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `privacy` | `"public" \| "unlisted" \| "private"` | Visibility of the upload. |
+| `filename` | `string` | Filename sent with the upload (defaults to `"upload"`). |
+
+```javascript
+import { readFileSync } from "node:fs";
+
+const buffer = readFileSync("./image.png");
+const result = await client.upload(buffer, { privacy: "unlisted", filename: "image.png" });
+console.log(result.url);
+```
+
+### `listUploads()`
+
+List the authenticated user's recent uploads.
+
+```javascript
+const uploads = await client.listUploads();
+```
+
+### `deleteUpload(filename)`
+
+Delete an upload by its filename.
+
+```javascript
+await client.deleteUpload("a3f7b2c91d4e8f0612ab34cd56ef7890.png");
+```
+
+### `discover()`
+
+Browse public uploads from the community.
+
+```javascript
+const feed = await client.discover();
+```
+
+## Error handling
+
+All API errors throw a `SnippError` with `status` and `message` properties.
+
+```javascript
+import { SnippClient, SnippError } from "@snipp-gg/snipp";
+
+try {
+  await client.getUser("nonexistent");
+} catch (err) {
+  if (err instanceof SnippError) {
+    console.error(err.status, err.message);
+  }
+}
+```

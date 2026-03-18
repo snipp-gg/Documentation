@@ -1,0 +1,90 @@
+---
+title: "Python"
+description: "Official Python wrapper for the Snipp API"
+---
+
+## Installation
+
+```bash
+pip install snipp-py
+```
+
+Requires Python 3.9 or later. Depends on `requests`.
+
+## Getting started
+
+```python
+from snipp import SnippClient
+
+client = SnippClient(api_key="YOUR_API_KEY")
+
+me = client.get_user("@me")
+print(me["user"]["username"])
+```
+
+## Methods
+
+### `get_user(user_id, include_posts=None, posts_limit=None)`
+
+Fetch a user by ID. Pass `"@me"` for the authenticated user.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `user_id` | `str` | User ID or `"@me"`. |
+| `include_posts` | `bool \| None` | Include the user's public uploads. |
+| `posts_limit` | `int \| None` | Number of posts to return (1-50). |
+
+```python
+user = client.get_user("@me", include_posts=True, posts_limit=10)
+```
+
+### `upload(file, privacy="unlisted")`
+
+Upload a file. Accepts a file path string, bytes, or a file-like object.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `file` | `str \| bytes \| BinaryIO` | File path, raw bytes, or file object. |
+| `privacy` | `str` | `"public"`, `"unlisted"`, or `"private"`. |
+
+```python
+result = client.upload("image.png", privacy="unlisted")
+print(result["url"])
+```
+
+### `list_uploads()`
+
+List the authenticated user's recent uploads.
+
+```python
+uploads = client.list_uploads()
+```
+
+### `delete_upload(filename)`
+
+Delete an upload by its filename.
+
+```python
+client.delete_upload("a3f7b2c91d4e8f0612ab34cd56ef7890.png")
+```
+
+### `discover()`
+
+Browse public uploads from the community.
+
+```python
+feed = client.discover()
+```
+
+## Error handling
+
+All API errors raise a `SnippError` with `status` and `message` attributes.
+
+```python
+from snipp import SnippClient, SnippError
+
+try:
+    client.get_user("nonexistent")
+except SnippError as err:
+    print(err.status, err.message)
+```

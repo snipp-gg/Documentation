@@ -1,0 +1,75 @@
+---
+title: "SDKs"
+description: "Official API wrappers for Node.js, Python, and Rust"
+---
+
+Snipp provides official SDK packages so you can skip raw HTTP calls and get straight to building. Each wrapper covers every API endpoint with idiomatic patterns for its language.
+
+## Available SDKs
+
+<CardGroup cols={3}>
+  <Card title="Node.js" icon="js" href="/sdks/node">
+    `@snipp-gg/snipp` — zero dependencies, uses native `fetch`.
+  </Card>
+  <Card title="Python" icon="python" href="/sdks/python">
+    `snipp-py` — built on `requests`.
+  </Card>
+  <Card title="Rust" icon="rust" href="/sdks/rust">
+    `snipp-rust` — async, built on `reqwest`.
+  </Card>
+</CardGroup>
+
+## Installation
+
+<Tabs>
+  <Tab title="Node.js">
+    ```bash
+    npm install @snipp-gg/snipp
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```bash
+    pip install snipp-py
+    ```
+  </Tab>
+  <Tab title="Rust">
+    Add to your `Cargo.toml`:
+    ```toml
+    [dependencies]
+    snipp-rust = "0.1"
+    tokio = { version = "1", features = ["full"] }
+    ```
+  </Tab>
+</Tabs>
+
+## Quick comparison
+
+<CodeGroup>
+```javascript Node.js
+import { SnippClient } from "@snipp-gg/snipp";
+
+const snipp = new SnippClient({ apiKey: process.env.SNIPP_API_KEY });
+const me = await snipp.getUser("@me");
+console.log(me.user.username);
+```
+
+```python Python
+from snipp import SnippClient
+
+client = SnippClient(api_key="YOUR_API_KEY")
+me = client.get_user("@me")
+print(me["user"]["username"])
+```
+
+```rust Rust
+use snipp_rust::SnippClient;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = SnippClient::new("YOUR_API_KEY");
+    let me = client.get_user("@me", None).await?;
+    println!("{}", me.user.username.unwrap_or_default());
+    Ok(())
+}
+```
+</CodeGroup>

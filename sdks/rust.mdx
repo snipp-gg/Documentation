@@ -1,0 +1,98 @@
+---
+title: "Rust"
+description: "Official Rust wrapper for the Snipp API"
+---
+
+## Installation
+
+Add to your `Cargo.toml`:
+
+```toml
+[dependencies]
+snipp-rust = "0.1"
+tokio = { version = "1", features = ["full"] }
+```
+
+## Getting started
+
+```rust
+use snipp_rust::SnippClient;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = SnippClient::new("YOUR_API_KEY");
+
+    let me = client.get_user("@me", None).await?;
+    println!("{}", me.user.username.unwrap_or_default());
+
+    Ok(())
+}
+```
+
+## Methods
+
+All methods are `async` and return `Result<T, SnippError>`.
+
+### `get_user(id, options)`
+
+Fetch a user by ID. Pass `"@me"` for the authenticated user.
+
+```rust
+use snipp_rust::GetUserOptions;
+
+// Without options
+let user = client.get_user("@me", None).await?;
+
+// With options
+let opts = GetUserOptions {
+    include_posts: Some(true),
+    posts_limit: Some(10),
+};
+let user = client.get_user("@me", Some(opts)).await?;
+```
+
+### `upload(path, privacy)`
+
+Upload a file from disk.
+
+```rust
+use snipp_rust::Privacy;
+
+let result = client.upload("image.png", Some(Privacy::Unlisted)).await?;
+println!("{}", result.url);
+```
+
+### `list_uploads()`
+
+List the authenticated user's recent uploads.
+
+```rust
+let uploads = client.list_uploads().await?;
+```
+
+### `delete_upload(filename)`
+
+Delete an upload by its filename.
+
+```rust
+client.delete_upload("a3f7b2c91d4e8f0612ab34cd56ef7890.png").await?;
+```
+
+### `discover()`
+
+Browse public uploads from the community.
+
+```rust
+let feed = client.discover().await?;
+```
+
+## Error handling
+
+All errors are returned as `SnippError`, which covers API errors, HTTP errors, deserialization failures, and IO errors.
+
+```rust
+match client.get_user("nonexistent", None).await {
+    Ok(user) => println!("{:?}", user),
+    Err(e) => eprintln!("Error: {e}"),
+}
+```
