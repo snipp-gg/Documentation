@@ -1,0 +1,79 @@
+---
+title: "ShadowPlay"
+description: "Auto-upload NVIDIA ShadowPlay clips to Snipp"
+---
+
+<Card horizontal icon="github" href="https://github.com/snipp-gg/ShadowPlay">
+  snipp-gg/ShadowPlay
+</Card>
+<Card horizontal icon="python" href="https://pypi.org/project/snipp-shadowplay">
+  snipp-shadowplay
+</Card>
+
+## Installation
+
+```bash
+pip install snipp-shadowplay
+```
+
+Requires Python 3.9 or later. Dependencies: `watchdog`, `requests`, `pyperclip`, `colorama`.
+
+## Configuration
+
+1. **Get your API Key:**
+   Visit the [Snipp Console](https://snipp.gg/settings/console) and generate a key.
+
+2. **Set your API Key** as an environment variable:
+
+<Tabs>
+  <Tab title="Command Prompt">
+    ```cmd
+    setx SNIPP_API_KEY YOUR_API_KEY
+    ```
+  </Tab>
+  <Tab title="PowerShell">
+    ```powershell
+    [System.Environment]::SetEnvironmentVariable("SNIPP_API_KEY", "YOUR_API_KEY", "User")
+    ```
+  </Tab>
+  <Tab title="Config file">
+    Save your key to `~/.snipp_uploader`:
+    ```bash
+    echo "YOUR_API_KEY" > ~/.snipp_uploader
+    ```
+  </Tab>
+</Tabs>
+
+## Getting started
+
+Once installed and configured, run:
+
+```cmd
+snipp
+```
+
+The watcher monitors your `~/Videos` folder for new `.mp4` files. When a clip is saved by ShadowPlay, it is automatically uploaded to Snipp and the shareable URL is copied to your clipboard.
+
+## How it works
+
+1. **File detection** — Watches the `~/Videos` directory (recursively) using `watchdog` for new `.mp4` files.
+2. **Completion wait** — Waits for the file to finish being written to disk before uploading.
+3. **Upload** — Sends the clip to the Snipp API as a multipart upload with `unlisted` privacy.
+4. **Clipboard** — Copies the returned URL to your clipboard via `pyperclip`.
+
+## Limits
+
+- Maximum file size: **1 GB**
+- Supported format: `.mp4`
+- Privacy: uploads default to **unlisted**
+
+## Error handling
+
+Errors are printed to the console with colour-coded messages:
+
+| Colour | Meaning |
+|--------|---------|
+| Blue | Informational (startup, file detected) |
+| Yellow | Warnings (file still processing) |
+| Green | Success (uploaded with URL) |
+| Red | Errors (upload failed, file too large) |
