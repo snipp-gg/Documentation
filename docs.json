@@ -89,6 +89,7 @@
               "api-reference/endpoint/users",
               "api-reference/endpoint/upload",
               "api-reference/endpoint/uploads",
+              "api-reference/endpoint/edit",
               "api-reference/endpoint/delete",
               "api-reference/endpoint/discover"
             ]

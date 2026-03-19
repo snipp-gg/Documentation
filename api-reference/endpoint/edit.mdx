@@ -1,0 +1,35 @@
+---
+title: "Edit upload"
+openapi: "PATCH /editUpload"
+---
+
+Use this endpoint to update an existing upload's title, description, or privacy level.
+
+## Behavior
+
+- You must own the upload to edit it.
+- Requires an API key with upload access permission.
+- At least one of `title`, `description`, or `postprivacy` headers must be provided.
+- Send an empty string for `title` or `description` to clear the field.
+- `title` is truncated to 30 characters, `description` to 200 characters.
+
+## Examples
+
+Update a post's title and privacy:
+
+```bash
+curl -X PATCH "https://api.snipp.gg/editUpload" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "code: AbCd1234" \
+  -H "title: New title" \
+  -H "postprivacy: public"
+```
+
+Clear a post's description:
+
+```bash
+curl -X PATCH "https://api.snipp.gg/editUpload" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "code: AbCd1234" \
+  -H "description: "
+```

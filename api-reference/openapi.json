@@ -388,6 +388,107 @@
         }
       }
     },
+    "/editUpload": {
+      "patch": {
+        "summary": "Edit upload",
+        "description": "Edit an existing upload's title, description, or privacy level. Requires an API key with upload access permission. You must own the upload.",
+        "operationId": "editUpload",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "header",
+            "required": true,
+            "description": "The share code of the upload to edit",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "title",
+            "in": "header",
+            "required": false,
+            "description": "New title (max 30 characters). Send empty string to clear.",
+            "schema": { "type": "string", "maxLength": 30 }
+          },
+          {
+            "name": "description",
+            "in": "header",
+            "required": false,
+            "description": "New description (max 200 characters). Send empty string to clear.",
+            "schema": { "type": "string", "maxLength": 200 }
+          },
+          {
+            "name": "postprivacy",
+            "in": "header",
+            "required": false,
+            "description": "New privacy level",
+            "schema": { "type": "string", "enum": ["public", "unlisted", "private"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Upload updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "Upload updated successfully." },
+                    "post": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "string" },
+                        "title": { "type": "string", "nullable": true },
+                        "description": { "type": "string", "nullable": true },
+                        "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters or no fields to update",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "403": {
+            "description": "No permission to edit uploads or not the owner",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "404": {
+            "description": "Upload not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/discover": {
       "get": {
         "summary": "Discover feed",
