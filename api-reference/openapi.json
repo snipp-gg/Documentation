@@ -385,6 +385,169 @@
         }
       }
     },
+    "/upload/multi": {
+      "post": {
+        "summary": "Upload multiple files",
+        "description": "Upload up to 9 image or video files in a single request. Supports PNG, JPG, WebP, GIF, MP4, MOV, and MKV. Individual files that fail validation (wrong type, too large, etc.) are skipped — the remaining files are still uploaded. If all files fail, returns 400. File size limits depend on your plan: Free (100 MB per file), Plus (5 GB per file), Enterprise (10 GB per file).",
+        "operationId": "uploadMulti",
+        "parameters": [
+          {
+            "name": "postprivacy",
+            "in": "header",
+            "required": false,
+            "description": "Privacy for the generated post(s): unlisted (default), private, or public",
+            "schema": { "type": "string", "enum": ["public", "unlisted", "private"], "default": "unlisted" }
+          },
+          {
+            "name": "x-upload-mode",
+            "in": "header",
+            "required": false,
+            "description": "Set to `album` to group all files into a single album post, or `individual` (default) to create separate posts per file",
+            "schema": { "type": "string", "enum": ["album", "individual"], "default": "individual" }
+          },
+          {
+            "name": "x-post-title",
+            "in": "header",
+            "required": false,
+            "description": "Post title (max 30 characters)",
+            "schema": { "type": "string", "maxLength": 30 }
+          },
+          {
+            "name": "x-post-description",
+            "in": "header",
+            "required": false,
+            "description": "Post description (max 200 characters)",
+            "schema": { "type": "string", "maxLength": 200 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "array",
+                    "items": { "type": "string", "format": "binary" },
+                    "minItems": 2,
+                    "maxItems": 9,
+                    "description": "2-9 image or video files"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Upload completed. Partial success is possible — check `failed` array.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "Upload successful!" },
+                    "files": {
+                      "type": "array",
+                      "description": "Successfully uploaded files",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "index": { "type": "integer", "description": "Original position in the request (0-based)" },
+                          "url": { "type": "string" },
+                          "size": { "type": "integer" },
+                          "size_formatted": { "type": "string" },
+                          "mime_type": { "type": "string" },
+                          "status": { "type": "string", "enum": ["success"] },
+                          "dimensions": {
+                            "type": "object",
+                            "nullable": true,
+                            "properties": {
+                              "width": { "type": "integer" },
+                              "height": { "type": "integer" }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "failed": {
+                      "type": "array",
+                      "nullable": true,
+                      "description": "Files that failed validation. Only present when at least one file failed.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "index": { "type": "integer", "description": "Original position in the request (0-based)" },
+                          "error": { "type": "string" },
+                          "status": { "type": "string", "enum": ["failed"] }
+                        }
+                      }
+                    },
+                    "processing_time": { "type": "integer", "description": "Server-side processing time in milliseconds" },
+                    "post": {
+                      "type": "object",
+                      "description": "Generated post metadata. Shape depends on upload mode.",
+                      "properties": {
+                        "code": { "type": "string", "description": "Album share code (album mode only)" },
+                        "url": { "type": "string", "description": "Album share URL (album mode only)" },
+                        "postPrivacy": { "type": "string" },
+                        "isAlbum": { "type": "boolean" },
+                        "fileCount": { "type": "integer" },
+                        "posts": {
+                          "type": "array",
+                          "description": "Individual post entries (individual mode only)",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": { "type": "string" },
+                              "url": { "type": "string" },
+                              "postPrivacy": { "type": "string" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No files, fewer than 2 files, all files failed, or other validation error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "403": {
+            "description": "Account suspended",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/uploads": {
       "get": {
         "summary": "List uploads",
