@@ -69,7 +69,7 @@ Upload an image or video to your account:
 ```bash cURL
 curl -X POST "https://api.snipp.gg/upload" \
   -H "api-key: YOUR_API_KEY" \
-  -H "postprivacy: unlisted" \
+  -H "post-privacy: unlisted" \
   -F "file=@/path/to/image.png"
 ```
 
@@ -81,7 +81,7 @@ const res = await fetch("https://api.snipp.gg/upload", {
   method: "POST",
   headers: {
     "api-key": "YOUR_API_KEY",
-    "postprivacy": "unlisted",
+    "post-privacy": "unlisted",
   },
   body: formData,
 });
@@ -97,7 +97,7 @@ with open("image.png", "rb") as f:
         "https://api.snipp.gg/upload",
         headers={
             "api-key": "YOUR_API_KEY",
-            "postprivacy": "unlisted",
+            "post-privacy": "unlisted",
         },
         files={"file": f},
     )
@@ -131,11 +131,11 @@ curl -X POST "https://api.snipp.gg/upload" \
   -F "file=@photo2.png"
 ```
 
-Albums are the default when sending 2+ files. To create separate posts instead, add `-H "x-upload-mode: individual"`.
+Albums are the default when sending 2+ files. To create separate posts instead, add `-H "post-type: individual"`.
 
 ### Privacy options
 
-Control who can see your uploads by setting the `postprivacy` header:
+Control who can see your uploads by setting the `post-privacy` header:
 
 | Value | Visibility |
 |-------|-----------|

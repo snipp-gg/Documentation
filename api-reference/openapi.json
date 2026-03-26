@@ -276,7 +276,7 @@
         "operationId": "upload",
         "parameters": [
           {
-            "name": "postprivacy",
+            "name": "post-privacy",
             "in": "header",
             "required": false,
             "description": "Privacy for the generated post: private (default), unlisted (accessible via link), or public (visible on Discover)",
@@ -297,7 +297,7 @@
             "schema": { "type": "string", "maxLength": 200 }
           },
           {
-            "name": "x-upload-mode",
+            "name": "post-type",
             "in": "header",
             "required": false,
             "description": "Only relevant when uploading 2+ files. `album` (default) groups all files into a single album post. `individual` creates a separate post per file.",
@@ -602,7 +602,7 @@
             "schema": { "type": "string", "maxLength": 200 }
           },
           {
-            "name": "postprivacy",
+            "name": "post-privacy",
             "in": "header",
             "required": false,
             "description": "New privacy level",
