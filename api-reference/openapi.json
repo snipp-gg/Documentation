@@ -283,14 +283,14 @@
             "schema": { "type": "string", "enum": ["public", "unlisted", "private"], "default": "private" }
           },
           {
-            "name": "posttitle",
+            "name": "post-title",
             "in": "header",
             "required": false,
             "description": "Post title (max 30 characters)",
             "schema": { "type": "string", "maxLength": 30 }
           },
           {
-            "name": "postdescription",
+            "name": "post-description",
             "in": "header",
             "required": false,
             "description": "Post description (max 200 characters)",

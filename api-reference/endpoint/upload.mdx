@@ -11,8 +11,8 @@ Upload 1-9 files in a single request. Every upload automatically creates a post.
 |--------|----------|-------------|
 | `api-key` | Yes | Your API key |
 | `post-privacy` | No | `public`, `unlisted`, or `private` (default) |
-| `posttitle` | No | Post title, max 30 characters |
-| `postdescription` | No | Post description, max 200 characters |
+| `post-title` | No | Post title, max 30 characters |
+| `post-description` | No | Post description, max 200 characters |
 | `post-type` | No | `album` (default) or `individual` — only applies to 2+ files |
 
 ## Behavior
@@ -29,7 +29,7 @@ Upload a single file:
 curl -X POST "https://api.snipp.gg/upload" \
   -H "api-key: YOUR_API_KEY" \
   -H "post-privacy: unlisted" \
-  -H "posttitle: My screenshot" \
+  -H "post-title: My screenshot" \
   -F "file=@screenshot.png"
 ```
 
@@ -39,7 +39,7 @@ Upload an album (2+ files default to album):
 curl -X POST "https://api.snipp.gg/upload" \
   -H "api-key: YOUR_API_KEY" \
   -H "post-privacy: public" \
-  -H "posttitle: Vacation photos" \
+  -H "post-title: Vacation photos" \
   -F "file=@photo1.png" \
   -F "file=@photo2.png" \
   -F "file=@photo3.png"
