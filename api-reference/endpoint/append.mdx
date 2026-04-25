@@ -1,0 +1,43 @@
+---
+title: "Append to album"
+openapi: "POST /appendUpload"
+---
+
+Add 1 or more files to an existing album post. Use this to grow a post's file list in place — the post's share code, privacy, title, and description stay the same.
+
+## Headers
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `api-key` | Yes | Your API key (requires upload access permission) |
+| `post-code` | Yes | The share code of the post to append to |
+
+## Behavior
+
+- You must own the post.
+- The post cannot be moderated. Moderated posts reject modifications.
+- Albums cap at **9 files total**. Requests that would exceed the cap are rejected.
+- Newly added files inherit the post's existing privacy. If the post is **private**, returned `url`s are signed with a 24-hour expiry.
+- Video files (`.mp4`, `.mov`, `.mkv`) are remuxed to MP4 with `+faststart` — see [File types](/concepts/file-types) for details.
+- Each new file is auto-moderated. If any file (or the post's title/description) is flagged, the entire post — including existing files — is quarantined and marked `moderated`.
+
+## Examples
+
+Add two images to an existing album:
+
+```bash
+curl -X POST "https://api.snipp.gg/appendUpload" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "post-code: AbCd1234" \
+  -F "file=@photo4.png" \
+  -F "file=@photo5.png"
+```
+
+Convert a single-file post into an album by appending a second file:
+
+```bash
+curl -X POST "https://api.snipp.gg/appendUpload" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "post-code: AbCd1234" \
+  -F "file=@second.png"
+```
