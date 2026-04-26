@@ -1,6 +1,6 @@
 ---
 title: "Python"
-description: "Official Python wrapper for the Snipp API"
+description: "Official Python wrapper for the Snipp API."
 ---
 
 <Card horizontal icon="github" href="https://github.com/snipp-gg/snipp-py">
@@ -18,7 +18,7 @@ pip install snipp
 
 Requires Python 3.9 or later. Depends on `requests`.
 
-## Getting started
+## Getting Started
 
 ```python
 from snipp import SnippClient
@@ -39,7 +39,7 @@ Fetch a user by ID. Pass `"@me"` for the authenticated user.
 |-----------|------|-------------|
 | `user_id` | `str` | User ID or `"@me"`. |
 | `include_posts` | `bool \| None` | Include the user's public uploads. |
-| `posts_limit` | `int \| None` | Number of posts to return (1-50). |
+| `posts_limit` | `int \| None` | Number of posts to return (1 to 50). |
 
 ```python
 user = client.get_user("@me", include_posts=True, posts_limit=10)
@@ -97,12 +97,12 @@ client.edit_upload("AbCd1234", title="New title", privacy="public")
 
 ### `append_upload(code, files)`
 
-Append 1 or more files to an existing album post. The post's share code, privacy, title, and description are preserved. Albums cap at 9 files total; requests that would exceed the cap are rejected. New files inherit the post's privacy — returned URLs are signed with a 24-hour expiry for private posts.
+Append one or more files to an existing album post. The post's share code, privacy, title, and description are preserved. Albums cap at 9 files total. Requests that would exceed the cap are rejected. New files inherit the post's privacy. Returned URLs are signed with a 24-hour expiry for private posts.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `code` | `str` | Share code of the post to append to. |
-| `files` | `list[str \| bytes \| BinaryIO]` | 1 or more files. Each item may be a file path, raw bytes, or a file-like object. |
+| `files` | `list[str \| bytes \| BinaryIO]` | One or more files. Each item may be a file path, raw bytes, or a file-like object. |
 
 ```python
 result = client.append_upload("AbCd1234", ["photo-a.png", "photo-b.png"])
@@ -149,7 +149,7 @@ Unblock a user by their ID.
 client.unblock_user("123456789012345678")
 ```
 
-## Error handling
+## Error Handling
 
 All API errors raise a `SnippError` with `status` and `message` attributes.
 

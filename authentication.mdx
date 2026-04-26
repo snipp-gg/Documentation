@@ -1,9 +1,9 @@
 ---
 title: "Authentication"
-description: "Authenticate all API requests using your API key"
+description: "Authenticate all API requests using your API key."
 ---
 
-## API key authentication
+## API Key Authentication
 
 All Snipp API endpoints require authentication. Include your API key in the `api-key` header with every request.
 
@@ -11,7 +11,7 @@ All Snipp API endpoints require authentication. Include your API key in the `api
 api-key: YOUR_API_KEY
 ```
 
-### Where to find your API key
+### Where to Find Your API Key
 
 1. Sign in at [snipp.gg](https://snipp.gg).
 2. Go to **Settings**.
@@ -43,25 +43,25 @@ data = res.json()
 ```
 </CodeGroup>
 
-### API key permissions
+### API Key Permissions
 
-Not all API keys have the same permissions. When you view your key in settings, you'll see whether it has upload access enabled:
+Not all API keys have the same permissions. Each key clearly indicates whether upload access is enabled:
 
 | Permission | Description |
 |------------|-------------|
-| **Read** | Fetch your profile, list uploads, browse discover. Always enabled. |
+| **Read** | Fetch your profile, list uploads, browse Discover. Always enabled. |
 | **Upload** | Upload files and delete uploads. Can be toggled in settings. |
 
-You can check your key's permissions by calling `GET /users/@me` and looking at the `keyHasUploadsAccess` field.
+You can check your key's permissions by calling `GET /users/@me` and reviewing the `keyHasUploadsAccess` field.
 
-### Security best practices
+### Security Best Practices
 
 - **Never expose your API key** in client-side code, public repositories, or shared documents.
-- **Use environment variables** in production (e.g. `process.env.SNIPP_API_KEY`).
+- **Use environment variables** in production (for example, `process.env.SNIPP_API_KEY`).
 - **Rotate your key** immediately if you suspect it has been compromised. You can regenerate it from your account settings.
 - **Limit upload access** if your integration only needs read access.
 
-### Error responses
+### Error Responses
 
 | Status | Cause |
 |--------|-------|

@@ -1,6 +1,6 @@
 ---
 title: "Rust"
-description: "Official Rust wrapper for the Snipp API"
+description: "Official Rust wrapper for the Snipp API."
 ---
 
 <Card horizontal icon="github" href="https://github.com/snipp-gg/snipp-rust">
@@ -20,7 +20,7 @@ snipp-rust = "0.1"
 tokio = { version = "1", features = ["full"] }
 ```
 
-## Getting started
+## Getting Started
 
 ```rust
 use snipp_rust::SnippClient;
@@ -103,7 +103,7 @@ client.edit_upload("AbCd1234", opts).await?;
 
 ### `append_upload(code, file_paths)`
 
-Append 1 or more files to an existing album post. The post's share code, privacy, title, and description are preserved. Albums cap at 9 files total; requests that would exceed the cap are rejected. New files inherit the post's privacy — returned URLs are signed with a 24-hour expiry for private posts.
+Append one or more files to an existing album post. The post's share code, privacy, title, and description are preserved. Albums cap at 9 files total. Requests that would exceed the cap are rejected. New files inherit the post's privacy. Returned URLs are signed with a 24-hour expiry for private posts.
 
 ```rust
 let result = client
@@ -155,7 +155,7 @@ Unblock a user by their ID.
 client.unblock_user("123456789012345678").await?;
 ```
 
-## Error handling
+## Error Handling
 
 All errors are returned as `SnippError`, which covers API errors, HTTP errors, deserialization failures, and IO errors.
 

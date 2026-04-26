@@ -1,6 +1,6 @@
 ---
 title: "Node.js"
-description: "Official Node.js wrapper for the Snipp API"
+description: "Official Node.js wrapper for the Snipp API."
 ---
 
 <Card horizontal icon="github" href="https://github.com/snipp-gg/snipp-js">
@@ -16,9 +16,9 @@ description: "Official Node.js wrapper for the Snipp API"
 npm install @snipp-gg/snipp
 ```
 
-Requires Node.js 18 or later. Zero dependencies — uses native `fetch` and `FormData`.
+Requires Node.js 18 or later. Zero dependencies. Uses native `fetch` and `FormData`.
 
-## Getting started
+## Getting Started
 
 ```javascript
 import { SnippClient } from "@snipp-gg/snipp";
@@ -38,7 +38,7 @@ Fetch a user by ID. Pass `"@me"` for the authenticated user.
 | Option | Type | Description |
 |--------|------|-------------|
 | `includePosts` | `boolean` | Include the user's public uploads. |
-| `postsLimit` | `number` | Number of posts to return (1-50). |
+| `postsLimit` | `number` | Number of posts to return (1 to 50). |
 
 ```javascript
 const user = await client.getUser("@me", { includePosts: true, postsLimit: 10 });
@@ -94,12 +94,12 @@ await client.editUpload("AbCd1234", { title: "New title", privacy: "public" });
 
 ### `appendUpload(code, files, options?)`
 
-Append 1 or more files to an existing album post. The post's share code, privacy, title, and description are preserved. Albums cap at 9 files total; requests that would exceed the cap are rejected. New files inherit the post's privacy — returned URLs are signed with a 24-hour expiry for private posts.
+Append one or more files to an existing album post. The post's share code, privacy, title, and description are preserved. Albums cap at 9 files total. Requests that would exceed the cap are rejected. New files inherit the post's privacy. Returned URLs are signed with a 24-hour expiry for private posts.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `code` | `string` | Share code of the post to append to. |
-| `files` | `Array<File \| Blob \| Buffer \| Uint8Array>` | 1 or more files to append. |
+| `files` | `Array<File \| Blob \| Buffer \| Uint8Array>` | One or more files to append. |
 | `options.filenames` | `string[]` | Optional filenames (one per file). |
 
 ```javascript
@@ -154,7 +154,7 @@ Unblock a user by their ID.
 await client.unblockUser("123456789012345678");
 ```
 
-## Error handling
+## Error Handling
 
 All API errors throw a `SnippError` with `status` and `message` properties.
 

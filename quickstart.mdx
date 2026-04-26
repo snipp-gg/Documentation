@@ -1,23 +1,23 @@
 ---
 title: "Quickstart"
-description: "Get your API key and make your first upload in under five minutes"
+description: "Get your API key and make your first upload in under five minutes."
 ---
 
-## Get started in three steps
+## Get Started in Three Steps
 
 Make your first API call and upload a file to Snipp.
 
-### Step 1: Get your API key
+### Step 1: Get Your API Key
 
 1. Sign in at [snipp.gg](https://snipp.gg).
 2. Open **Settings** and navigate to the API section.
-3. Copy your API key. You'll include it in the `api-key` header with every request.
+3. Copy your API key. Include it in the `api-key` header with every request.
 
 <Warning>
   Never share your API key or commit it to version control. Store it in an environment variable in production.
 </Warning>
 
-### Step 2: Verify your setup
+### Step 2: Verify Your Setup
 
 Test your API key by fetching your own profile:
 
@@ -61,7 +61,7 @@ A successful response returns your user object:
 }
 ```
 
-### Step 3: Upload a file
+### Step 3: Upload a File
 
 Upload an image or video to your account:
 
@@ -121,7 +121,7 @@ The response includes a direct URL to your file and a post object with share met
 
 ### Albums
 
-Upload multiple files in one request to create an album. Just add more `-F "file=@..."` fields:
+Upload multiple files in one request to create an album. Add additional `-F "file=@..."` fields:
 
 ```bash
 curl -X POST "https://api.snipp.gg/upload" \
@@ -131,31 +131,31 @@ curl -X POST "https://api.snipp.gg/upload" \
   -F "file=@photo2.png"
 ```
 
-Albums are the default when sending 2+ files. To create separate posts instead, add `-H "post-type: individual"`.
+Albums are the default when sending two or more files. To create separate posts instead, add `-H "post-type: individual"`.
 
-### Privacy options
+### Privacy Options
 
 Control who can see your uploads by setting the `post-privacy` header:
 
 | Value | Visibility |
 |-------|-----------|
-| `private` | Only you can view it. Response URLs are signed and expire after 24 hours — re-fetch from `GET /posts/{code}` or `GET /uploads` for a fresh link. |
-| `unlisted` | Anyone with the share link can view it (default) |
-| `public` | Visible to everyone and eligible for the Discover feed |
+| `private` | Only you can view it. Response URLs are signed and expire after 24 hours. Re-fetch from `GET /posts/{code}` or `GET /uploads` for a fresh link. |
+| `unlisted` | Anyone with the share link can view it (default). |
+| `public` | Visible to everyone and eligible for the Discover feed. |
 
-## Next steps
+## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Authentication" icon="key" href="/authentication">
     Learn how the API key header works and security best practices.
   </Card>
-  <Card title="API reference" icon="code" href="/api-reference/introduction">
+  <Card title="API Reference" icon="code" href="/api-reference/introduction">
     Explore all available endpoints and response schemas.
   </Card>
-  <Card title="File types" icon="file" href="/concepts/file-types">
+  <Card title="File Types" icon="file" href="/concepts/file-types">
     See supported formats and size limits per plan.
   </Card>
-  <Card title="Rate limits" icon="gauge" href="/concepts/rate-limits">
+  <Card title="Rate Limits" icon="gauge" href="/concepts/rate-limits">
     Understand request limits and how to handle throttling.
   </Card>
 </CardGroup>

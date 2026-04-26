@@ -3,11 +3,11 @@ title: "Blocks"
 openapi: "GET /blocks"
 ---
 
-Manage your blocked users list. Blocked users cannot view your profile, posts, or interact with your content. You also cannot view theirs.
+Manage your blocked users list. Blocked users cannot view your profile or posts, or interact with your content. You also cannot view theirs.
 
 ## Endpoints
 
-### List blocked users
+### List Blocked Users
 
 ```
 GET /blocks
@@ -25,7 +25,7 @@ Returns the list of user IDs you have blocked.
 }
 ```
 
-### Block a user
+### Block a User
 
 ```
 POST /block
@@ -49,7 +49,7 @@ Block a user by their ID. If the user is already blocked, the request succeeds w
 }
 ```
 
-### Unblock a user
+### Unblock a User
 
 ```
 POST /unblock
@@ -76,7 +76,7 @@ Unblock a user by their ID. If the user is not blocked, the request succeeds wit
 ## Behavior
 
 - You cannot block yourself.
-- Blocking is bidirectional in effect: blocked users cannot see your posts, profile, or interact with your content (comment, like, report). You also cannot see theirs.
+- Blocking is bidirectional in effect. Blocked users cannot see your posts or profile, or interact with your content (comment, like, report). You also cannot see theirs.
 - Blocked users' posts are filtered from `/discover` results.
 - When fetching a user profile via `GET /users/{id}`, a `blockedByYou` field indicates whether you have blocked that user. If the target user has blocked **you**, a `403` error is returned.
 - Staff accounts are exempt from block restrictions.

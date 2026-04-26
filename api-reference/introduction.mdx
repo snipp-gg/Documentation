@@ -1,6 +1,6 @@
 ---
-title: "API overview"
-description: "Base URL, authentication, endpoints, and error handling for the Snipp API"
+title: "API Overview"
+description: "Base URL, authentication, endpoints, and error handling for the Snipp API."
 ---
 
 ## Base URL
@@ -13,7 +13,7 @@ https://api.snipp.gg
 
 ## Authentication
 
-Include your API key in the `api-key` header with every request. See [Authentication](/authentication) for details on finding your key and security best practices.
+Include your API key in the `api-key` header with every request. See [Authentication](/authentication) for details on locating your key and security best practices.
 
 ```
 api-key: YOUR_API_KEY
@@ -33,32 +33,32 @@ api-key: YOUR_API_KEY
 | `POST` | `/unblock` | Unblock a user. |
 | `POST` | `/reports` | Report a post. |
 
-## Rate limits
+## Rate Limits
 
 - **15 requests per minute** per user across most endpoints.
 - **8 uploads per second** before temporary throttling.
 
-See [Rate limits](/concepts/rate-limits) for details on handling `429` responses.
+See [Rate Limits](/concepts/rate-limits) for details on handling `429` responses.
 
-## Error format
+## Error Format
 
 All errors return a JSON object with an `error` field:
 
 ```json
 {
-  "error": "Unauthorised. No api-key header found."
+  "error": "Unauthorized. No api-key header found."
 }
 ```
 
-## HTTP status codes
+## HTTP Status Codes
 
 | Code | Meaning |
 |------|---------|
 | `200` | Success |
-| `400` | Bad request — invalid input, unsupported file type, or file too large |
-| `401` | Unauthorised — missing or invalid API key |
-| `403` | Forbidden — account suspended or insufficient permissions |
+| `400` | Bad request. Invalid input, unsupported file type, or file too large. |
+| `401` | Unauthorized. Missing or invalid API key. |
+| `403` | Forbidden. Account suspended or insufficient permissions. |
 | `404` | Not found |
-| `413` | Payload too large — file exceeds your plan's size limit |
+| `413` | Payload too large. File exceeds your plan's size limit. |
 | `429` | Rate limit exceeded |
 | `500` | Internal server error |

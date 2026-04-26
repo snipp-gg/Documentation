@@ -1,6 +1,6 @@
 ---
 title: "ShadowPlay"
-description: "Auto-upload NVIDIA ShadowPlay clips to Snipp"
+description: "Auto-upload NVIDIA ShadowPlay clips to Snipp."
 ---
 
 <Card horizontal icon="github" href="https://github.com/snipp-gg/ShadowPlay">
@@ -20,10 +20,9 @@ Requires Python 3.9 or later. Dependencies: `watchdog`, `requests`, `pyperclip`,
 
 ## Configuration
 
-1. **Get your API Key:**
-   Visit the [Snipp Console](https://snipp.gg/settings/console) and generate a key.
+1. **Get your API key.** Visit [snipp.gg](https://snipp.gg) and generate a key from your settings.
 
-2. **Set your API Key** as an environment variable:
+2. **Set your API key** as an environment variable:
 
 <Tabs>
   <Tab title="Command Prompt">
@@ -36,7 +35,7 @@ Requires Python 3.9 or later. Dependencies: `watchdog`, `requests`, `pyperclip`,
     [System.Environment]::SetEnvironmentVariable("SNIPP_API_KEY", "YOUR_API_KEY", "User")
     ```
   </Tab>
-  <Tab title="Config file">
+  <Tab title="Config File">
     Save your key to `~/.snipp_uploader`:
     ```bash
     echo "YOUR_API_KEY" > ~/.snipp_uploader
@@ -44,7 +43,7 @@ Requires Python 3.9 or later. Dependencies: `watchdog`, `requests`, `pyperclip`,
   </Tab>
 </Tabs>
 
-## Getting started
+## Getting Started
 
 Once installed and configured, run:
 
@@ -54,12 +53,12 @@ snipp
 
 The watcher monitors your `~/Videos` folder for new `.mp4` files. When a clip is saved by ShadowPlay, it is automatically uploaded to Snipp and the shareable URL is copied to your clipboard.
 
-## How it works
+## How It Works
 
-1. **File detection** — Watches the `~/Videos` directory (recursively) using `watchdog` for new `.mp4` files.
-2. **Completion wait** — Waits for the file to finish being written to disk before uploading.
-3. **Upload** — Sends the clip to the Snipp API as a multipart upload with `unlisted` privacy.
-4. **Clipboard** — Copies the returned URL to your clipboard via `pyperclip`.
+1. **File detection.** Watches the `~/Videos` directory (recursively) using `watchdog` for new `.mp4` files.
+2. **Completion wait.** Waits for the file to finish being written to disk before uploading.
+3. **Upload.** Sends the clip to the Snipp API as a multipart upload with `unlisted` privacy.
+4. **Clipboard.** Copies the returned URL to your clipboard via `pyperclip`.
 
 ## Limits
 
@@ -67,11 +66,11 @@ The watcher monitors your `~/Videos` folder for new `.mp4` files. When a clip is
 - Supported format: `.mp4`
 - Privacy: uploads default to **unlisted**
 
-## Error handling
+## Error Handling
 
-Errors are printed to the console with colour-coded messages:
+Errors are printed to the console with color-coded messages:
 
-| Colour | Meaning |
+| Color | Meaning |
 |--------|---------|
 | Blue | Informational (startup, file detected) |
 | Yellow | Warnings (file still processing) |
