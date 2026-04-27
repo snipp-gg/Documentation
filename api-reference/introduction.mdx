@@ -32,21 +32,20 @@ api-key: YOUR_API_KEY
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | `GET` | `/users/{id}` | Fetch a user profile. Use `@me` for your own account. |
+| `GET` | `/posts/{code}` | Fetch a single post by share code. |
 | `POST` | `/upload` | Upload an image or video file. |
 | `GET` | `/uploads` | List your 30 most recent uploads. |
+| `PATCH` | `/editUpload` | Update title, description, or privacy of a post. |
+| `POST` | `/appendUpload` | Add files to an existing album. |
 | `DELETE` | `/deleteUpload` | Delete an upload by filename. |
 | `GET` | `/discover` | Browse public uploads from the community. |
-| `GET` | `/blocks` | List your blocked users. |
-| `POST` | `/block` | Block a user. |
-| `POST` | `/unblock` | Unblock a user. |
 | `POST` | `/reports` | Report a post. |
+
+Looking for blocking, profile editing, avatar uploads, or anything that powers the full Snipp experience? See the [Relay API](/concepts/relay).
 
 ## Rate Limits
 
-- **15 requests per minute** per user across most endpoints.
-- **8 uploads per second** before temporary throttling.
-
-See [Rate Limits](/concepts/rate-limits) for details on handling `429` responses.
+Rate limits apply per endpoint, not per account. See [Rate Limits](/concepts/rate-limits) for the full table and details on handling `429` responses.
 
 ## Error Format
 

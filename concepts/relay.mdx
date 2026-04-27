@@ -1,0 +1,62 @@
+---
+title: "Relay"
+description: "The Relay API powers full Snipp account features for first-party clients like the mobile app."
+---
+
+## Overview
+
+Relay is a separate Snipp API geared toward the full user experience. It mirrors the public API for uploads, posts, and discovery, and adds account-level features such as profile editing, avatar and banner uploads, and blocking other users.
+
+Relay is intended for first-party clients (for example, the Snipp mobile app). The public API at `api.snipp.gg` remains the right choice for third-party integrations and SDKs.
+
+## Base URL
+
+```
+relay.snipp.gg
+```
+
+## Authentication
+
+Relay uses a `relay-key` header instead of `api-key`. Each Snipp account has a unique relay key. Treat it like a password.
+
+```
+relay-key: YOUR_RELAY_KEY
+```
+
+A missing, empty, or unrecognized relay key returns `401`.
+
+## Endpoints
+
+Relay supports every endpoint listed in the [API Overview](/api-reference/introduction), with these additions:
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/blocks` | List your blocked users. |
+| `POST` | `/block` | Block a user by ID. |
+| `POST` | `/unblock` | Unblock a user by ID. |
+| `PATCH` | `/profile` | Update your profile fields (bio, nickname, username, email, socials, embed settings, avatar URL, banner URL). |
+| `POST` | `/profile/avatar` | Upload a new avatar. The image is square-cropped and stored under `avatars/{userId}/`. |
+| `POST` | `/profile/banner` | Upload a new banner. Stored under `banners/{userId}/`. |
+
+## Behavior
+
+- Avatar and banner uploads accept `.png`, `.jpg`, `.webp`, and `.gif` up to 30 MB.
+- Avatar uploads are square-cropped to the shorter side using a centered crop. Banner uploads keep their original aspect ratio.
+- Successful avatar or banner uploads automatically set the field on your profile, so a follow-up `PATCH /profile` call is not required.
+- `PATCH /profile` rejects avatar or banner URLs that do not point to your own `avatars/{userId}/` or `banners/{userId}/` prefix on the Snipp CDN.
+- Embed settings (custom embed title, description, theme color, small text) are PLUS-only.
+- Blocking is bidirectional in effect. Blocked users cannot see your posts or profile, and you cannot see theirs. Staff accounts are exempt.
+
+## Rate Limits
+
+Relay shares the per-endpoint limits documented in [Rate Limits](/concepts/rate-limits), including the dedicated buckets for the Relay-only endpoints listed above.
+
+## Error Format
+
+Errors follow the same format as the public API:
+
+```json
+{
+  "error": "Unauthorised. No relay-key header found."
+}
+```

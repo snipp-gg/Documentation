@@ -53,7 +53,8 @@
             "pages": [
               "concepts/file-types",
               "concepts/rate-limits",
-              "concepts/plans"
+              "concepts/plans",
+              "concepts/relay"
             ]
           }
         ]

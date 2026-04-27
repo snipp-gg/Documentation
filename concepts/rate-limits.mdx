@@ -1,30 +1,54 @@
 ---
 title: "Rate Limits"
-description: "Understand API request limits and how to handle throttling."
+description: "Understand request limits across the API and Relay, and how to handle throttling."
 ---
 
 ## Overview
 
-Rate limits protect the Snipp API from abuse and ensure consistent performance for all users. Limits apply per user based on your API key.
+Rate limits protect Snipp from abuse and keep performance consistent for everyone. Limits apply per user, per endpoint. Hitting the cap on one endpoint does not affect requests to another.
 
-## Limits
+## API Limits
 
-| Scope | Limit | Window |
-|-------|-------|--------|
-| General API requests | 15 requests | Per minute |
-| File uploads | 8 uploads | Per second |
+| Endpoint | Limit | Window |
+|----------|-------|--------|
+| `GET /users/{id}` | No limit | |
+| `GET /posts/{code}` | 20 requests | Per 30 seconds |
+| `POST /upload` | 20 requests | Per 30 seconds |
+| `GET /uploads` | 20 requests | Per 30 seconds |
+| `PATCH /editUpload` | 20 requests | Per 30 seconds |
+| `POST /appendUpload` | 10 requests | Per minute |
+| `DELETE /deleteUpload` | 20 requests | Per 30 seconds |
+| `GET /discover` | No limit | |
+| `POST /reports` | 3 requests | Per minute |
 
-These limits apply across all endpoints. Exceeding the upload limit may result in temporary suspension of upload access for your account.
+`POST /upload` also has an abuse safeguard. More than 8 uploads per second triggers a temporary suspension of upload access for your account.
+
+## Relay Limits
+
+The Relay API matches the limits above for shared endpoints, with these additional Relay-only endpoints:
+
+| Endpoint | Limit | Window |
+|----------|-------|--------|
+| `GET /blocks` | No limit | |
+| `POST /block` | 10 requests | Per minute |
+| `POST /unblock` | 10 requests | Per minute |
+| `PATCH /profile` | 10 requests | Per minute |
+| `POST /profile/avatar` | 10 requests | Per minute |
+| `POST /profile/banner` | 10 requests | Per minute |
+
+See [Relay](/concepts/relay) for what Relay covers and how to authenticate.
 
 ## Rate Limit Headers
 
-Every authenticated response includes headers to help you track your usage:
+Rate-limited responses include headers to help you track your usage:
 
 | Header | Description |
 |--------|-------------|
 | `X-RateLimit-Limit` | Maximum requests allowed per window |
 | `X-RateLimit-Remaining` | Requests remaining in the current window |
 | `X-RateLimit-Reset` | Unix timestamp (seconds) when the window resets |
+
+Endpoints with no limit do not include these headers.
 
 ## Rate Limit Responses
 
