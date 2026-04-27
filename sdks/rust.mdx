@@ -122,7 +122,7 @@ if let Some(post) = result.post {
 
 ### `delete_upload(filename)`
 
-Delete an upload by its filename.
+Delete an upload by its filename. On albums, only that file is removed; on single-file posts the entire post is deleted.
 
 ```rust
 client.delete_upload("a3f7b2c91d4e8f0612ab34cd56ef7890.png").await?;

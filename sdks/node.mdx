@@ -119,7 +119,7 @@ console.log(result.post.fileCount);
 
 ### `deleteUpload(filename)`
 
-Delete an upload by its filename.
+Delete an upload by its filename. On albums, only that file is removed; on single-file posts the entire post is deleted.
 
 ```javascript
 await client.deleteUpload("a3f7b2c91d4e8f0612ab34cd56ef7890.png");

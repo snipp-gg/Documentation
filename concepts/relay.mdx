@@ -58,7 +58,7 @@ The `GET /posts/{code}` response includes `views`, `likeCount`, `liked` (whether
 - Successful avatar or banner uploads automatically set the field on your profile, so a follow-up `PATCH /profile` call is not required.
 - `PATCH /profile` rejects avatar or banner URLs that do not point to your own `avatars/{userId}/` or `banners/{userId}/` prefix on the Snipp CDN.
 - Embed settings (custom embed title, description, theme color, small text) are PLUS-only.
-- Blocking is bidirectional in effect. Blocked users cannot see your posts or profile, and you cannot see theirs. Staff accounts are exempt.
+- Blocking is bidirectional in effect. Blocked users cannot see your posts or profile, and you cannot see theirs.
 - `POST /like` toggles the like. Calling it twice removes the like.
 - Comments are limited to 200 characters. A post can hold up to 500 comments.
 - Likes and comments are blocked on moderated posts and on private posts you do not own.
