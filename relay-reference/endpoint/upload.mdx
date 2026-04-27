@@ -1,0 +1,58 @@
+---
+title: "Upload File(s)"
+openapi: "POST /upload"
+---
+
+Upload between 1 and 9 files in a single request. Every upload automatically creates a post. When sending multiple files, they are grouped into an album by default.
+
+## Headers
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `relay-key` | Yes | Your Relay key |
+| `post-privacy` | No | `public`, `unlisted`, or `private` (default) |
+| `post-title` | No | Post title, max 30 characters |
+| `post-description` | No | Post description, max 200 characters |
+| `post-type` | No | `album` (default) or `individual`. Only applies to two or more files. |
+
+## Behavior
+
+- **One file:** creates a single post. `post-type` is ignored.
+- **Two or more files, no header or `album`:** creates one album post containing all files.
+- **Two or more files, `individual`:** creates a separate post for each file.
+- **`post-privacy: private`:** the returned `url` (and any `urls` in albums) is a signed URL with a 24-hour expiry. After it expires, call [`GET /posts/{code}`](/relay-reference/endpoint/post) or [`GET /uploads`](/relay-reference/endpoint/uploads) to get a fresh signed URL.
+- **Video uploads:** `.mp4`, `.mov`, and `.mkv` files are remuxed to MP4 with `+faststart` so the browser can begin playback before the full file has downloaded. `.mov` and `.mkv` uploads are stored (and returned) with an `.mp4` extension. If remuxing fails, the original file is stored unchanged. See [File Types](/concepts/file-types) for details.
+
+## Examples
+
+Upload a single file:
+
+```bash
+curl -X POST "https://relay.snipp.gg/upload" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "post-privacy: unlisted" \
+  -H "post-title: my gaming POV" \
+  -F "file=@screenshot.png"
+```
+
+Upload an album (two or more files default to album):
+
+```bash
+curl -X POST "https://relay.snipp.gg/upload" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "post-privacy: public" \
+  -H "post-title: Game Moderation Evidence" \
+  -F "file=@photo1.png" \
+  -F "file=@photo2.png" \
+  -F "file=@photo3.png"
+```
+
+Upload multiple files as individual posts:
+
+```bash
+curl -X POST "https://relay.snipp.gg/upload" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "post-type: individual" \
+  -F "file=@image1.png" \
+  -F "file=@image2.png"
+```

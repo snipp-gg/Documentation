@@ -1,0 +1,85 @@
+---
+title: "Relay Overview"
+description: "Base URL, authentication, endpoints, and behavior for the Snipp Relay API."
+---
+
+## Overview
+
+Relay is the Snipp API geared toward the full user experience. It mirrors the public API for uploads and posts, and adds the discover feed, likes, comments, blocking, profile editing, avatar and banner uploads, and view counting.
+
+Relay is intended for first-party clients (for example, the Snipp mobile app). For third-party integrations and SDKs, use the [public API](/api-reference/introduction) at `api.snipp.gg`.
+
+## Base URL
+
+All Relay requests are made to:
+
+```
+relay.snipp.gg
+```
+
+## Authentication
+
+Relay uses a `relay-key` header. Each Snipp account has a unique relay key. Treat it like a password.
+
+```
+relay-key: YOUR_RELAY_KEY
+```
+
+A missing, empty, or unrecognized relay key returns `401`.
+
+## Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/users/{id}` | Fetch a user profile. Use `@me` for your own account. |
+| `GET` | `/posts/{code}` | Fetch a single post by share code. Includes views, likeCount, liked, commentCount. |
+| `POST` | `/upload` | Upload an image or video file. |
+| `GET` | `/uploads` | List all of your uploads. |
+| `PATCH` | `/editUpload` | Update title, description, or privacy of a post. |
+| `POST` | `/appendUpload` | Add files to an existing album. |
+| `DELETE` | `/deleteUpload` | Delete a file. If the file belongs to an album with other files, only that file is removed; otherwise the post is deleted. |
+| `GET` | `/discover` | Browse public uploads from the community. |
+| `GET` | `/blocks` | List your blocked users. |
+| `POST` | `/block` | Block a user by ID. |
+| `POST` | `/unblock` | Unblock a user by ID. |
+| `POST` | `/like` | Toggle a like on a post. |
+| `GET` | `/comments` | List comments on a post. |
+| `POST` | `/comment` | Add a comment to a post. |
+| `DELETE` | `/comment` | Delete a comment. |
+| `POST` | `/reports` | Report a post. |
+| `PATCH` | `/profile` | Update profile fields (bio, nickname, username, email, socials, embed settings, avatar URL, banner URL). |
+| `POST` | `/profile/avatar` | Upload a new avatar. |
+| `POST` | `/profile/banner` | Upload a new banner. |
+
+## View Counting
+
+Relay does not expose a dedicated view endpoint. Views increment automatically when a viewer hits `GET /posts/{code}` or `GET /discover`.
+
+To prevent inflation, views are deduplicated per IP and post: an IP can contribute up to 3 counted views per post per hour. Views are only counted on public, non-moderated posts.
+
+## Rate Limits
+
+Rate limits apply per endpoint, not per account. See [Rate Limits](/concepts/rate-limits) for the full table and details on handling `429` responses.
+
+## Error Format
+
+All errors return a JSON object with an `error` field:
+
+```json
+{
+  "error": "Unauthorised. No relay-key header found."
+}
+```
+
+## HTTP Status Codes
+
+| Code | Meaning |
+|------|---------|
+| `200` | Success |
+| `400` | Bad request. Invalid input, unsupported file type, or file too large. |
+| `401` | Unauthorized. Missing or invalid relay key. |
+| `403` | Forbidden. Account suspended or insufficient permissions. |
+| `404` | Not found |
+| `413` | Payload too large. File exceeds your plan's size limit. |
+| `429` | Rate limit exceeded |
+| `500` | Internal server error |

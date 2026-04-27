@@ -1,0 +1,19 @@
+---
+title: "Discover Feed"
+openapi: "GET /discover"
+---
+
+Browse public uploads from the community. Returns up to 50 items.
+
+## Behavior
+
+- Plus and Enterprise users do not see ads.
+- Blocked users are filtered both ways: posts from users you have blocked, and posts from users who have blocked you, are excluded.
+- Hits to this endpoint count views toward each returned post. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour.
+
+## Examples
+
+```bash
+curl -X GET "https://relay.snipp.gg/discover" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```

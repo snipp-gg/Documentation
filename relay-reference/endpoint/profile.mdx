@@ -1,0 +1,25 @@
+---
+title: "Update Profile"
+openapi: "PATCH /profile"
+---
+
+Update your profile fields. Send only the fields you want to change.
+
+## Behavior
+
+- `bio` is capped at 200 characters.
+- `nickname` is capped at 15 characters.
+- `username` must be 4-15 characters, letters, numbers, and underscores only.
+- `email` must be a valid email and at most 50 characters.
+- `socials` is an object keyed by `roblox`, `github`, `spotify`, `youtube`, `tiktok`, `X`, `bluesky`, `discord`. Each value must be a URL on the platform's domain.
+- `avatar` and `banner` only accept URLs that point to your own `avatars/{userId}/` or `banners/{userId}/` prefix on the Snipp CDN. Use [`/profile/avatar`](/relay-reference/endpoint/avatar) or [`/profile/banner`](/relay-reference/endpoint/banner) to upload first.
+- `embed_settings` (custom embed title, description, theme color, small text) is PLUS-only.
+
+## Examples
+
+```bash
+curl -X PATCH "https://relay.snipp.gg/profile" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"bio": "Building things at Snipp", "nickname": "Snipp"}'
+```

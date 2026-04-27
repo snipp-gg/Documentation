@@ -1,0 +1,21 @@
+---
+title: "Upload Avatar"
+openapi: "POST /profile/avatar"
+---
+
+Upload a new avatar via multipart form upload.
+
+## Behavior
+
+- Accepts `.png`, `.jpg`, `.webp`, `.gif` up to **30 MB**.
+- Image is square-cropped to the shorter side using a centered crop.
+- Stored under `avatars/{userId}/` on the Snipp CDN.
+- Sets the field on your profile automatically. No follow-up [`/profile`](/relay-reference/endpoint/profile) call required.
+
+## Examples
+
+```bash
+curl -X POST "https://relay.snipp.gg/profile/avatar" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -F "file=@avatar.png"
+```

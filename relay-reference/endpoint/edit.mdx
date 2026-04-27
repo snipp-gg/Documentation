@@ -1,0 +1,34 @@
+---
+title: "Edit Upload"
+openapi: "PATCH /editUpload"
+---
+
+Update an existing upload's title, description, or privacy level.
+
+## Behavior
+
+- You must own the upload to edit it.
+- At least one of the `title`, `description`, or `post-privacy` headers must be provided.
+- Send an empty string for `title` or `description` to clear the field.
+- `title` is truncated to 30 characters, `description` to 200 characters.
+
+## Examples
+
+Update a post's title and privacy:
+
+```bash
+curl -X PATCH "https://relay.snipp.gg/editUpload" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "code: AbCd1234" \
+  -H "title: New title" \
+  -H "post-privacy: public"
+```
+
+Clear a post's description:
+
+```bash
+curl -X PATCH "https://relay.snipp.gg/editUpload" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "code: AbCd1234" \
+  -H "description: "
+```

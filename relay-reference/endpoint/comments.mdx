@@ -1,0 +1,19 @@
+---
+title: "List Comments"
+openapi: "GET /comments"
+---
+
+List comments on a post. Pass `shareCode` as a query parameter or `code` as a header.
+
+## Behavior
+
+- Returns each comment with the author's username, nickname, avatar, verified flag, and PLUS flag.
+- Comments from suspended users and from users you have blocked are filtered out.
+- Private posts and moderated posts are visible only to the owner.
+
+## Examples
+
+```bash
+curl -X GET "https://relay.snipp.gg/comments?shareCode=AbCd1234" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```

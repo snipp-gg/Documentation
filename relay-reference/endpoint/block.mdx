@@ -1,0 +1,21 @@
+---
+title: "Block User"
+openapi: "POST /block"
+---
+
+Block a user by ID.
+
+## Behavior
+
+- Blocking is bidirectional in effect. Blocked users cannot see your posts or profile, and you cannot see theirs.
+- Blocking an already-blocked user succeeds without error.
+- You cannot block yourself.
+
+## Examples
+
+```bash
+curl -X POST "https://relay.snipp.gg/block" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"targetId": "123456789012345678"}'
+```

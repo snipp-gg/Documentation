@@ -1,0 +1,15 @@
+---
+title: "Unblock User"
+openapi: "POST /unblock"
+---
+
+Unblock a user by ID. Unblocking a user who is not blocked succeeds without error.
+
+## Examples
+
+```bash
+curl -X POST "https://relay.snipp.gg/unblock" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"targetId": "123456789012345678"}'
+```

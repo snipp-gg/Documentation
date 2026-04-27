@@ -1,0 +1,20 @@
+---
+title: "Toggle Like"
+openapi: "POST /like"
+---
+
+Toggle a like on a post. Calling it twice removes the like.
+
+## Behavior
+
+- Likes are blocked on moderated posts and on private posts you do not own.
+- The response includes `liked` (your new state) and `likeCount` (the post's total).
+
+## Examples
+
+```bash
+curl -X POST "https://relay.snipp.gg/like" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"shareCode": "AbCd1234"}'
+```

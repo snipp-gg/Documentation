@@ -1,0 +1,37 @@
+---
+title: "List Uploads"
+openapi: "GET /uploads"
+---
+
+Fetch all of your uploads.
+
+## Behavior
+
+- Returns every upload you have, newest first. No cap.
+- Each upload includes `code` for the associated post when one exists.
+- `isAlbum` is `true` when that upload belongs to an album post.
+- URLs for private uploads are returned as signed URLs with a 24-hour expiry. After that, request the endpoint again for a fresh signed URL.
+
+## Example
+
+```bash
+curl -X GET "https://relay.snipp.gg/uploads" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+Example response:
+
+```json
+{
+  "uploads": [
+    {
+      "code": "AbCd1234",
+      "isAlbum": true,
+      "url": "https://i.snipp.gg/364836696149458944/16483ec5681c5fc2b5cc08dd49b7dbae",
+      "size": 2487312,
+      "size_formatted": "2.37 MB",
+      "uploaded": "2026-03-27T11:42:18.000Z"
+    }
+  ]
+}
+```

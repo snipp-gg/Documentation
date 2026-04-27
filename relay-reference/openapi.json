@@ -1,0 +1,1453 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Snipp.gg Relay API",
+    "description": "First-party Snipp API for the full user experience. Includes uploads, posts, discover, likes, comments, blocks, and profile management.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://relay.snipp.gg"
+    }
+  ],
+  "security": [
+    {
+      "relayKeyAuth": []
+    }
+  ],
+  "paths": {
+    "/users/{id}": {
+      "get": {
+        "summary": "Get User",
+        "description": "Retrieve user profile data. Includes badge flags and a `badges` object (ordered as `verified`, `staff`, `partner`, `bugHunterTier`, `translator`, `plus`). For non-self requests, public profile uploads are included by default as `publicUploads`.",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "User ID or `@me` for the authenticated user",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "includePosts",
+            "in": "query",
+            "required": false,
+            "description": "Include `publicUploads` in the response. Defaults to `true` for non-self requests and `false` for `@me`.",
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "postsLimit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of `publicUploads` to return (1-50, default 50).",
+            "schema": { "type": "integer", "minimum": 1, "maximum": 50 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserResponse"
+                },
+                "examples": {
+                  "selfProfile": {
+                    "summary": "@me Response",
+                    "value": {
+                      "user": {
+                        "id": "123456789012345678",
+                        "username": "snipp",
+                        "avatar": "https://cdn.snipp.gg/avatar.png",
+                        "banner": null,
+                        "nickname": "Snipp",
+                        "bio": null,
+                        "socials": null,
+                        "key": "snp_xxx",
+                        "keyHasUploadsAccess": true,
+                        "plus": true,
+                        "enterprise": false,
+                        "verified": true,
+                        "staff": false,
+                        "partner": false,
+                        "translator": false,
+                        "bugHunterTier": 0,
+                        "suspended": false,
+                        "created": "2025-01-01T00:00:00.000Z",
+                        "embed_settings": null,
+                        "badges": {
+                          "verified": true,
+                          "staff": false,
+                          "partner": false,
+                          "bugHunterTier": 0,
+                          "translator": false,
+                          "plus": true
+                        },
+                        "uploads": 42
+                      }
+                    }
+                  },
+                  "publicProfile": {
+                    "summary": "Public Profile Response",
+                    "value": {
+                      "user": {
+                        "id": "987654321098765432",
+                        "username": "creator",
+                        "avatar": "https://cdn.snipp.gg/avatar.png",
+                        "banner": null,
+                        "nickname": "Creator",
+                        "bio": "Hello world",
+                        "socials": {
+                          "x": "snippgg"
+                        },
+                        "plus": true,
+                        "enterprise": false,
+                        "verified": true,
+                        "staff": false,
+                        "partner": false,
+                        "translator": false,
+                        "bugHunterTier": 1,
+                        "suspended": false,
+                        "created": "2025-01-01T00:00:00.000Z",
+                        "embed_settings": null,
+                        "badges": {
+                          "verified": true,
+                          "staff": false,
+                          "partner": false,
+                          "bugHunterTier": 1,
+                          "translator": false,
+                          "plus": true
+                        },
+                        "publicUploads": [
+                          {
+                            "url": "https://i.snipp.gg/987654321098765432/example",
+                            "code": "AbCd1234",
+                            "title": "Launch teaser",
+                            "description": "Public post",
+                            "created": "2025-01-02T00:00:00.000Z",
+                            "public": true
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised. No relay-key header or invalid relay key.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/{code}": {
+      "get": {
+        "summary": "Get Post",
+        "description": "Fetch a post by its share code. Returns the post's metadata including its direct file URL, title, description, privacy level, and creation date. Private posts are only visible to the owner.",
+        "operationId": "getPost",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "description": "The share code of the post",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "post": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "string" },
+                        "url": { "type": "string", "nullable": true, "description": "Direct URL to the primary file" },
+                        "urls": {
+                          "type": "array",
+                          "description": "Ordered list of all file URLs. Only present on albums (more than one file).",
+                          "items": { "type": "string" }
+                        },
+                        "isAlbum": { "type": "boolean", "description": "True when the post contains more than one file." },
+                        "files": {
+                          "type": "array",
+                          "description": "Per-file metadata. Use `fileName` to address a file in /deleteUpload.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "index": { "type": "integer" },
+                              "fileName": { "type": "string" },
+                              "url": { "type": "string" }
+                            }
+                          }
+                        },
+                        "title": { "type": "string", "nullable": true },
+                        "description": { "type": "string", "nullable": true },
+                        "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] },
+                        "created": { "type": "string", "format": "date-time", "nullable": true },
+                        "views": { "type": "integer", "description": "Total view count for the post (auto-incremented on this request when applicable)." },
+                        "likeCount": { "type": "integer", "description": "Total likes on the post." },
+                        "liked": { "type": "boolean", "description": "Whether the requesting user has liked this post." },
+                        "commentCount": { "type": "integer", "description": "Total comments on the post." },
+                        "file": {
+                          "type": "object",
+                          "description": "File metadata. May be absent for older uploads.",
+                          "properties": {
+                            "size": { "type": "integer", "description": "File size in bytes" },
+                            "size_formatted": { "type": "string", "description": "Human-readable file size" },
+                            "mime_type": { "type": "string", "description": "MIME type" },
+                            "dimensions": {
+                              "type": "object",
+                              "description": "Image dimensions. Only present for images and GIFs.",
+                              "properties": {
+                                "width": { "type": "integer" },
+                                "height": { "type": "integer" }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "post": {
+                    "summary": "Post Response",
+                    "value": {
+                      "post": {
+                        "code": "AbCd1234",
+                        "url": "https://i.snipp.gg/123456789012345678/example.png",
+                        "title": "My screenshot",
+                        "description": "A cool screenshot",
+                        "postPrivacy": "public",
+                        "created": "2025-01-02T00:00:00.000Z",
+                        "file": {
+                          "size": 2621440,
+                          "size_formatted": "2.50 MB",
+                          "mime_type": "image/png",
+                          "dimensions": {
+                            "width": 1920,
+                            "height": 1080
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/upload": {
+      "post": {
+        "summary": "Upload File(s)",
+        "description": "Upload 1-9 image or video files. Supports PNG, JPG, WebP, GIF, MP4, MOV, and MKV. Every upload automatically creates a post. When sending multiple files, they are grouped into an album by default. File size limits depend on your plan: Free (100 MB per file), Plus (5 GB per file), Enterprise (10 GB per file).",
+        "operationId": "upload",
+        "parameters": [
+          {
+            "name": "post-privacy",
+            "in": "header",
+            "required": false,
+            "description": "Privacy for the generated post: private (default), unlisted (accessible via link), or public (visible on Discover)",
+            "schema": { "type": "string", "enum": ["public", "unlisted", "private"], "default": "private" }
+          },
+          {
+            "name": "post-title",
+            "in": "header",
+            "required": false,
+            "description": "Post title (max 30 characters)",
+            "schema": { "type": "string", "maxLength": 30 }
+          },
+          {
+            "name": "post-description",
+            "in": "header",
+            "required": false,
+            "description": "Post description (max 200 characters)",
+            "schema": { "type": "string", "maxLength": 200 }
+          },
+          {
+            "name": "post-type",
+            "in": "header",
+            "required": false,
+            "description": "Only relevant when uploading 2+ files. `album` (default) groups all files into a single album post. `individual` creates a separate post per file.",
+            "schema": { "type": "string", "enum": ["album", "individual"], "default": "album" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "1-9 image or video files. Use multiple `file` fields for multi-file uploads."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Upload successful. Response shape depends on whether 1 or multiple files were uploaded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "description": "Single file response",
+                      "properties": {
+                        "message": { "type": "string", "example": "Upload successful!" },
+                        "url": { "type": "string", "description": "Direct URL to the uploaded file" },
+                        "file": {
+                          "type": "object",
+                          "properties": {
+                            "size": { "type": "integer", "description": "File size in bytes" },
+                            "size_formatted": { "type": "string" },
+                            "mime_type": { "type": "string" },
+                            "dimensions": {
+                              "type": "object",
+                              "nullable": true,
+                              "properties": {
+                                "width": { "type": "integer" },
+                                "height": { "type": "integer" }
+                              }
+                            }
+                          }
+                        },
+                        "processing_time": { "type": "integer" },
+                        "post": {
+                          "type": "object",
+                          "properties": {
+                            "code": { "type": "string" },
+                            "url": { "type": "string", "description": "Share page URL" },
+                            "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "description": "Multi-file response",
+                      "properties": {
+                        "message": { "type": "string" },
+                        "files": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "index": { "type": "integer" },
+                              "url": { "type": "string" },
+                              "size": { "type": "integer" },
+                              "size_formatted": { "type": "string" },
+                              "mime_type": { "type": "string" },
+                              "status": { "type": "string", "enum": ["success"] },
+                              "dimensions": { "type": "object", "nullable": true, "properties": { "width": { "type": "integer" }, "height": { "type": "integer" } } }
+                            }
+                          }
+                        },
+                        "failed": {
+                          "type": "array",
+                          "nullable": true,
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "index": { "type": "integer" },
+                              "error": { "type": "string" },
+                              "status": { "type": "string", "enum": ["failed"] }
+                            }
+                          }
+                        },
+                        "processing_time": { "type": "integer" },
+                        "post": {
+                          "type": "object",
+                          "description": "Album mode returns `code`/`url`/`isAlbum`/`fileCount`. Individual mode returns `posts` array.",
+                          "properties": {
+                            "code": { "type": "string" },
+                            "url": { "type": "string" },
+                            "postPrivacy": { "type": "string" },
+                            "isAlbum": { "type": "boolean" },
+                            "fileCount": { "type": "integer" },
+                            "posts": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "code": { "type": "string" },
+                                  "url": { "type": "string" },
+                                  "postPrivacy": { "type": "string" }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No file, unsupported type, file too large, or all files failed",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "401": {
+            "description": "Unauthorised",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "403": {
+            "description": "Account suspended",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "413": {
+            "description": "File exceeds your plan's size limit",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          }
+        }
+      }
+    },
+    "/uploads": {
+      "get": {
+        "summary": "List Uploads",
+        "description": "Get your 30 most recent uploads.",
+        "operationId": "listUploads",
+        "responses": {
+          "200": {
+            "description": "List of recent uploads",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uploads": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "code": { "type": "string", "nullable": true, "description": "Associated share code when a post exists" },
+                          "isAlbum": { "type": "boolean", "description": "Whether the upload belongs to an album post" },
+                          "url": { "type": "string" },
+                          "size": { "type": "integer", "description": "File size in bytes" },
+                          "size_formatted": { "type": "string", "description": "Human-readable file size (e.g. \"2.50 MB\")" },
+                          "uploaded": { "type": "string", "format": "date-time", "description": "ISO 8601 timestamp" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "403": {
+            "description": "No permission to access recent uploads",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deleteUpload": {
+      "delete": {
+        "summary": "Delete Upload",
+        "description": "Delete an uploaded file by filename.",
+        "operationId": "deleteUpload",
+        "parameters": [
+          {
+            "name": "file",
+            "in": "header",
+            "required": true,
+            "description": "Filename (32 hex chars + extension, e.g. a1b2c3d4e5f6...png)",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "File deleted successfully." }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid file parameter",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "403": {
+            "description": "No permission to delete uploads",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "404": {
+            "description": "File not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/editUpload": {
+      "patch": {
+        "summary": "Edit Upload",
+        "description": "Edit an existing upload's title, description, or privacy level. You must own the upload.",
+        "operationId": "editUpload",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "header",
+            "required": true,
+            "description": "The share code of the upload to edit",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "title",
+            "in": "header",
+            "required": false,
+            "description": "New title (max 30 characters). Send empty string to clear.",
+            "schema": { "type": "string", "maxLength": 30 }
+          },
+          {
+            "name": "description",
+            "in": "header",
+            "required": false,
+            "description": "New description (max 200 characters). Send empty string to clear.",
+            "schema": { "type": "string", "maxLength": 200 }
+          },
+          {
+            "name": "post-privacy",
+            "in": "header",
+            "required": false,
+            "description": "New privacy level",
+            "schema": { "type": "string", "enum": ["public", "unlisted", "private"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Upload updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "Upload updated successfully." },
+                    "post": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "string" },
+                        "title": { "type": "string", "nullable": true },
+                        "description": { "type": "string", "nullable": true },
+                        "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters or no fields to update",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "403": {
+            "description": "No permission to edit uploads or not the owner",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "404": {
+            "description": "Upload not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appendUpload": {
+      "post": {
+        "summary": "Append to Album",
+        "description": "Add one or more files to an existing album post (max 9 files total). New files inherit the post's privacy. You must own the post.",
+        "operationId": "appendUpload",
+        "parameters": [
+          {
+            "name": "post-code",
+            "in": "header",
+            "required": true,
+            "description": "The share code of the post to append to",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "1 or more image or video files. Use multiple `file` fields for multi-file appends. Total file count after append cannot exceed 9."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Files appended to album",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" },
+                    "post": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "string" },
+                        "url": { "type": "string", "description": "Share page URL" },
+                        "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] },
+                        "fileCount": { "type": "integer", "description": "Total files in the album after append" }
+                      }
+                    },
+                    "files": {
+                      "type": "array",
+                      "description": "Files that were successfully added",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "index": { "type": "integer" },
+                          "fileName": { "type": "string" },
+                          "url": { "type": "string", "description": "Direct URL. Signed with a 24-hour expiry if the post is private." },
+                          "size": { "type": "integer" },
+                          "size_formatted": { "type": "string" },
+                          "mime_type": { "type": "string" },
+                          "status": { "type": "string", "enum": ["success"] },
+                          "dimensions": {
+                            "type": "object",
+                            "nullable": true,
+                            "properties": {
+                              "width": { "type": "integer" },
+                              "height": { "type": "integer" }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "failed": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "index": { "type": "integer" },
+                          "error": { "type": "string" },
+                          "status": { "type": "string", "enum": ["failed"] }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing/invalid post-code, no file, album already full, would exceed 9-file cap, or all files failed",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "401": {
+            "description": "Unauthorised",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "403": {
+            "description": "Account suspended, no permission to modify uploads, not the owner, or post is moderated",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "404": {
+            "description": "Post not found",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "405": {
+            "description": "Endpoint unavailable during development",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "413": {
+            "description": "File exceeds your plan's size limit",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          }
+        }
+      }
+    },
+    "/discover": {
+      "get": {
+        "summary": "Discover Feed",
+        "description": "Get public uploads for the discover feed. Returns up to 50 items. Plus and Enterprise users do not see ads. Blocked users are filtered both ways. Hits to this endpoint also count views toward each returned post (deduplicated per IP and post: 3 per hour).",
+        "operationId": "discover",
+        "responses": {
+          "200": {
+            "description": "Discover feed uploads",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uploads": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": { "type": "string" },
+                          "code": { "type": "string" },
+                          "title": { "type": "string", "nullable": true },
+                          "description": { "type": "string", "nullable": true },
+                          "created": { "type": "string", "nullable": true },
+                          "author": { "type": "string" },
+                          "authorId": { "type": "string", "nullable": true },
+                          "authorUsername": { "type": "string", "nullable": true },
+                          "authorAvatar": { "type": "string", "nullable": true },
+                          "authorPlus": { "type": "boolean" },
+                          "isVerified": { "type": "boolean" },
+                          "isAd": { "type": "boolean" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "403": { "description": "Account suspended", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/blocks": {
+      "get": {
+        "summary": "List Blocked Users",
+        "description": "Returns the list of users you have blocked.",
+        "operationId": "listBlocks",
+        "responses": {
+          "200": {
+            "description": "List of blocked users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blocks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "userId": { "type": "string" },
+                          "created": { "type": "string", "format": "date-time" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/block": {
+      "post": {
+        "summary": "Block User",
+        "description": "Block a user by ID. Blocking is bidirectional in effect. Blocking an already-blocked user succeeds without error.",
+        "operationId": "blockUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "targetId": { "type": "string", "description": "The user ID to block" }
+                },
+                "required": ["targetId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Block status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blocked": { "type": "boolean" },
+                    "message": { "type": "string", "nullable": true }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid target or cannot block yourself", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "403": { "description": "Account suspended", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "User not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/unblock": {
+      "post": {
+        "summary": "Unblock User",
+        "description": "Unblock a user by ID. Unblocking a user who is not blocked succeeds without error.",
+        "operationId": "unblockUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "targetId": { "type": "string", "description": "The user ID to unblock" }
+                },
+                "required": ["targetId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Block status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blocked": { "type": "boolean" },
+                    "message": { "type": "string", "nullable": true }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid target", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "403": { "description": "Account suspended", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "User not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/like": {
+      "post": {
+        "summary": "Toggle Like",
+        "description": "Toggle a like on a post. Calling it twice removes the like.",
+        "operationId": "toggleLike",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "shareCode": { "type": "string", "description": "The share code of the post" }
+                },
+                "required": ["shareCode"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Like state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "liked": { "type": "boolean" },
+                    "likeCount": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid share code", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "403": { "description": "Cannot like (suspended, moderated, or blocked by author)", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "Post not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/comments": {
+      "get": {
+        "summary": "List Comments",
+        "description": "List comments on a post. Pass `shareCode` as a query parameter or `code` as a header.",
+        "operationId": "listComments",
+        "parameters": [
+          {
+            "name": "shareCode",
+            "in": "query",
+            "required": false,
+            "description": "The share code of the post",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comments list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "body": { "type": "string" },
+                          "userId": { "type": "string" },
+                          "createdAt": { "type": "string", "format": "date-time" },
+                          "username": { "type": "string", "nullable": true },
+                          "nickname": { "type": "string", "nullable": true },
+                          "avatar": { "type": "string", "nullable": true },
+                          "isVerified": { "type": "boolean" },
+                          "plus": { "type": "boolean" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid share code", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "Post not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/comment": {
+      "post": {
+        "summary": "Add Comment",
+        "description": "Add a comment to a post. Comments are limited to 200 characters. A post holds up to 500 comments.",
+        "operationId": "addComment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "shareCode": { "type": "string" },
+                  "text": { "type": "string", "maxLength": 200 }
+                },
+                "required": ["shareCode", "text"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Comment added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "comment": { "type": "object" },
+                    "comments": { "type": "array", "items": { "type": "object" } }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid input or post comment cap reached", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "403": { "description": "Cannot comment (suspended, moderated, or blocked by author)", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "Post not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      },
+      "delete": {
+        "summary": "Delete Comment",
+        "description": "Delete a comment by ID. The comment author or the post owner can delete a comment.",
+        "operationId": "deleteComment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "shareCode": { "type": "string" },
+                  "commentId": { "type": "string", "description": "The UUID of the comment to delete" }
+                },
+                "required": ["shareCode", "commentId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Comment deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "comments": { "type": "array", "items": { "type": "object" } }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid input", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "403": { "description": "Not allowed to delete this comment", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "Post or comment not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/profile": {
+      "patch": {
+        "summary": "Update Profile",
+        "description": "Update profile fields. Send only the fields you want to change. Avatar and banner URLs must point to your own avatars/{userId}/ or banners/{userId}/ prefix on the Snipp CDN. Use /profile/avatar or /profile/banner to upload first.",
+        "operationId": "updateProfile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bio": { "type": "string", "maxLength": 200, "nullable": true },
+                  "nickname": { "type": "string", "maxLength": 15, "nullable": true },
+                  "username": { "type": "string", "minLength": 4, "maxLength": 15 },
+                  "email": { "type": "string", "maxLength": 50, "nullable": true },
+                  "socials": { "type": "object", "additionalProperties": true, "nullable": true },
+                  "avatar": { "type": "string", "nullable": true },
+                  "banner": { "type": "string", "nullable": true },
+                  "embed_settings": { "type": "object", "additionalProperties": true, "nullable": true }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Profile updated", "content": { "application/json": { "schema": { "type": "object" } } } },
+          "400": { "description": "Validation error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "403": { "description": "PLUS-only feature requested without PLUS", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/profile/avatar": {
+      "post": {
+        "summary": "Upload Avatar",
+        "description": "Upload a new avatar. Multipart form upload. Image is square-cropped to the shorter side and stored under avatars/{userId}/. Accepts .png, .jpg, .webp, .gif up to 30 MB. Sets the field on your profile automatically.",
+        "operationId": "uploadAvatar",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": { "type": "string", "format": "binary" }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Avatar uploaded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": { "type": "string" },
+                    "type": { "type": "string", "enum": ["avatar"] }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "No file, invalid type, or file too large", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "413": { "description": "File too large (over 30 MB)", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/profile/banner": {
+      "post": {
+        "summary": "Upload Banner",
+        "description": "Upload a new banner. Multipart form upload. Banner keeps its original aspect ratio and is stored under banners/{userId}/. Accepts .png, .jpg, .webp, .gif up to 30 MB. Sets the field on your profile automatically.",
+        "operationId": "uploadBanner",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": { "type": "string", "format": "binary" }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Banner uploaded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": { "type": "string" },
+                    "type": { "type": "string", "enum": ["banner"] }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "No file, invalid type, or file too large", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "413": { "description": "File too large (over 30 MB)", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/reports": {
+      "post": {
+        "summary": "Report Post",
+        "description": "Report a post for violating community guidelines. The post must be public and not your own. Reports are reviewed by the moderation team.",
+        "operationId": "reportPost",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": { "type": "string", "description": "The share code of the post to report" },
+                  "reason": { "type": "string", "description": "Optional reason for the report", "maxLength": 200 }
+                },
+                "required": ["code"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Report submitted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Missing or invalid code, or reason too long", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "403": { "description": "Post already moderated, reporting own post, or author has blocked you", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "Post not found or private", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Badges": {
+        "type": "object",
+        "description": "Badge map used by profile surfaces. Order matches website profile rendering.",
+        "properties": {
+          "verified": { "type": "boolean" },
+          "staff": { "type": "boolean" },
+          "partner": { "type": "boolean" },
+          "bugHunterTier": { "type": "integer", "minimum": 0 },
+          "translator": { "type": "boolean" },
+          "plus": { "type": "boolean" }
+        },
+        "required": ["verified", "staff", "partner", "bugHunterTier", "translator", "plus"]
+      },
+      "PublicUpload": {
+        "type": "object",
+        "properties": {
+          "url": { "type": "string" },
+          "code": { "type": "string" },
+          "title": { "type": "string", "nullable": true },
+          "description": { "type": "string", "nullable": true },
+          "created": { "type": "string", "format": "date-time", "nullable": true },
+          "public": { "type": "boolean" }
+        },
+        "required": ["url", "code", "public"]
+      },
+      "UserProfileBase": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "username": { "type": "string", "nullable": true },
+          "avatar": { "type": "string", "nullable": true },
+          "banner": { "type": "string", "nullable": true },
+          "nickname": { "type": "string", "nullable": true },
+          "bio": { "type": "string", "nullable": true },
+          "socials": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": true
+          },
+          "plus": { "type": "boolean" },
+          "enterprise": { "type": "boolean" },
+          "verified": { "type": "boolean" },
+          "staff": { "type": "boolean" },
+          "partner": { "type": "boolean" },
+          "translator": { "type": "boolean" },
+          "bugHunterTier": { "type": "integer", "minimum": 0 },
+          "suspended": { "type": "boolean" },
+          "created": { "type": "string", "format": "date-time", "nullable": true },
+          "embed_settings": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": true
+          },
+          "badges": { "$ref": "#/components/schemas/Badges" }
+        },
+        "required": [
+          "id",
+          "plus",
+          "enterprise",
+          "verified",
+          "staff",
+          "partner",
+          "translator",
+          "bugHunterTier",
+          "suspended",
+          "badges"
+        ]
+      },
+      "UserProfileSelf": {
+        "allOf": [
+          { "$ref": "#/components/schemas/UserProfileBase" },
+          {
+            "type": "object",
+            "properties": {
+              "key": { "type": "string" },
+              "keyHasUploadsAccess": { "type": "boolean" },
+              "uploads": { "type": "integer", "minimum": 0 },
+              "publicUploads": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/PublicUpload" }
+              }
+            },
+            "required": ["key", "keyHasUploadsAccess", "uploads"]
+          }
+        ]
+      },
+      "UserProfilePublic": {
+        "allOf": [
+          { "$ref": "#/components/schemas/UserProfileBase" },
+          {
+            "type": "object",
+            "properties": {
+              "publicUploads": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/PublicUpload" }
+              },
+              "blockedByYou": {
+                "type": "boolean",
+                "description": "Whether you have blocked this user. Only present on non-self profiles."
+              }
+            }
+          }
+        ]
+      },
+      "GetUserResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/UserProfileSelf" },
+              { "$ref": "#/components/schemas/UserProfilePublic" }
+            ]
+          }
+        },
+        "required": ["user"]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "relayKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "relay-key",
+        "description": "Your Relay key from the Snipp Console"
+      }
+    }
+  }
+}
