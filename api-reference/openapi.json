@@ -293,7 +293,7 @@
     "/upload": {
       "post": {
         "summary": "Upload File(s)",
-        "description": "Upload 1-9 image or video files. Supports PNG, JPG, WebP, GIF, MP4, MOV, and MKV. Every upload automatically creates a post. When sending multiple files, they are grouped into an album by default. File size limits depend on your plan: Free (100 MB per file), Plus (5 GB per file), Enterprise (10 GB per file).",
+        "description": "Upload 1-9 image or video files. Supports PNG, JPG, WebP, GIF, MP4, MOV, and MKV. Every upload automatically creates a post. When sending multiple files, they are grouped into an album by default. File size limits depend on your plan. See [Plans](/concepts/plans) for details.",
         "operationId": "upload",
         "parameters": [
           {
