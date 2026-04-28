@@ -84,7 +84,6 @@
           },
           {
             "group": "Endpoints",
-            "openapi": "api-reference/openapi.json",
             "pages": [
               "api-reference/endpoint/users",
               "api-reference/endpoint/post",
@@ -92,7 +91,8 @@
               "api-reference/endpoint/uploads",
               "api-reference/endpoint/edit",
               "api-reference/endpoint/append",
-              "api-reference/endpoint/delete"
+              "api-reference/endpoint/delete",
+              "api-reference/endpoint/reports"
             ]
           }
         ]
@@ -108,7 +108,6 @@
           },
           {
             "group": "Endpoints",
-            "openapi": "relay-reference/openapi.json",
             "pages": [
               "relay-reference/endpoint/users",
               "relay-reference/endpoint/post",
