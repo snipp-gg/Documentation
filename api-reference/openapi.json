@@ -470,8 +470,17 @@
     "/uploads": {
       "get": {
         "summary": "List Uploads",
-        "description": "Get your 30 most recent uploads.",
+        "description": "Get your most recent uploads. Defaults to 30. Pass `?limit=N` to control the count (max 1000).",
         "operationId": "listUploads",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum uploads to return (1-1000, default 30).",
+            "schema": { "type": "integer", "minimum": 1, "maximum": 1000 }
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of recent uploads",

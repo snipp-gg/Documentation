@@ -73,12 +73,16 @@ const result = await client.upload(buffer, { privacy: "unlisted", filename: "ima
 console.log(result.url);
 ```
 
-### `listUploads()`
+### `listUploads(options?)`
 
-List the authenticated user's recent uploads.
+List the authenticated user's recent uploads. Defaults to 30. Pass `limit` to control the count (max 1000).
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `limit` | `number` | Maximum uploads to return (1-1000). |
 
 ```javascript
-const uploads = await client.listUploads();
+const uploads = await client.listUploads({ limit: 100 });
 ```
 
 ### `editUpload(code, options)`

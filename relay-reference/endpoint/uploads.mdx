@@ -3,11 +3,11 @@ title: "List Uploads"
 openapi: "GET /uploads"
 ---
 
-Fetch all of your uploads.
+Fetch your uploads. Returns all of them by default. Pass `?limit=N` to cap the response (max 1000).
 
 ## Behavior
 
-- Returns every upload you have, newest first. No cap.
+- Returns uploads newest first.
 - Each upload includes `code` for the associated post when one exists.
 - `isAlbum` is `true` when that upload belongs to an album post.
 - URLs for private uploads are returned as signed URLs with a 24-hour expiry. After that, request the endpoint again for a fresh signed URL.

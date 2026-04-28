@@ -83,12 +83,12 @@ let result = client.upload("image.png", Some(opts)).await?;
 println!("{}", result.url.unwrap_or_default());
 ```
 
-### `list_uploads()`
+### `list_uploads(limit)`
 
-List the authenticated user's recent uploads.
+List the authenticated user's recent uploads. Pass `Some(N)` for `limit` to control the count (max 1000), or `None` for the default (30).
 
 ```rust
-let uploads = client.list_uploads().await?;
+let uploads = client.list_uploads(Some(100)).await?;
 ```
 
 ### `edit_upload(code, options)`

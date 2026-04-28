@@ -3,7 +3,7 @@ title: "List Uploads"
 openapi: "GET /uploads"
 ---
 
-Fetch your 30 most recent uploads.
+Fetch your most recent uploads. Defaults to 30. Pass `?limit=N` to control the count (max 1000).
 
 ## Behavior
 
@@ -15,7 +15,7 @@ Fetch your 30 most recent uploads.
 ## Example
 
 ```bash
-curl -X GET "https://api.snipp.gg/uploads" \
+curl -X GET "https://api.snipp.gg/uploads?limit=100" \
   -H "api-key: YOUR_API_KEY"
 ```
 

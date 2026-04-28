@@ -75,12 +75,16 @@ result = client.upload("image.png", privacy="unlisted", title="My screenshot")
 print(result["url"])
 ```
 
-### `list_uploads()`
+### `list_uploads(limit=None)`
 
-List the authenticated user's recent uploads.
+List the authenticated user's recent uploads. Defaults to 30. Pass `limit` to control the count (max 1000).
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `limit` | `int \| None` | Maximum uploads to return (1-1000). |
 
 ```python
-uploads = client.list_uploads()
+uploads = client.list_uploads(limit=100)
 ```
 
 ### `edit_upload(code, title=None, description=None, privacy=None)`

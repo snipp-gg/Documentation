@@ -471,8 +471,17 @@
     "/uploads": {
       "get": {
         "summary": "List Uploads",
-        "description": "Get your 30 most recent uploads.",
+        "description": "List your uploads, newest first. Returns all by default. Pass `?limit=N` to cap the response (max 1000).",
         "operationId": "listUploads",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum uploads to return (1-1000). Omit for all.",
+            "schema": { "type": "integer", "minimum": 1, "maximum": 1000 }
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of recent uploads",
