@@ -130,6 +130,7 @@
             "group": "Posts",
             "pages": [
               "relay-reference/endpoint/post",
+              "relay-reference/endpoint/discover",
               "relay-reference/endpoint/like",
               "relay-reference/endpoint/comments",
               "relay-reference/endpoint/comment-create",
@@ -143,21 +144,10 @@
               "relay-reference/endpoint/users",
               "relay-reference/endpoint/profile",
               "relay-reference/endpoint/avatar",
-              "relay-reference/endpoint/banner"
-            ]
-          },
-          {
-            "group": "Social",
-            "pages": [
+              "relay-reference/endpoint/banner",
               "relay-reference/endpoint/blocks",
               "relay-reference/endpoint/block",
               "relay-reference/endpoint/unblock"
-            ]
-          },
-          {
-            "group": "Discover",
-            "pages": [
-              "relay-reference/endpoint/discover"
             ]
           }
         ]
