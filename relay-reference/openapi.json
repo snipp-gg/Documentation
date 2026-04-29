@@ -1290,7 +1290,7 @@
         }
       }
     },
-    "/reports": {
+    "/report": {
       "post": {
         "summary": "Report Post",
         "description": "Report a post for violating community guidelines. The post must be public and not your own. Reports are reviewed by the moderation team.",

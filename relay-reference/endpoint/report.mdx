@@ -1,6 +1,6 @@
 ---
 title: "Reports"
-openapi: "POST /reports"
+openapi: "POST /report"
 ---
 
 Report a post for violating community guidelines. Reports are reviewed by the moderation team.
@@ -10,7 +10,7 @@ Report a post for violating community guidelines. Reports are reviewed by the mo
 ### Report a Post
 
 ```
-POST /reports
+POST /report
 ```
 
 Submit a report for a post using its share code. An optional reason can be provided to help moderators review the report.
@@ -54,8 +54,8 @@ Submit a report for a post using its share code. An optional reason can be provi
 Report a post:
 
 ```bash
-curl -X POST "https://api.snipp.gg/reports" \
-  -H "api-key: YOUR_API_KEY" \
+curl -X POST "https://relay.snipp.gg/report" \
+  -H "relay-key: YOUR_RELAY_KEY" \
   -H "Content-Type: application/json" \
   -d '{"code": "AbCd1234", "reason": "Inappropriate content"}'
 ```
@@ -63,8 +63,8 @@ curl -X POST "https://api.snipp.gg/reports" \
 Report a post without a reason:
 
 ```bash
-curl -X POST "https://api.snipp.gg/reports" \
-  -H "api-key: YOUR_API_KEY" \
+curl -X POST "https://relay.snipp.gg/report" \
+  -H "relay-key: YOUR_RELAY_KEY" \
   -H "Content-Type: application/json" \
   -d '{"code": "AbCd1234"}'
 ```

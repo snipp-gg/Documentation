@@ -96,7 +96,7 @@
             "group": "Posts",
             "pages": [
               "api-reference/endpoint/post",
-              "api-reference/endpoint/reports"
+              "api-reference/endpoint/report"
             ]
           },
           {
@@ -135,7 +135,7 @@
               "relay-reference/endpoint/comments",
               "relay-reference/endpoint/comment-create",
               "relay-reference/endpoint/comment-delete",
-              "relay-reference/endpoint/reports"
+              "relay-reference/endpoint/report"
             ]
           },
           {
