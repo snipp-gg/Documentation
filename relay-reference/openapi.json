@@ -137,7 +137,7 @@
             }
           },
           "401": {
-            "description": "Unauthorised. No relay-key header or invalid relay key.",
+            "description": "Unauthorized. No relay-key header or invalid relay key.",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/Error" }
@@ -269,7 +269,7 @@
             }
           },
           "401": {
-            "description": "Unauthorised",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/Error" }
@@ -454,7 +454,7 @@
             "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
           },
           "401": {
-            "description": "Unauthorised",
+            "description": "Unauthorized",
             "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
           },
           "403": {
@@ -514,7 +514,7 @@
             }
           },
           "401": {
-            "description": "Unauthorised",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/Error" }
@@ -577,7 +577,7 @@
             }
           },
           "401": {
-            "description": "Unauthorised",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/Error" }
@@ -678,7 +678,7 @@
             }
           },
           "401": {
-            "description": "Unauthorised",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/Error" }
@@ -807,7 +807,7 @@
             "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
           },
           "401": {
-            "description": "Unauthorised",
+            "description": "Unauthorized",
             "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
           },
           "403": {
@@ -871,7 +871,7 @@
               }
             }
           },
-          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "403": { "description": "Account suspended", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
       }
@@ -904,7 +904,7 @@
               }
             }
           },
-          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+          "401": { "description": "Unauthorized", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
       }
     },
@@ -943,7 +943,7 @@
             }
           },
           "400": { "description": "Invalid target or cannot block yourself", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "403": { "description": "Account suspended", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "404": { "description": "User not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
@@ -985,7 +985,7 @@
             }
           },
           "400": { "description": "Invalid target", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "403": { "description": "Account suspended", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "404": { "description": "User not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
@@ -1027,7 +1027,7 @@
             }
           },
           "400": { "description": "Invalid share code", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "403": { "description": "Cannot like (suspended, moderated, or blocked by author)", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "404": { "description": "Post not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
@@ -1079,7 +1079,7 @@
             }
           },
           "400": { "description": "Invalid share code", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "404": { "description": "Post not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
       }
@@ -1120,7 +1120,7 @@
             }
           },
           "400": { "description": "Invalid input or post comment cap reached", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "403": { "description": "Cannot comment (suspended, moderated, or blocked by author)", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "404": { "description": "Post not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
@@ -1160,7 +1160,7 @@
             }
           },
           "400": { "description": "Invalid input", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "403": { "description": "Not allowed to delete this comment", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "404": { "description": "Post or comment not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
@@ -1206,7 +1206,7 @@
         "responses": {
           "200": { "description": "Profile updated", "content": { "application/json": { "schema": { "type": "object" } } } },
           "400": { "description": "Validation error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "403": { "description": "PLUS-only feature requested without PLUS", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
@@ -1247,7 +1247,7 @@
             }
           },
           "400": { "description": "No file, invalid type, or file too large", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "413": { "description": "File too large (over 30 MB)", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
@@ -1288,7 +1288,7 @@
             }
           },
           "400": { "description": "No file, invalid type, or file too large", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "413": { "description": "File too large (over 30 MB)", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
@@ -1329,7 +1329,7 @@
             }
           },
           "400": { "description": "Missing or invalid code, or reason too long", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "401": { "description": "Unauthorised", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "403": { "description": "Post already moderated, reporting own post, or author has blocked you", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "404": { "description": "Post not found or private", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }

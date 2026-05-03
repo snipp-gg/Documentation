@@ -2,3 +2,29 @@
 title: "Delete Upload"
 openapi: "DELETE /deleteUpload"
 ---
+
+Delete a file from your account by filename.
+
+## Behavior
+
+- Pass the file's name in the `file` header. The filename is 32 hex characters plus an extension (for example, `a1b2c3d4e5f6789012345678abcdef01.png`).
+- Get the filename from the `files[].fileName` field on [`GET /posts/{code}`](/relay-reference/endpoint/post) or [`GET /uploads`](/relay-reference/endpoint/uploads).
+- On a single-file post, deleting the file deletes the entire post.
+- On an album, deleting a file removes just that file. Deleting the last remaining file deletes the album post.
+- You can only delete your own uploads.
+
+## Examples
+
+```bash
+curl -X DELETE "https://relay.snipp.gg/deleteUpload" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "file: a1b2c3d4e5f6789012345678abcdef01.png"
+```
+
+## Responses
+
+```json
+{
+  "message": "File deleted successfully."
+}
+```
