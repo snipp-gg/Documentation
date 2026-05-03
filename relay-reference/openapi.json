@@ -836,7 +836,7 @@
     "/discover": {
       "get": {
         "summary": "Discover Feed",
-        "description": "Get public uploads for the discover feed. Returns up to 50 items. Plus and Enterprise users do not see ads. Blocked users are filtered both ways. Hits to this endpoint also count views toward each returned post (deduplicated per IP and post: 3 per hour).",
+        "description": "Get public uploads for the discover feed. Returns up to 50 items. Blocked users are filtered both ways. Hits to this endpoint also count views toward each returned post (deduplicated per IP and post: 3 per hour).",
         "operationId": "discover",
         "responses": {
           "200": {
@@ -861,8 +861,7 @@
                           "authorUsername": { "type": "string", "nullable": true },
                           "authorAvatar": { "type": "string", "nullable": true },
                           "authorPlus": { "type": "boolean" },
-                          "isVerified": { "type": "boolean" },
-                          "isAd": { "type": "boolean" }
+                          "isVerified": { "type": "boolean" }
                         }
                       }
                     }

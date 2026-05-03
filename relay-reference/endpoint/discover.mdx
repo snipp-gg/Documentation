@@ -9,7 +9,6 @@ Browse public uploads from the community. Returns up to 50 items, newest first.
 
 - Only `public` posts are returned. `unlisted` and `private` posts never appear in Discover.
 - Moderated posts are excluded.
-- Plus and Enterprise users do not see ads. Free accounts may receive ad entries (`isAd: true`).
 - Blocked users are filtered both ways: posts from users you have blocked, and posts from users who have blocked you, are excluded.
 - Hits to this endpoint count a view toward each returned post. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour.
 - Files that no longer exist on the CDN are skipped silently.
@@ -37,8 +36,7 @@ curl -X GET "https://relay.snipp.gg/discover" \
       "authorUsername": "playerone",
       "authorAvatar": "https://cdn.snipp.gg/avatars/123456789012345678/avatar.png",
       "authorPlus": true,
-      "isVerified": false,
-      "isAd": false
+      "isVerified": false
     }
   ]
 }
