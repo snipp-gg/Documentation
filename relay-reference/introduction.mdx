@@ -34,22 +34,22 @@ A missing, empty, or unrecognized relay key returns `401`.
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | `GET` | `/users/{id}` | Fetch a user profile. Use `@me` for your own account. |
-| `GET` | `/posts/{code}` | Fetch a single post by share code. Includes views, likeCount, liked, commentCount. |
+| `GET` | `/posts/{code}` | Fetch a single post by share code. |
 | `POST` | `/upload` | Upload an image or video file. |
 | `GET` | `/uploads` | List all of your uploads. |
 | `PATCH` | `/editUpload` | Update title, description, or privacy of a post. |
 | `POST` | `/appendUpload` | Add files to an existing album. |
-| `DELETE` | `/deleteUpload` | Delete a file. If the file belongs to an album with other files, only that file is removed; otherwise the post is deleted. |
+| `DELETE` | `/deleteUpload` | Delete a file or post. |
 | `GET` | `/discover` | Browse public uploads from the community. |
 | `GET` | `/blocks` | List your blocked users. |
 | `POST` | `/block` | Block a user by ID. |
 | `POST` | `/unblock` | Unblock a user by ID. |
-| `POST` | `/like` | Like a post (calling it twice removes the like). |
+| `POST` | `/like` | Like or unlike a post. |
 | `GET` | `/comments` | List comments on a post. |
 | `POST` | `/comment` | Create a comment on a post. |
 | `DELETE` | `/comment` | Delete a comment. |
 | `POST` | `/report` | Report a post. |
-| `PATCH` | `/profile` | Update profile fields (bio, nickname, username, email, socials, embed settings, avatar URL, banner URL). |
+| `PATCH` | `/profile` | Update profile fields. |
 | `POST` | `/profile/avatar` | Upload a new avatar. |
 | `POST` | `/profile/banner` | Upload a new banner. |
 

@@ -7,10 +7,8 @@ Fetch a post by its share code.
 
 ## Behavior
 
-- Returns the post's metadata including its direct file URL, title, description, privacy, and creation date.
-- Albums (posts with more than one file) include `urls` (the legacy ordered list) and `isAlbum: true`.
-- All posts include a `files` array with `{ index, fileName, url }` for each file. Use `fileName` when calling [`/deleteUpload`](/relay-reference/endpoint/delete) to identify a specific file. On albums, `/deleteUpload` removes just that file; on single-file posts it deletes the post.
-- The response includes `views`, `likeCount`, `liked` (whether the requester has liked the post), and `commentCount`.
+- Albums (posts with more than one file) include `urls` and `isAlbum: true`.
+- Use `fileName` from the `files` array when calling [`/deleteUpload`](/relay-reference/endpoint/delete) to address a specific file. On albums, `/deleteUpload` removes just that file; on single-file posts it deletes the post.
 - Hits to this endpoint count a view toward the post. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour. Views are only counted on public, non-moderated posts.
 - Private posts are only visible to the owner. Requests for another user's private post return `404`.
 - URLs for private posts are returned as signed URLs with a 24-hour expiry. After that, request the endpoint again for a fresh signed URL.
