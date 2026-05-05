@@ -5,9 +5,19 @@ description: "Use your own domain for Snipp post links."
 
 ## Overview
 
-You can serve Snipp post links from your own domain by setting up a redirect from `yourdomain.com/p/[code]` to `snipp.gg/p/[code]`. This is a DNS-level redirect that you configure with your own domain provider. Snipp does not host your domain.
+You can serve Snipp post links from your own domain by setting up a redirect from `example.com/[code]` to `snipp.gg/p/[code]`. This is a DNS-level redirect that you configure with your own domain provider. Snipp does not host your domain.
+
+Because the redirect catches every path on your domain, your custom domain should be dedicated to Snipp. Do not point a domain you also use for a website or other services.
 
 The address bar will switch to `snipp.gg` after the redirect completes. Snipp does not currently offer true custom hostnames where the URL stays on your domain.
+
+Custom domains are available on every plan, including Free. There is nothing to enable in your account settings, since the redirect is configured entirely on your own domain.
+
+If you are on Snipp Plus, you can pair a custom domain with the **custom embeds** feature to fully personalize how your posts appear when shared. Combined, the two features let you present uploads under your own brand and design rather than the default Snipp look.
+
+<Note>
+We are working on the ability to set a custom domain as your default link domain across Snipp. Once shipped, copied links and shared URLs will use your chosen domain automatically, so you will not have to swap `snipp.gg` for your domain by hand each time.
+</Note>
 
 ## Setup with Cloudflare
 
@@ -18,7 +28,7 @@ If your domain is on Cloudflare, the easiest path is [**Bulk Redirects**](https:
 
 | Field | Value |
 |-------|-------|
-| Source URL | `https://yourdomain.com/p/` |
+| Source URL | `https://example.com/` |
 | Target URL | `https://snipp.gg/p/` |
 | Status | `301` |
 | Preserve path suffix | Enabled |
@@ -26,7 +36,7 @@ If your domain is on Cloudflare, the easiest path is [**Bulk Redirects**](https:
 
 3. Attach the list to your zone.
 
-The same approach works for `/u/`, `/a/`, or any other Snipp path you want to mirror.
+A visit to `example.com/[code]` will resolve to `snipp.gg/p/[code]`.
 
 ## Setup with Other Providers
 
@@ -36,6 +46,8 @@ Most DNS providers support URL forwarding with path preservation. Look for:
 - **Porkbun:** URL Forwarding → enable "Include path".
 - **GoDaddy:** Domain Settings → Forwarding → "Forward with masking" off, "Update my nameservers" off.
 
+Configure forwarding from `https://example.com/` to `https://snipp.gg/p/` with path preservation enabled.
+
 If your provider does not support path-preserving forwarding, point the domain at a small worker, redirect script, or static host that issues a `301` to `https://snipp.gg/p/{code}`.
 
 <Warning>
@@ -43,3 +55,20 @@ A redirect lives entirely on your domain's DNS. Snipp has no way to know which d
 </Warning>
 
 Snipp does not offer hostname verification (TXT records, dashboard claims, etc.) for this feature. Even with verification, a third party could still point their own domain at the same `snipp.gg/p/[code]` URL. Verification would only confirm that you control your domain, not that you control who else can redirect to a public Snipp link. The end result is the same as the unverified setup, so the extra step would add friction without adding protection.
+
+## Community Domains
+
+If you do not own a domain but still want something other than `snipp.gg`, the following community-run domains are already configured to redirect to Snipp:
+
+- [screenshott.ing](https://screenshott.ing)
+- [sza.lol](https://sza.lol)
+- [wsp.lol](https://wsp.lol)
+- [gngs.lol](https://gngs.lol)
+- [cork.lol](https://cork.lol)
+- [dollas.lol](https://dollas.lol)
+
+Use any of these in place of `snipp.gg/p` when sharing a post link. For example, `screenshott.ing/[code]` will resolve to the same upload as `snipp.gg/p/[code]`.
+
+<Warning>
+These domains are operated by community members, not by Snipp. They may expire, change ownership, or stop redirecting at any time. Use them at your own risk. While we try to keep this list updated regularly, we cannot guarantee that the domains are live at the time of viewing this page.
+</Warning>
