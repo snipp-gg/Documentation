@@ -53,8 +53,8 @@
             "pages": [
               "concepts/file-types",
               "concepts/rate-limits",
-              "concepts/plans",
-              "concepts/custom-domains"
+              "concepts/custom-domains",
+              "concepts/plans"
             ]
           }
         ]
