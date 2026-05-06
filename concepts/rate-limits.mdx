@@ -68,6 +68,15 @@ When you exceed the limit, the API returns HTTP status `429`:
 
 The rate limit headers are still included on `429` responses so you know when to retry.
 
+## Weekly Usage Limit Responses
+
+Separate from per-endpoint rate limits, every account has a [weekly usage limit](/concepts/plans#weekly-usage-limit). Files that would push you over the limit are rejected before they are stored. The exact response shape depends on the endpoint:
+
+- `POST /upload` and `POST /appendUpload` return `200` with the rejected file moved to the `failed` array. Each entry includes `error: "Weekly usage limit exceeded."`, plus `quota`, `used`, and `resetsAt`.
+- The Website internal `/api/v1/album` and chunked-upload routes return `413` with the same fields at the top level.
+
+Check your remaining usage anytime via `GET /users/@me` (`limits.usage`).
+
 ## Handling Rate Limits
 
 <Steps>

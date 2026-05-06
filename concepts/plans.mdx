@@ -10,22 +10,40 @@ Snipp offers three tiers to suit different needs. All plans include full API acc
 | | Free | Plus | Enterprise |
 |--|------|------|------------|
 | **Price** | Free | $4.99/mo | Contact us |
-| **Max File Size** | 100 MB | 5 GB | 10 GB |
+| **Max File Size** | 50 MB | 5 GB | 10 GB |
+| **Weekly Usage Limit** | 500 MB | 50 GB | 100 GB |
 | **Upload Rate** | 8 uploads/sec | 8 uploads/sec | 8 uploads/sec |
 | **API Access** | Yes | Yes | Yes |
 | **Plus Badge** | No | Yes | Yes |
 | **Priority Support** | No | Yes | Yes |
 
+## Weekly Usage Limit
+
+Each plan has a rolling 7-day upload quota. The window starts on your first upload after each reset and slides forward as you continue to use Snipp. Inactivity does not stack quota, but it also does not penalize you. The window simply re-anchors on your next upload.
+
+Failed uploads do not count against the limit. Only successfully stored files consume bytes.
+
 ## Checking Your Plan via the API
 
-Call `GET /users/@me` to see your current plan status. The response includes:
+Call `GET /users/@me` to see your current plan status and weekly storage usage. The response includes:
 
 ```json
 {
   "user": {
     "plus": true,
     "enterprise": false,
-    "uploads": 42
+    "uploads": 42,
+    "limits": {
+      "tier": "plus",
+      "maxFileSize": 5368709120,
+      "usage": {
+        "used": 1073741824,
+        "limit": 53687091200,
+        "windowStart": "2026-05-01T00:00:00.000Z",
+        "windowEnd": "2026-05-08T00:00:00.000Z",
+        "resetsInSeconds": 172800
+      }
+    }
   }
 }
 ```
@@ -35,6 +53,13 @@ Call `GET /users/@me` to see your current plan status. The response includes:
 | `plus` | `true` if you have an active Plus subscription |
 | `enterprise` | `true` if you have an Enterprise plan |
 | `uploads` | Total number of files you have uploaded |
+| `limits.tier` | Active plan tier (`free`, `plus`, or `enterprise`) |
+| `limits.maxFileSize` | Maximum size per file in bytes |
+| `limits.usage.used` | Bytes uploaded in the current window |
+| `limits.usage.limit` | Total bytes allowed per window |
+| `limits.usage.windowStart` | When the current window started, or `null` if there is no active window |
+| `limits.usage.windowEnd` | When the current window resets, or `null` if there is no active window |
+| `limits.usage.resetsInSeconds` | Seconds until the current window resets, or `null` if there is no active window |
 
 ## Upgrading
 
