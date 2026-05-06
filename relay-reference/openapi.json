@@ -87,7 +87,7 @@
                         },
                         "uploads": 42,
                         "limits": {
-                          "tier": "plus",
+                          "plan": "plus",
                           "maxFileSize": 5368709120,
                           "usage": {
                             "used": 1073741824,
@@ -1449,10 +1449,10 @@
         "type": "object",
         "description": "Plan limits and current weekly storage usage. Self-only field.",
         "properties": {
-          "tier": {
+          "plan": {
             "type": "string",
             "enum": ["free", "plus", "enterprise"],
-            "description": "Active plan tier."
+            "description": "Active plan."
           },
           "maxFileSize": {
             "type": "integer",
@@ -1482,7 +1482,7 @@
             "required": ["used", "limit", "windowStart", "windowEnd", "resetsInSeconds"]
           }
         },
-        "required": ["tier", "maxFileSize", "usage"]
+        "required": ["plan", "maxFileSize", "usage"]
       },
       "UserProfilePublic": {
         "allOf": [

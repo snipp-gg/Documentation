@@ -34,7 +34,7 @@ Call `GET /users/@me` to see your current plan status and weekly storage usage. 
     "enterprise": false,
     "uploads": 42,
     "limits": {
-      "tier": "plus",
+      "plan": "plus",
       "maxFileSize": 5368709120,
       "usage": {
         "used": 1073741824,
@@ -53,7 +53,7 @@ Call `GET /users/@me` to see your current plan status and weekly storage usage. 
 | `plus` | `true` if you have an active Plus subscription |
 | `enterprise` | `true` if you have an Enterprise plan |
 | `uploads` | Total number of files you have uploaded |
-| `limits.tier` | Active plan tier (`free`, `plus`, or `enterprise`) |
+| `limits.plan` | Active plan (`free`, `plus`, or `enterprise`) |
 | `limits.maxFileSize` | Maximum size per file in bytes |
 | `limits.usage.used` | Bytes uploaded in the current window |
 | `limits.usage.limit` | Total bytes allowed per window |
