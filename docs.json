@@ -54,8 +54,7 @@
               "concepts/file-types",
               "concepts/rate-limits",
               "concepts/custom-domains",
-              "concepts/plans",
-              "concepts/discord-bot"
+              "concepts/plans"
             ]
           }
         ]
@@ -71,6 +70,17 @@
               "sdks/python",
               "sdks/rust",
               "sdks/shadowplay"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Discord Bot",
+        "groups": [
+          {
+            "group": "Discord Bot",
+            "pages": [
+              "discord-bot"
             ]
           }
         ]

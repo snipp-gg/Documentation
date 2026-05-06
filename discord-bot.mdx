@@ -31,7 +31,13 @@ Shows your 9 most recent uploads with previews and direct share links. Private f
 
 ### `/usage`
 
-Shows your current plan, max file size, and weekly usage with a progress bar. When the weekly cap is hit the embed turns red and shows the reset time (e.g. `Resets Mon 3:00 PM`).
+Shows your current plan, max file size, and weekly usage with a progress bar. The embed color reflects how close you are to your cap:
+
+- Green below 75%
+- Orange between 75% and 99%
+- Red at 100% or higher
+
+When the weekly cap is hit the embed shows `Weekly usage exceeded • Resets Mon 3:00 PM`. Otherwise it shows the reset time on its own.
 
 Example output:
 
@@ -39,8 +45,8 @@ Example output:
 Plan: Plus
 Max File Size: 5.00 GB
 
-Weekly Usage: 12.4 GB / 50.0 GB (24.8%)
-████░░░░░░░░░░░░░░░░
+Weekly Usage: 12.40 GB / 50.00 GB (25%)
+> █████░░░░░░░░░░░░░░░
 Resets Mon 3:00 PM
 ```
 
