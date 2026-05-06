@@ -47,6 +47,7 @@ Call `GET /users/@me` to see your current plan status and weekly storage usage. 
       "usage": {
         "used": 1073741824,
         "limit": 53687091200,
+        "usedPercent": 2,
         "windowStart": "2026-05-01T00:00:00.000Z",
         "windowEnd": "2026-05-08T00:00:00.000Z",
         "resetsInSeconds": 172800
@@ -65,6 +66,7 @@ Call `GET /users/@me` to see your current plan status and weekly storage usage. 
 | `limits.maxFileSize` | Maximum size per file in bytes |
 | `limits.usage.used` | Bytes uploaded in the current window |
 | `limits.usage.limit` | Total bytes allowed per window |
+| `limits.usage.usedPercent` | Percentage of the weekly cap consumed, rounded to the nearest integer (0–100+) |
 | `limits.usage.windowStart` | When the current window started, or `null` if there is no active window |
 | `limits.usage.windowEnd` | When the current window resets, or `null` if there is no active window |
 | `limits.usage.resetsInSeconds` | Seconds until the current window resets, or `null` if there is no active window |
