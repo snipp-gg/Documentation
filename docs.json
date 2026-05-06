@@ -78,9 +78,9 @@
         "tab": "Discord Bot",
         "groups": [
           {
-            "group": "Discord Bot",
+            "group": "Overview",
             "pages": [
-              "discord-bot"
+              "discord-bot/overview"
             ]
           }
         ]
