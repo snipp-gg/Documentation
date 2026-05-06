@@ -23,6 +23,8 @@ Each plan has a rolling 7-day upload quota. The window starts on your first uplo
 
 Failed uploads do not count against the limit. Only successfully stored files consume bytes.
 
+Deleting a file does not restore weekly quota. The limit measures upload throughput per window, not stored bytes, so any successful upload counts for the full window even if the file is later removed.
+
 ## Checking Your Plan
 
 You can view your current plan and weekly usage in three places:
