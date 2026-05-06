@@ -11,7 +11,7 @@ Snipp offers three tiers to suit different needs. All plans include full API acc
 |--|------|------|------------|
 | **Price** | Free | $4.99/mo | Contact us |
 | **Max File Size** | 50 MB | 5 GB | 10 GB |
-| **Weekly Usage Limit** | 500 MB | 50 GB | 100 GB |
+| **Weekly Usage Limit** | 2 GB | 50 GB | 1 TB |
 | **Upload Rate** | 8 uploads/sec | 8 uploads/sec | 8 uploads/sec |
 | **API Access** | Yes | Yes | Yes |
 | **Plus Badge** | No | Yes | Yes |
@@ -22,6 +22,14 @@ Snipp offers three tiers to suit different needs. All plans include full API acc
 Each plan has a rolling 7-day upload quota. The window starts on your first upload after each reset and slides forward as you continue to use Snipp. Inactivity does not stack quota, but it also does not penalize you. The window simply re-anchors on your next upload.
 
 Failed uploads do not count against the limit. Only successfully stored files consume bytes.
+
+## Checking Your Plan
+
+You can view your current plan and weekly usage in three places:
+
+- **Website:** the Settings page shows your plan, max file size, weekly usage bar, and reset time.
+- **Discord bot:** run `/usage` for the same view inside Discord. See [Discord Bot](/concepts/discord-bot).
+- **API:** call `GET /users/@me`.
 
 ## Checking Your Plan via the API
 

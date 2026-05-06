@@ -54,7 +54,8 @@
               "concepts/file-types",
               "concepts/rate-limits",
               "concepts/custom-domains",
-              "concepts/plans"
+              "concepts/plans",
+              "concepts/discord-bot"
             ]
           }
         ]

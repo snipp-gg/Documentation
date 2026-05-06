@@ -1,0 +1,60 @@
+---
+title: "Discord Bot"
+description: "Upload, manage, and check usage on Snipp directly from Discord."
+---
+
+## Overview
+
+The Snipp Discord bot mirrors core upload features of the website. Once your Discord account is linked, you can upload files, browse your gallery, and check your weekly usage from any server or DM.
+
+## Linking Your Account
+
+Before using the bot, link your Discord account at [snipp.gg](https://snipp.gg). The bot looks up your Snipp profile by Discord ID. Without a linked account, every command returns a "No Snipp Account Found" prompt.
+
+## Commands
+
+### `/upload`
+
+Opens a modal where you attach one or more files, set privacy (public, unlisted, private), pick album or single mode, and optionally add a title and description.
+
+Behavior matches the website:
+
+- Single file → one post.
+- Multiple files in album mode → one album post.
+- Multiple files in single mode → individual posts per file.
+
+File-size and weekly-usage limits apply identically to API uploads. See [Plans](/concepts/plans).
+
+### `/gallery`
+
+Shows your 9 most recent uploads with previews and direct share links. Private files include short-lived signed URLs so previews still render in Discord.
+
+### `/usage`
+
+Shows your current plan, max file size, and weekly usage with a progress bar. When the weekly cap is hit the embed turns red and shows the reset time (e.g. `Resets Mon 3:00 PM`).
+
+Example output:
+
+```
+Plan: Plus
+Max File Size: 5.00 GB
+
+Weekly Usage: 12.4 GB / 50.0 GB (24.8%)
+████░░░░░░░░░░░░░░░░
+Resets Mon 3:00 PM
+```
+
+## Limits and Restrictions
+
+The bot enforces the same per-file and weekly-usage caps as the API. Uploads counted via the bot decrement the same weekly window shown on the website and in `GET /users/@me`.
+
+A few bot-specific notes:
+
+- MKV and MOV files are not supported through the bot. Use the website or API, or convert to MP4.
+- Allowed types: `.png`, `.jpg`, `.jpeg`, `.webp`, `.gif`, `.mp4`.
+- Discord caps attachments at 10 MB for free users and higher for Nitro. Larger files must be uploaded via the website or API.
+- The 8-uploads-per-second abuse guard from the API also applies to the bot.
+
+## Suspended Accounts
+
+If your account is suspended, the bot blocks `/upload` and surfaces a message linking to the data-deletion page. Contact `support@snipp.gg` to appeal.
