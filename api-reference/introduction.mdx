@@ -11,19 +11,26 @@ For first-party clients (for example, the Snipp mobile app) that need account-le
 
 ## Base URL
 
-All API requests are made to:
+The default base URL is:
 
 ```
 api.snipp.gg
 ```
 
-### Smart Routing
+`api.snipp.gg` is proxied and load-balanced through Cloudflare. It picks the closest healthy region for you, so it's the fastest option for most requests. Because Cloudflare proxies the traffic, uploads on this host are capped at **100 MB per request**.
 
-For lower-latency uploads, route requests through the global edge network at `zap.snipp.gg` instead. Smart Routing is capped at **100 MB per upload**. Files larger than that must use `api.snipp.gg`.
+### Regional endpoints
 
-```
-zap.snipp.gg
-```
+For uploads larger than 100 MB (or when you want to pin a specific region), use a regional endpoint instead. Regional endpoints are unproxied, so there is no 100 MB cap. Your file size limit is whatever your plan allows.
+
+| Region | Host |
+|--------|------|
+| UK Central | `uk-central-1.api.snipp.gg` |
+| US West | `us-west-1.api.snipp.gg` |
+
+You can mix and match. Use `api.snipp.gg` for everyday calls and switch to a regional endpoint only when an upload exceeds 100 MB.
+
+To confirm which region served a request, hit [`GET /region`](/api-reference/endpoint/region) on any host.
 
 ## Authentication
 
@@ -45,6 +52,7 @@ api-key: YOUR_API_KEY
 | `POST` | `/appendUpload` | Add files to an existing album. |
 | `DELETE` | `/deleteUpload` | Delete a file or post. |
 | `POST` | `/report` | Report a post. |
+| `GET` | `/region` | Return the region serving the request. No auth required. |
 
 Looking for the discover feed, likes, comments, blocking, profile editing, avatar uploads, or anything that powers the full Snipp experience? See the [Relay API](/relay-reference/introduction).
 

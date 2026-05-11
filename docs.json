@@ -116,6 +116,12 @@
             "pages": [
               "api-reference/endpoint/users"
             ]
+          },
+          {
+            "group": "Meta",
+            "pages": [
+              "api-reference/endpoint/region"
+            ]
           }
         ]
       },
@@ -160,6 +166,12 @@
               "relay-reference/endpoint/blocks",
               "relay-reference/endpoint/block",
               "relay-reference/endpoint/unblock"
+            ]
+          },
+          {
+            "group": "Meta",
+            "pages": [
+              "relay-reference/endpoint/region"
             ]
           }
         ]

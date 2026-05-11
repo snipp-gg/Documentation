@@ -11,11 +11,26 @@ Relay is intended for first-party clients (for example, the Snipp mobile app). F
 
 ## Base URL
 
-All Relay requests are made to:
+The default base URL is:
 
 ```
 relay.snipp.gg
 ```
+
+`relay.snipp.gg` is proxied and load-balanced through Cloudflare. It picks the closest healthy region for you, so it's the fastest option for most requests. Because Cloudflare proxies the traffic, uploads on this host are capped at **100 MB per request**.
+
+### Regional endpoints
+
+For uploads larger than 100 MB (or when you want to pin a specific region), use a regional endpoint instead. Regional endpoints are unproxied, so there is no 100 MB cap. Your file size limit is whatever your plan allows.
+
+| Region | Host |
+|--------|------|
+| UK Central | `uk-central-1.relay.snipp.gg` |
+| US West | `us-west-1.relay.snipp.gg` |
+
+You can mix and match. Use `relay.snipp.gg` for everyday calls and switch to a regional endpoint only when an upload exceeds 100 MB.
+
+To confirm which region served a request, hit [`GET /region`](/relay-reference/endpoint/region) on any host.
 
 ## Authentication
 
@@ -52,6 +67,7 @@ A missing, empty, or unrecognized relay key returns `401`.
 | `PATCH` | `/profile` | Update profile fields. |
 | `POST` | `/profile/avatar` | Upload a new avatar. |
 | `POST` | `/profile/banner` | Upload a new banner. |
+| `GET` | `/region` | Return the region serving the request. No auth required. |
 
 ## View Counting
 

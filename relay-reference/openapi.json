@@ -7,7 +7,16 @@
   },
   "servers": [
     {
-      "url": "https://relay.snipp.gg"
+      "url": "https://relay.snipp.gg",
+      "description": "Default. Proxied and load-balanced through Cloudflare. Capped at 100 MB per upload."
+    },
+    {
+      "url": "https://uk-central-1.relay.snipp.gg",
+      "description": "UK Central regional endpoint. Unproxied, no 100 MB upload cap."
+    },
+    {
+      "url": "https://us-west-1.relay.snipp.gg",
+      "description": "US West regional endpoint. Unproxied, no 100 MB upload cap."
     }
   ],
   "security": [
@@ -1344,6 +1353,46 @@
           "403": { "description": "Post already moderated, reporting own post, or author has blocked you", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "404": { "description": "Post not found or private", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/region": {
+      "get": {
+        "summary": "Get Region",
+        "description": "Returns the region serving the request. Useful for confirming which regional endpoint you hit, or for inspecting how `relay.snipp.gg` routed you. No authentication required.",
+        "operationId": "getRegion",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Region info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "region": {
+                      "type": "string",
+                      "description": "Short region code, for example `uk-central-1` or `us-west-1`. `unknown` if unset."
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "Country name mapped from the region prefix. Omitted if no mapping is available."
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "Human-readable region label."
+                    }
+                  },
+                  "required": ["region", "label"]
+                },
+                "example": {
+                  "region": "us-west-1",
+                  "country": "United States",
+                  "label": "United States (us-west-1)"
+                }
+              }
+            }
+          }
         }
       }
     }
