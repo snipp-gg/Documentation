@@ -11,8 +11,8 @@
       "description": "Default. Proxied and load-balanced through Cloudflare. Capped at 100 MB per upload."
     },
     {
-      "url": "https://uk-central-1.api.snipp.gg",
-      "description": "UK Central regional endpoint. Unproxied, no 100 MB upload cap."
+      "url": "https://eu-west-1.api.snipp.gg",
+      "description": "EU West regional endpoint. Unproxied, no 100 MB upload cap."
     },
     {
       "url": "https://us-west-1.api.snipp.gg",
@@ -909,11 +909,11 @@
                   "properties": {
                     "region": {
                       "type": "string",
-                      "description": "Short region code, for example `uk-central-1` or `us-west-1`. `unknown` if unset."
+                      "description": "Short region code, for example `eu-west-1` or `us-west-1`. `unknown` if unset."
                     },
                     "country": {
                       "type": "string",
-                      "description": "Country name mapped from the region prefix. Omitted if no mapping is available."
+                      "description": "Country name mapped from the region code. Omitted if no mapping is available."
                     },
                     "label": {
                       "type": "string",
@@ -923,9 +923,9 @@
                   "required": ["region", "label"]
                 },
                 "example": {
-                  "region": "uk-central-1",
+                  "region": "eu-west-1",
                   "country": "United Kingdom",
-                  "label": "United Kingdom (uk-central-1)"
+                  "label": "United Kingdom (eu-west-1)"
                 }
               }
             }

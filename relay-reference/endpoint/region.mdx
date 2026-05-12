@@ -8,7 +8,7 @@ Returns which region served the request. Useful for confirming you're hitting th
 ## Behavior
 
 - No authentication required.
-- `region` is the short region code (for example, `uk-central-1` or `us-west-1`). Returns `unknown` if the server has no region configured.
+- `region` is the short region code (for example, `eu-west-1` or `us-west-1`). Returns `unknown` if the server has no region configured.
 - `country` is the country name mapped from the region prefix (for example, `United States`). Omitted if no country mapping is available.
 - `label` is a human-readable form (for example, `United States (us-west-1)`). Falls back to the raw region code if no country mapping is available.
 
