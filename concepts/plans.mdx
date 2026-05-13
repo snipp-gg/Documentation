@@ -10,8 +10,8 @@ Snipp offers three tiers to suit different needs. All plans include full API acc
 | | Free | Plus | Enterprise |
 |--|------|------|------------|
 | **Price** | Free | $4.99/mo | Contact us |
-| **Max File Size** | 50 MB | 5 GB | 10 GB |
-| **Weekly Usage Limit** | 2 GB | 50 GB | 100 GB |
+| **Max File Size** | 50 MB | No per-file limit | No per-file limit |
+| **Weekly Usage Limit** | 2 GB | 20 GB | 50 GB |
 | **Upload Rate** | 8 uploads/sec | 8 uploads/sec | 8 uploads/sec |
 | **API Access** | Yes | Yes | Yes |
 | **Plus Badge** | No | Yes | Yes |
@@ -45,11 +45,11 @@ Call `GET /users/@me` to see your current plan status and weekly storage usage. 
     "uploads": 42,
     "limits": {
       "plan": "plus",
-      "maxFileSize": 5368709120,
+      "maxFileSize": null,
       "usage": {
         "used": 1073741824,
-        "limit": 53687091200,
-        "usedPercent": 2,
+        "limit": 21474836480,
+        "usedPercent": 5,
         "windowStart": "2026-05-01T00:00:00.000Z",
         "windowEnd": "2026-05-08T00:00:00.000Z",
         "resetsInSeconds": 172800
@@ -65,7 +65,7 @@ Call `GET /users/@me` to see your current plan status and weekly storage usage. 
 | `enterprise` | `true` if you have an Enterprise plan |
 | `uploads` | Total number of files you have uploaded |
 | `limits.plan` | Active plan (`free`, `plus`, or `enterprise`) |
-| `limits.maxFileSize` | Maximum size per file in bytes |
+| `limits.maxFileSize` | Maximum size per file in bytes. `null` on Plus and Enterprise (no per-file limit; only weekly quota applies) |
 | `limits.usage.used` | Bytes uploaded in the current window |
 | `limits.usage.limit` | Total bytes allowed per window |
 | `limits.usage.usedPercent` | Percentage of the weekly cap consumed, rounded to the nearest integer (0–100+) |

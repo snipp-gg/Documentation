@@ -96,10 +96,10 @@
                         "uploads": 42,
                         "limits": {
                           "plan": "plus",
-                          "maxFileSize": 5368709120,
+                          "maxFileSize": null,
                           "usage": {
                             "used": 1073741824,
-                            "limit": 53687091200,
+                            "limit": 21474836480,
                             "windowStart": "2026-05-01T00:00:00.000Z",
                             "windowEnd": "2026-05-08T00:00:00.000Z",
                             "resetsInSeconds": 172800
@@ -1040,15 +1040,15 @@
             "description": "Active plan."
           },
           "maxFileSize": {
-            "type": "integer",
-            "description": "Maximum size per file in bytes. 50 MB free, 5 GB plus, 10 GB enterprise."
+            "type": ["integer", "null"],
+            "description": "Maximum size per file in bytes. 50 MB on free. `null` on plus and enterprise (no per-file limit; only weekly quota applies)."
           },
           "usage": {
             "type": "object",
             "description": "Weekly usage limit state. The window is a rolling 7-day period anchored to your first upload after each reset.",
             "properties": {
               "used": { "type": "integer", "description": "Bytes uploaded in the current window." },
-              "limit": { "type": "integer", "description": "Total bytes allowed per window. 500 MB free, 50 GB plus, 100 GB enterprise." },
+              "limit": { "type": "integer", "description": "Total bytes allowed per window. 2 GB free, 20 GB plus, 50 GB enterprise." },
               "windowStart": {
                 "type": ["string", "null"],
                 "format": "date-time",
