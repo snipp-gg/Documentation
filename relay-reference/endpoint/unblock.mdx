@@ -13,3 +13,20 @@ curl -X POST "https://relay.snipp.gg/unblock" \
   -H "Content-Type: application/json" \
   -d '{"targetId": "123456789012345678"}'
 ```
+
+## Responses
+
+```json
+{
+  "blocked": false
+}
+```
+
+Unblocking a user who is not blocked succeeds and includes a `message`:
+
+```json
+{
+  "blocked": false,
+  "message": "User is not blocked."
+}
+```

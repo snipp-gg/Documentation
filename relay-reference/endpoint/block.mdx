@@ -19,3 +19,20 @@ curl -X POST "https://relay.snipp.gg/block" \
   -H "Content-Type: application/json" \
   -d '{"targetId": "123456789012345678"}'
 ```
+
+## Responses
+
+```json
+{
+  "blocked": true
+}
+```
+
+Blocking an already-blocked user succeeds and includes a `message`:
+
+```json
+{
+  "blocked": true,
+  "message": "User is already blocked."
+}
+```

@@ -32,3 +32,17 @@ curl -X PATCH "https://relay.snipp.gg/editUpload" \
   -H "code: AbCd1234" \
   -H "description: "
 ```
+
+## Responses
+
+```json
+{
+  "message": "Upload updated successfully.",
+  "post": {
+    "code": "AbCd1234",
+    "title": "New title",
+    "description": null,
+    "postPrivacy": "public"
+  }
+}
+```

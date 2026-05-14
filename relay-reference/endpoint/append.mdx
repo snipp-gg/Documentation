@@ -41,3 +41,43 @@ curl -X POST "https://relay.snipp.gg/appendUpload" \
   -H "post-code: AbCd1234" \
   -F "file=@second.png"
 ```
+
+## Responses
+
+```json
+{
+  "message": "Files added to album successfully.",
+  "post": {
+    "code": "AbCd1234",
+    "url": "https://snipp.gg/p/AbCd1234",
+    "postPrivacy": "public",
+    "fileCount": 5
+  },
+  "files": [
+    {
+      "index": 3,
+      "fileName": "a1b2c3d4e5f6789012345678abcdef01.png",
+      "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+      "size": 2487312,
+      "size_formatted": "2.37 MB",
+      "mime_type": "image/png",
+      "status": "success",
+      "dimensions": { "width": 1920, "height": 1080 }
+    }
+  ]
+}
+```
+
+If some files fail, a `failed` array is included alongside `files`:
+
+```json
+{
+  "failed": [
+    {
+      "index": 4,
+      "error": "Album cap of 9 files exceeded",
+      "status": "failed"
+    }
+  ]
+}
+```

@@ -18,3 +18,24 @@ curl -X DELETE "https://relay.snipp.gg/comment" \
   -H "Content-Type: application/json" \
   -d '{"shareCode": "AbCd1234", "commentId": "00000000-0000-4000-8000-000000000000"}'
 ```
+
+## Responses
+
+Returns the post's updated comment list with the deleted comment removed.
+
+```json
+{
+  "comments": [
+    {
+      "id": "11111111-1111-4111-8111-111111111111",
+      "body": "Still here",
+      "userId": "987654321098765432",
+      "user": {
+        "username": "playertwo",
+        "avatar": "https://i.snipp.gg/avatars/987654321098765432/avatar.png"
+      },
+      "createdAt": "2026-05-03T12:05:00Z"
+    }
+  ]
+}
+```

@@ -19,3 +19,34 @@ curl -X POST "https://relay.snipp.gg/comment" \
   -H "Content-Type: application/json" \
   -d '{"shareCode": "AbCd1234", "text": "Nice shot!"}'
 ```
+
+## Responses
+
+Returns the created comment plus the post's full updated comment list.
+
+```json
+{
+  "comment": {
+    "id": "00000000-0000-4000-8000-000000000000",
+    "body": "Nice shot!",
+    "userId": "123456789012345678",
+    "user": {
+      "username": "playerone",
+      "avatar": "https://i.snipp.gg/avatars/123456789012345678/avatar.png"
+    },
+    "createdAt": "2026-05-03T12:00:00Z"
+  },
+  "comments": [
+    {
+      "id": "00000000-0000-4000-8000-000000000000",
+      "body": "Nice shot!",
+      "userId": "123456789012345678",
+      "user": {
+        "username": "playerone",
+        "avatar": "https://i.snipp.gg/avatars/123456789012345678/avatar.png"
+      },
+      "createdAt": "2026-05-03T12:00:00Z"
+    }
+  ]
+}
+```

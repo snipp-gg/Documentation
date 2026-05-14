@@ -17,3 +17,14 @@ curl -X POST "https://relay.snipp.gg/like" \
   -H "Content-Type: application/json" \
   -d '{"shareCode": "AbCd1234"}'
 ```
+
+## Responses
+
+`liked` reflects the state after the call. Calling the endpoint again toggles it back.
+
+```json
+{
+  "liked": true,
+  "likeCount": 42
+}
+```

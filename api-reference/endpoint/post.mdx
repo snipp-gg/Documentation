@@ -22,3 +22,77 @@ Fetch a post by code:
 curl -X GET "https://api.snipp.gg/posts/AbCd1234" \
   -H "api-key: YOUR_API_KEY"
 ```
+
+## Responses
+
+Single-file post:
+
+```json
+{
+  "post": {
+    "code": "AbCd1234",
+    "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+    "files": [
+      {
+        "index": 0,
+        "fileName": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png"
+      }
+    ],
+    "title": "Nice shot",
+    "description": null,
+    "postPrivacy": "public",
+    "created": "2026-05-03T12:00:00Z",
+    "views": 128,
+    "likeCount": 42,
+    "commentCount": 3,
+    "file": {
+      "size": 2487312,
+      "size_formatted": "2.37 MB",
+      "mime_type": "image/png",
+      "dimensions": { "width": 1920, "height": 1080 }
+    }
+  }
+}
+```
+
+Album post (includes `urls` and `isAlbum`):
+
+```json
+{
+  "post": {
+    "code": "AbCd1234",
+    "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+    "urls": [
+      "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+      "https://i.snipp.gg/123456789012345678/b2c3d4e5f6789012345678abcdef0102.png"
+    ],
+    "isAlbum": true,
+    "files": [
+      {
+        "index": 0,
+        "fileName": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png"
+      },
+      {
+        "index": 1,
+        "fileName": "b2c3d4e5f6789012345678abcdef0102.png",
+        "url": "https://i.snipp.gg/123456789012345678/b2c3d4e5f6789012345678abcdef0102.png"
+      }
+    ],
+    "title": "Match highlights",
+    "description": null,
+    "postPrivacy": "public",
+    "created": "2026-05-03T12:00:00Z",
+    "views": 128,
+    "likeCount": 42,
+    "commentCount": 3,
+    "file": {
+      "size": 2487312,
+      "size_formatted": "2.37 MB",
+      "mime_type": "image/png",
+      "dimensions": { "width": 1920, "height": 1080 }
+    }
+  }
+}
+```

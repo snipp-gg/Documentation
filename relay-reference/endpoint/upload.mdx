@@ -56,3 +56,99 @@ curl -X POST "https://relay.snipp.gg/upload" \
   -F "file=@image1.png" \
   -F "file=@image2.png"
 ```
+
+## Responses
+
+Single file:
+
+```json
+{
+  "message": "Upload successful!",
+  "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+  "file": {
+    "size": 2487312,
+    "size_formatted": "2.37 MB",
+    "mime_type": "image/png",
+    "dimensions": { "width": 1920, "height": 1080 }
+  },
+  "processing_time": 412,
+  "post": {
+    "code": "AbCd1234",
+    "url": "https://snipp.gg/p/AbCd1234",
+    "postPrivacy": "unlisted"
+  }
+}
+```
+
+Album (two or more files, default): one `post` containing every file.
+
+```json
+{
+  "message": "Upload successful!",
+  "files": [
+    {
+      "index": 0,
+      "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+      "size": 2487312,
+      "size_formatted": "2.37 MB",
+      "mime_type": "image/png",
+      "status": "success",
+      "dimensions": { "width": 1920, "height": 1080 }
+    },
+    {
+      "index": 1,
+      "url": "https://i.snipp.gg/123456789012345678/b2c3d4e5f6789012345678abcdef0102.png",
+      "size": 1840221,
+      "size_formatted": "1.76 MB",
+      "mime_type": "image/png",
+      "status": "success",
+      "dimensions": { "width": 1280, "height": 720 }
+    }
+  ],
+  "processing_time": 938,
+  "post": {
+    "posts": [
+      {
+        "code": "AbCd1234",
+        "url": "https://snipp.gg/p/AbCd1234",
+        "postPrivacy": "public"
+      }
+    ]
+  }
+}
+```
+
+Individual (`post-type: individual`): one entry in `post.posts` per file. If a file fails, a `failed` array is included alongside `files`.
+
+```json
+{
+  "message": "Upload successful!",
+  "files": [
+    {
+      "index": 0,
+      "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+      "size": 2487312,
+      "size_formatted": "2.37 MB",
+      "mime_type": "image/png",
+      "status": "success"
+    }
+  ],
+  "failed": [
+    {
+      "index": 1,
+      "error": "Weekly quota exceeded",
+      "status": "failed"
+    }
+  ],
+  "processing_time": 938,
+  "post": {
+    "posts": [
+      {
+        "code": "AbCd1234",
+        "url": "https://snipp.gg/p/AbCd1234",
+        "postPrivacy": "public"
+      }
+    ]
+  }
+}
+```

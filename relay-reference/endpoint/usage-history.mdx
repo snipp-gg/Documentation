@@ -22,3 +22,30 @@ Fetch your usage history:
 curl -X GET "https://relay.snipp.gg/usage-history" \
   -H "relay-key: YOUR_RELAY_KEY"
 ```
+
+## Responses
+
+```json
+{
+  "history": [
+    {
+      "day": "2026-05-12",
+      "bytes": 5242880,
+      "count": 3
+    },
+    {
+      "day": "2026-05-14",
+      "bytes": 1048576,
+      "count": 1
+    }
+  ],
+  "stats": {
+    "totalBytes": 6291456,
+    "totalUploads": 4,
+    "activeDays": 2,
+    "currentStreak": 1,
+    "biggestDay": { "day": "2026-05-12", "bytes": 5242880 },
+    "windowDays": 365
+  }
+}
+```
