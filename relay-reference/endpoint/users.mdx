@@ -8,6 +8,7 @@ Fetch either your own profile (`@me`) or another user's public profile.
 ## Behavior
 
 - `id=@me` returns your full account profile, including `apiKey`, `relayKey`, `limits`, `uploads`, and your settings.
+- `theme` is your selected color theme. It is only returned on the `@me` profile, never on other users. It is `null` if you have not picked one. Set it with [`/theme`](/relay-reference/endpoint/theme).
 - `id=<userId>` returns a public-safe profile for that user.
 - `badges` is always included and follows this order: `verified`, `staff`, `partner`, `bugHunterTier`, `translator`, `plus`.
 - `includePosts` controls `publicUploads`.
@@ -56,6 +57,7 @@ curl -X GET "https://relay.snipp.gg/users/USER_ID?includePosts=true&postsLimit=1
     "suspended": false,
     "created": "2026-01-04T09:30:00Z",
     "customEmbed": null,
+    "theme": "waterfall",
     "apiKey": "snp_api_xxxxxxxxxxxxxxxx",
     "relayKey": "snp_relay_xxxxxxxxxxxxxxxx",
     "limits": {

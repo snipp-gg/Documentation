@@ -162,6 +162,7 @@
             "pages": [
               "relay-reference/endpoint/users",
               "relay-reference/endpoint/profile",
+              "relay-reference/endpoint/theme",
               "relay-reference/endpoint/avatar",
               "relay-reference/endpoint/banner",
               "relay-reference/endpoint/blocks",

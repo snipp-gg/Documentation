@@ -1,0 +1,31 @@
+---
+title: "Update Theme"
+openapi: "PATCH /theme"
+---
+
+Set your account color theme. The theme is stored on your account and returned as `theme` on your [`/users/@me`](/relay-reference/endpoint/users) profile.
+
+## Behavior
+
+- This endpoint is PLUS-only. Non-PLUS accounts receive a `403`.
+- `theme` must be one of the supported theme keys: `red`, `orange`, `amber`, `yellow`, `pastel_yellow`, `pastel_orange`, `lime`, `light_green`, `slime`, `green`, `emerald`, `teal`, `ice`, `cyan`, `sky`, `pastel_blue`, `waterfall`, `blue`, `midnight_blue`, `indigo`, `light_violet`, `violet`, `purple`, `magneta`, `fuchsia`, `pastel_purple`, `light_pink`, `pink`, `rose`, `dark_rose`, `dynamic`.
+- Any other value returns a `400`.
+- The theme is visible only to you. It is never exposed on other users' profiles.
+
+## Examples
+
+```bash
+curl -X PATCH "https://relay.snipp.gg/theme" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"theme": "waterfall"}'
+```
+
+## Responses
+
+```json
+{
+  "message": "Theme updated successfully!",
+  "theme": "waterfall"
+}
+```

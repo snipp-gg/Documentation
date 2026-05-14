@@ -94,6 +94,7 @@
                         "suspended": false,
                         "created": "2025-01-01T00:00:00.000Z",
                         "customEmbed": null,
+                        "theme": "waterfall",
                         "badges": {
                           "verified": true,
                           "staff": false,
@@ -2283,6 +2284,125 @@
         }
       }
     },
+    "/theme": {
+      "patch": {
+        "summary": "Update Theme",
+        "description": "Set your account color theme. PLUS-only. The theme is stored on your account and returned as theme on your /users/@me profile. It is never exposed on other users profiles.",
+        "operationId": "updateTheme",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "theme"
+                ],
+                "properties": {
+                  "theme": {
+                    "type": "string",
+                    "enum": [
+                      "red",
+                      "orange",
+                      "amber",
+                      "yellow",
+                      "pastel_yellow",
+                      "pastel_orange",
+                      "lime",
+                      "light_green",
+                      "slime",
+                      "green",
+                      "emerald",
+                      "teal",
+                      "ice",
+                      "cyan",
+                      "sky",
+                      "pastel_blue",
+                      "waterfall",
+                      "blue",
+                      "midnight_blue",
+                      "indigo",
+                      "light_violet",
+                      "violet",
+                      "purple",
+                      "magneta",
+                      "fuchsia",
+                      "pastel_purple",
+                      "light_pink",
+                      "pink",
+                      "rose",
+                      "dark_rose",
+                      "dynamic"
+                    ],
+                    "description": "The color theme key to set."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Theme updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "theme": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid theme",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PLUS-only feature",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/report": {
       "post": {
         "summary": "Report Post",
@@ -2749,6 +2869,11 @@
               },
               "keyHasUploadsAccess": {
                 "type": "boolean"
+              },
+              "theme": {
+                "type": "string",
+                "nullable": true,
+                "description": "Your selected color theme. Self-only field. null if unset."
               },
               "uploads": {
                 "type": "integer",
