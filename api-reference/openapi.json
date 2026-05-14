@@ -36,21 +36,29 @@
             "in": "path",
             "required": true,
             "description": "User ID or `@me` for the authenticated user",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "includePosts",
             "in": "query",
             "required": false,
             "description": "Include `publicUploads` in the response. Defaults to `true` for non-self requests and `false` for `@me`.",
-            "schema": { "type": "boolean" }
+            "schema": {
+              "type": "boolean"
+            }
           },
           {
             "name": "postsLimit",
             "in": "query",
             "required": false,
             "description": "Maximum number of `publicUploads` to return (1-50, default 50).",
-            "schema": { "type": "integer", "minimum": 1, "maximum": 50 }
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
           }
         ],
         "responses": {
@@ -160,7 +168,9 @@
             "description": "Unauthorized. No api-key header or invalid API key.",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -168,7 +178,9 @@
             "description": "User not found",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -176,7 +188,9 @@
             "description": "Rate limit exceeded",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           }
@@ -194,7 +208,9 @@
             "in": "path",
             "required": true,
             "description": "The share code of the post",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -208,46 +224,102 @@
                     "post": {
                       "type": "object",
                       "properties": {
-                        "code": { "type": "string" },
-                        "url": { "type": "string", "nullable": true, "description": "Direct URL to the primary file" },
+                        "code": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Direct URL to the primary file"
+                        },
                         "urls": {
                           "type": "array",
                           "description": "Ordered list of all file URLs. Only present on albums (more than one file).",
-                          "items": { "type": "string" }
+                          "items": {
+                            "type": "string"
+                          }
                         },
-                        "isAlbum": { "type": "boolean", "description": "True when the post contains more than one file." },
+                        "isAlbum": {
+                          "type": "boolean",
+                          "description": "True when the post contains more than one file."
+                        },
                         "files": {
                           "type": "array",
                           "description": "Per-file metadata. Use `fileName` to address a file in /deleteUpload.",
                           "items": {
                             "type": "object",
                             "properties": {
-                              "index": { "type": "integer" },
-                              "fileName": { "type": "string" },
-                              "url": { "type": "string" }
+                              "index": {
+                                "type": "integer"
+                              },
+                              "fileName": {
+                                "type": "string"
+                              },
+                              "url": {
+                                "type": "string"
+                              }
                             }
                           }
                         },
-                        "title": { "type": "string", "nullable": true },
-                        "description": { "type": "string", "nullable": true },
-                        "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] },
-                        "created": { "type": "string", "format": "date-time", "nullable": true },
-                        "views": { "type": "integer", "description": "Total view count for the post." },
-                        "likeCount": { "type": "integer", "description": "Total likes on the post." },
-                        "commentCount": { "type": "integer", "description": "Total comments on the post." },
+                        "title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "description": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "postPrivacy": {
+                          "type": "string",
+                          "enum": [
+                            "public",
+                            "unlisted",
+                            "private"
+                          ]
+                        },
+                        "created": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "views": {
+                          "type": "integer",
+                          "description": "Total view count for the post."
+                        },
+                        "likeCount": {
+                          "type": "integer",
+                          "description": "Total likes on the post."
+                        },
+                        "commentCount": {
+                          "type": "integer",
+                          "description": "Total comments on the post."
+                        },
                         "file": {
                           "type": "object",
                           "description": "File metadata. May be absent for older uploads.",
                           "properties": {
-                            "size": { "type": "integer", "description": "File size in bytes" },
-                            "size_formatted": { "type": "string", "description": "Human-readable file size" },
-                            "mime_type": { "type": "string", "description": "MIME type" },
+                            "size": {
+                              "type": "integer",
+                              "description": "File size in bytes"
+                            },
+                            "size_formatted": {
+                              "type": "string",
+                              "description": "Human-readable file size"
+                            },
+                            "mime_type": {
+                              "type": "string",
+                              "description": "MIME type"
+                            },
                             "dimensions": {
                               "type": "object",
                               "description": "Image dimensions. Only present for images and GIFs.",
                               "properties": {
-                                "width": { "type": "integer" },
-                                "height": { "type": "integer" }
+                                "width": {
+                                  "type": "integer"
+                                },
+                                "height": {
+                                  "type": "integer"
+                                }
                               }
                             }
                           }
@@ -290,7 +362,9 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -298,7 +372,9 @@
             "description": "Post not found",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -306,7 +382,9 @@
             "description": "Rate limit exceeded",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           }
@@ -324,28 +402,49 @@
             "in": "header",
             "required": false,
             "description": "Privacy for the generated post: private (default), unlisted (accessible via link), or public (visible on Discover)",
-            "schema": { "type": "string", "enum": ["public", "unlisted", "private"], "default": "private" }
+            "schema": {
+              "type": "string",
+              "enum": [
+                "public",
+                "unlisted",
+                "private"
+              ],
+              "default": "private"
+            }
           },
           {
             "name": "post-title",
             "in": "header",
             "required": false,
             "description": "Post title (max 30 characters)",
-            "schema": { "type": "string", "maxLength": 30 }
+            "schema": {
+              "type": "string",
+              "maxLength": 30
+            }
           },
           {
             "name": "post-description",
             "in": "header",
             "required": false,
             "description": "Post description (max 200 characters)",
-            "schema": { "type": "string", "maxLength": 200 }
+            "schema": {
+              "type": "string",
+              "maxLength": 200
+            }
           },
           {
             "name": "post-type",
             "in": "header",
             "required": false,
             "description": "Only relevant when uploading 2+ files. `album` (default) groups all files into a single album post. `individual` creates a separate post per file.",
-            "schema": { "type": "string", "enum": ["album", "individual"], "default": "album" }
+            "schema": {
+              "type": "string",
+              "enum": [
+                "album",
+                "individual"
+              ],
+              "default": "album"
+            }
           }
         ],
         "requestBody": {
@@ -376,31 +475,62 @@
                       "type": "object",
                       "description": "Single file response",
                       "properties": {
-                        "message": { "type": "string", "example": "Upload successful!" },
-                        "url": { "type": "string", "description": "Direct URL to the uploaded file" },
+                        "message": {
+                          "type": "string",
+                          "example": "Upload successful!"
+                        },
+                        "url": {
+                          "type": "string",
+                          "description": "Direct URL to the uploaded file"
+                        },
                         "file": {
                           "type": "object",
                           "properties": {
-                            "size": { "type": "integer", "description": "File size in bytes" },
-                            "size_formatted": { "type": "string" },
-                            "mime_type": { "type": "string" },
+                            "size": {
+                              "type": "integer",
+                              "description": "File size in bytes"
+                            },
+                            "size_formatted": {
+                              "type": "string"
+                            },
+                            "mime_type": {
+                              "type": "string"
+                            },
                             "dimensions": {
                               "type": "object",
                               "nullable": true,
                               "properties": {
-                                "width": { "type": "integer" },
-                                "height": { "type": "integer" }
+                                "width": {
+                                  "type": "integer"
+                                },
+                                "height": {
+                                  "type": "integer"
+                                }
                               }
                             }
                           }
                         },
-                        "processing_time": { "type": "integer" },
+                        "processing_time": {
+                          "type": "integer"
+                        },
                         "post": {
                           "type": "object",
                           "properties": {
-                            "code": { "type": "string" },
-                            "url": { "type": "string", "description": "Share page URL" },
-                            "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] }
+                            "code": {
+                              "type": "string"
+                            },
+                            "url": {
+                              "type": "string",
+                              "description": "Share page URL"
+                            },
+                            "postPrivacy": {
+                              "type": "string",
+                              "enum": [
+                                "public",
+                                "unlisted",
+                                "private"
+                              ]
+                            }
                           }
                         }
                       }
@@ -409,19 +539,47 @@
                       "type": "object",
                       "description": "Multi-file response",
                       "properties": {
-                        "message": { "type": "string" },
+                        "message": {
+                          "type": "string"
+                        },
                         "files": {
                           "type": "array",
                           "items": {
                             "type": "object",
                             "properties": {
-                              "index": { "type": "integer" },
-                              "url": { "type": "string" },
-                              "size": { "type": "integer" },
-                              "size_formatted": { "type": "string" },
-                              "mime_type": { "type": "string" },
-                              "status": { "type": "string", "enum": ["success"] },
-                              "dimensions": { "type": "object", "nullable": true, "properties": { "width": { "type": "integer" }, "height": { "type": "integer" } } }
+                              "index": {
+                                "type": "integer"
+                              },
+                              "url": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "integer"
+                              },
+                              "size_formatted": {
+                                "type": "string"
+                              },
+                              "mime_type": {
+                                "type": "string"
+                              },
+                              "status": {
+                                "type": "string",
+                                "enum": [
+                                  "success"
+                                ]
+                              },
+                              "dimensions": {
+                                "type": "object",
+                                "nullable": true,
+                                "properties": {
+                                  "width": {
+                                    "type": "integer"
+                                  },
+                                  "height": {
+                                    "type": "integer"
+                                  }
+                                }
+                              }
                             }
                           }
                         },
@@ -431,30 +589,57 @@
                           "items": {
                             "type": "object",
                             "properties": {
-                              "index": { "type": "integer" },
-                              "error": { "type": "string" },
-                              "status": { "type": "string", "enum": ["failed"] }
+                              "index": {
+                                "type": "integer"
+                              },
+                              "error": {
+                                "type": "string"
+                              },
+                              "status": {
+                                "type": "string",
+                                "enum": [
+                                  "failed"
+                                ]
+                              }
                             }
                           }
                         },
-                        "processing_time": { "type": "integer" },
+                        "processing_time": {
+                          "type": "integer"
+                        },
                         "post": {
                           "type": "object",
                           "description": "Album mode returns `code`/`url`/`isAlbum`/`fileCount`. Individual mode returns `posts` array.",
                           "properties": {
-                            "code": { "type": "string" },
-                            "url": { "type": "string" },
-                            "postPrivacy": { "type": "string" },
-                            "isAlbum": { "type": "boolean" },
-                            "fileCount": { "type": "integer" },
+                            "code": {
+                              "type": "string"
+                            },
+                            "url": {
+                              "type": "string"
+                            },
+                            "postPrivacy": {
+                              "type": "string"
+                            },
+                            "isAlbum": {
+                              "type": "boolean"
+                            },
+                            "fileCount": {
+                              "type": "integer"
+                            },
                             "posts": {
                               "type": "array",
                               "items": {
                                 "type": "object",
                                 "properties": {
-                                  "code": { "type": "string" },
-                                  "url": { "type": "string" },
-                                  "postPrivacy": { "type": "string" }
+                                  "code": {
+                                    "type": "string"
+                                  },
+                                  "url": {
+                                    "type": "string"
+                                  },
+                                  "postPrivacy": {
+                                    "type": "string"
+                                  }
                                 }
                               }
                             }
@@ -469,23 +654,53 @@
           },
           "400": {
             "description": "No file, unsupported type, file too large, or all files failed",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "401": {
             "description": "Unauthorized",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "403": {
             "description": "Account suspended",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "413": {
             "description": "File exceeds your plan's size limit",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "429": {
             "description": "Rate limit exceeded",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -501,7 +716,11 @@
             "in": "query",
             "required": false,
             "description": "Maximum uploads to return (1-1000, default 30).",
-            "schema": { "type": "integer", "minimum": 1, "maximum": 1000 }
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000
+            }
           }
         ],
         "responses": {
@@ -517,12 +736,31 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "code": { "type": "string", "nullable": true, "description": "Associated share code when a post exists" },
-                          "isAlbum": { "type": "boolean", "description": "Whether the upload belongs to an album post" },
-                          "url": { "type": "string" },
-                          "size": { "type": "integer", "description": "File size in bytes" },
-                          "size_formatted": { "type": "string", "description": "Human-readable file size (e.g. \"2.50 MB\")" },
-                          "uploaded": { "type": "string", "format": "date-time", "description": "ISO 8601 timestamp" }
+                          "code": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Associated share code when a post exists"
+                          },
+                          "isAlbum": {
+                            "type": "boolean",
+                            "description": "Whether the upload belongs to an album post"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "size": {
+                            "type": "integer",
+                            "description": "File size in bytes"
+                          },
+                          "size_formatted": {
+                            "type": "string",
+                            "description": "Human-readable file size (e.g. \"2.50 MB\")"
+                          },
+                          "uploaded": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "ISO 8601 timestamp"
+                          }
                         }
                       }
                     }
@@ -535,7 +773,9 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -543,7 +783,9 @@
             "description": "No permission to access recent uploads",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -551,7 +793,9 @@
             "description": "Rate limit exceeded",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           }
@@ -569,7 +813,9 @@
             "in": "header",
             "required": true,
             "description": "Filename (32 hex chars + extension, e.g. a1b2c3d4e5f6...png)",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -580,7 +826,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": { "type": "string", "example": "File deleted successfully." }
+                    "message": {
+                      "type": "string",
+                      "example": "File deleted successfully."
+                    }
                   }
                 }
               }
@@ -590,7 +839,9 @@
             "description": "Invalid file parameter",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -598,7 +849,9 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -606,7 +859,9 @@
             "description": "No permission to delete uploads",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -614,7 +869,9 @@
             "description": "File not found",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -622,7 +879,9 @@
             "description": "Rate limit exceeded",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           }
@@ -640,28 +899,43 @@
             "in": "header",
             "required": true,
             "description": "The share code of the upload to edit",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "title",
             "in": "header",
             "required": false,
             "description": "New title (max 30 characters). Send empty string to clear.",
-            "schema": { "type": "string", "maxLength": 30 }
+            "schema": {
+              "type": "string",
+              "maxLength": 30
+            }
           },
           {
             "name": "description",
             "in": "header",
             "required": false,
             "description": "New description (max 200 characters). Send empty string to clear.",
-            "schema": { "type": "string", "maxLength": 200 }
+            "schema": {
+              "type": "string",
+              "maxLength": 200
+            }
           },
           {
             "name": "post-privacy",
             "in": "header",
             "required": false,
             "description": "New privacy level",
-            "schema": { "type": "string", "enum": ["public", "unlisted", "private"] }
+            "schema": {
+              "type": "string",
+              "enum": [
+                "public",
+                "unlisted",
+                "private"
+              ]
+            }
           }
         ],
         "responses": {
@@ -672,14 +946,32 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": { "type": "string", "example": "Upload updated successfully." },
+                    "message": {
+                      "type": "string",
+                      "example": "Upload updated successfully."
+                    },
                     "post": {
                       "type": "object",
                       "properties": {
-                        "code": { "type": "string" },
-                        "title": { "type": "string", "nullable": true },
-                        "description": { "type": "string", "nullable": true },
-                        "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] }
+                        "code": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "description": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "postPrivacy": {
+                          "type": "string",
+                          "enum": [
+                            "public",
+                            "unlisted",
+                            "private"
+                          ]
+                        }
                       }
                     }
                   }
@@ -691,7 +983,9 @@
             "description": "Invalid parameters or no fields to update",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -699,7 +993,9 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -707,7 +1003,9 @@
             "description": "No permission to edit uploads or not the owner",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -715,7 +1013,9 @@
             "description": "Upload not found",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           },
@@ -723,7 +1023,9 @@
             "description": "Rate limit exceeded",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           }
@@ -741,7 +1043,9 @@
             "in": "header",
             "required": true,
             "description": "The share code of the post to append to",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -769,14 +1073,31 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": { "type": "string" },
+                    "message": {
+                      "type": "string"
+                    },
                     "post": {
                       "type": "object",
                       "properties": {
-                        "code": { "type": "string" },
-                        "url": { "type": "string", "description": "Share page URL" },
-                        "postPrivacy": { "type": "string", "enum": ["public", "unlisted", "private"] },
-                        "fileCount": { "type": "integer", "description": "Total files in the album after append" }
+                        "code": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "type": "string",
+                          "description": "Share page URL"
+                        },
+                        "postPrivacy": {
+                          "type": "string",
+                          "enum": [
+                            "public",
+                            "unlisted",
+                            "private"
+                          ]
+                        },
+                        "fileCount": {
+                          "type": "integer",
+                          "description": "Total files in the album after append"
+                        }
                       }
                     },
                     "files": {
@@ -785,19 +1106,41 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "index": { "type": "integer" },
-                          "fileName": { "type": "string" },
-                          "url": { "type": "string", "description": "Direct URL. Signed with a 24-hour expiry if the post is private." },
-                          "size": { "type": "integer" },
-                          "size_formatted": { "type": "string" },
-                          "mime_type": { "type": "string" },
-                          "status": { "type": "string", "enum": ["success"] },
+                          "index": {
+                            "type": "integer"
+                          },
+                          "fileName": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "Direct URL. Signed with a 24-hour expiry if the post is private."
+                          },
+                          "size": {
+                            "type": "integer"
+                          },
+                          "size_formatted": {
+                            "type": "string"
+                          },
+                          "mime_type": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "success"
+                            ]
+                          },
                           "dimensions": {
                             "type": "object",
                             "nullable": true,
                             "properties": {
-                              "width": { "type": "integer" },
-                              "height": { "type": "integer" }
+                              "width": {
+                                "type": "integer"
+                              },
+                              "height": {
+                                "type": "integer"
+                              }
                             }
                           }
                         }
@@ -809,9 +1152,18 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "index": { "type": "integer" },
-                          "error": { "type": "string" },
-                          "status": { "type": "string", "enum": ["failed"] }
+                          "index": {
+                            "type": "integer"
+                          },
+                          "error": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "failed"
+                            ]
+                          }
                         }
                       }
                     }
@@ -822,31 +1174,73 @@
           },
           "400": {
             "description": "Missing/invalid post-code, no file, album already full, would exceed 9-file cap, or all files failed",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "401": {
             "description": "Unauthorized",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "403": {
             "description": "Account suspended, no permission to modify uploads, not the owner, or post is moderated",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "404": {
             "description": "Post not found",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "405": {
             "description": "Endpoint unavailable during development",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "413": {
             "description": "File exceeds your plan's size limit",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "429": {
             "description": "Rate limit exceeded",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -863,10 +1257,19 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "code": { "type": "string", "description": "The share code of the post to report" },
-                  "reason": { "type": "string", "description": "Optional reason for the report", "maxLength": 200 }
+                  "code": {
+                    "type": "string",
+                    "description": "The share code of the post to report"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "Optional reason for the report",
+                    "maxLength": 200
+                  }
                 },
-                "required": ["code"]
+                "required": [
+                  "code"
+                ]
               }
             }
           }
@@ -879,17 +1282,64 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "success": { "type": "boolean" }
+                    "success": {
+                      "type": "boolean"
+                    }
                   }
                 }
               }
             }
           },
-          "400": { "description": "Missing or invalid code, or reason too long", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "401": { "description": "Unauthorized", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "403": { "description": "Post already moderated, reporting own post, or author has blocked you", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "404": { "description": "Post not found or private", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "429": { "description": "Rate limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+          "400": {
+            "description": "Missing or invalid code, or reason too long",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Post already moderated, reporting own post, or author has blocked you",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found or private",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -920,12 +1370,152 @@
                       "description": "Human-readable region label."
                     }
                   },
-                  "required": ["region", "label"]
+                  "required": [
+                    "region",
+                    "label"
+                  ]
                 },
                 "example": {
                   "region": "eu-west-1",
                   "country": "United Kingdom",
                   "label": "United Kingdom (eu-west-1)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usage-history": {
+      "get": {
+        "summary": "Get Usage History",
+        "description": "Returns the authenticated user's daily upload activity for the last 365 days, plus aggregate stats. This is the data behind the Upload Activity heatmap in the Snipp Console, exposed so you can rebuild it yourself. Days with no uploads are omitted from `history`.",
+        "operationId": "getUsageHistory",
+        "responses": {
+          "200": {
+            "description": "Usage history and stats",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "history": {
+                      "type": "array",
+                      "description": "Per-day upload activity, ascending by date. Only days with at least one upload are included.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "day": {
+                            "type": "string",
+                            "format": "date",
+                            "description": "UTC date, `YYYY-MM-DD`."
+                          },
+                          "bytes": {
+                            "type": "integer",
+                            "description": "Total bytes uploaded on this day."
+                          },
+                          "count": {
+                            "type": "integer",
+                            "description": "Number of files uploaded on this day."
+                          }
+                        }
+                      }
+                    },
+                    "stats": {
+                      "type": "object",
+                      "properties": {
+                        "totalBytes": {
+                          "type": "integer",
+                          "description": "Total bytes uploaded across the window."
+                        },
+                        "totalUploads": {
+                          "type": "integer",
+                          "description": "Total files uploaded across the window."
+                        },
+                        "activeDays": {
+                          "type": "integer",
+                          "description": "Number of days with at least one upload."
+                        },
+                        "currentStreak": {
+                          "type": "integer",
+                          "description": "Consecutive days with uploads ending today (UTC)."
+                        },
+                        "biggestDay": {
+                          "type": "object",
+                          "nullable": true,
+                          "description": "The single day with the most bytes uploaded. `null` if there is no activity.",
+                          "properties": {
+                            "day": {
+                              "type": "string",
+                              "format": "date"
+                            },
+                            "bytes": {
+                              "type": "integer"
+                            }
+                          }
+                        },
+                        "windowDays": {
+                          "type": "integer",
+                          "description": "Size of the history window in days (always 365)."
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "history": [
+                    {
+                      "day": "2026-05-10",
+                      "bytes": 200000,
+                      "count": 2
+                    },
+                    {
+                      "day": "2026-05-14",
+                      "bytes": 80274,
+                      "count": 1
+                    }
+                  ],
+                  "stats": {
+                    "totalBytes": 280274,
+                    "totalUploads": 3,
+                    "activeDays": 2,
+                    "currentStreak": 1,
+                    "biggestDay": {
+                      "day": "2026-05-10",
+                      "bytes": 200000
+                    },
+                    "windowDays": 365
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Account suspended",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -940,63 +1530,155 @@
         "type": "object",
         "description": "Badge map used by profile surfaces. Order matches website profile rendering.",
         "properties": {
-          "verified": { "type": "boolean" },
-          "staff": { "type": "boolean" },
-          "partner": { "type": "boolean" },
-          "bugHunterTier": { "type": "integer", "minimum": 0 },
-          "translator": { "type": "boolean" },
-          "plus": { "type": "boolean" }
+          "verified": {
+            "type": "boolean"
+          },
+          "staff": {
+            "type": "boolean"
+          },
+          "partner": {
+            "type": "boolean"
+          },
+          "bugHunterTier": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "translator": {
+            "type": "boolean"
+          },
+          "plus": {
+            "type": "boolean"
+          }
         },
-        "required": ["verified", "staff", "partner", "bugHunterTier", "translator", "plus"]
+        "required": [
+          "verified",
+          "staff",
+          "partner",
+          "bugHunterTier",
+          "translator",
+          "plus"
+        ]
       },
       "PublicUpload": {
         "type": "object",
         "properties": {
-          "url": { "type": "string" },
-          "code": { "type": "string" },
-          "title": { "type": "string", "nullable": true },
-          "description": { "type": "string", "nullable": true },
-          "created": { "type": "string", "format": "date-time", "nullable": true },
-          "public": { "type": "boolean" }
+          "url": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "public": {
+            "type": "boolean"
+          }
         },
-        "required": ["url", "code", "public"]
+        "required": [
+          "url",
+          "code",
+          "public"
+        ]
       },
       "UserProfileBase": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "username": { "type": "string", "nullable": true },
-          "avatar": { "type": "string", "nullable": true },
-          "banner": { "type": "string", "nullable": true },
-          "nickname": { "type": "string", "nullable": true },
-          "bio": { "type": "string", "nullable": true },
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "banner": {
+            "type": "string",
+            "nullable": true
+          },
+          "nickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "bio": {
+            "type": "string",
+            "nullable": true
+          },
           "socials": {
             "type": "object",
             "nullable": true,
             "additionalProperties": true
           },
-          "plus": { "type": "boolean" },
-          "enterprise": { "type": "boolean" },
-          "verified": { "type": "boolean" },
-          "staff": { "type": "boolean" },
-          "partner": { "type": "boolean" },
-          "translator": { "type": "boolean" },
-          "bugHunterTier": { "type": "integer", "minimum": 0 },
-          "suspended": { "type": "boolean" },
-          "created": { "type": "string", "format": "date-time", "nullable": true },
+          "plus": {
+            "type": "boolean"
+          },
+          "enterprise": {
+            "type": "boolean"
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "staff": {
+            "type": "boolean"
+          },
+          "partner": {
+            "type": "boolean"
+          },
+          "translator": {
+            "type": "boolean"
+          },
+          "bugHunterTier": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "suspended": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "customEmbed": {
             "type": "object",
             "nullable": true,
             "description": "PLUS-only custom embed settings for share pages.",
             "properties": {
-              "title": { "type": "string", "maxLength": 60 },
-              "description": { "type": "string", "maxLength": 200 },
-              "themeColor": { "type": "string", "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$" },
-              "smallText": { "type": "string", "maxLength": 50 }
+              "title": {
+                "type": "string",
+                "maxLength": 60
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "themeColor": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              },
+              "smallText": {
+                "type": "string",
+                "maxLength": 50
+              }
             },
             "additionalProperties": false
           },
-          "badges": { "$ref": "#/components/schemas/Badges" }
+          "badges": {
+            "$ref": "#/components/schemas/Badges"
+          }
         },
         "required": [
           "id",
@@ -1013,20 +1695,39 @@
       },
       "UserProfileSelf": {
         "allOf": [
-          { "$ref": "#/components/schemas/UserProfileBase" },
+          {
+            "$ref": "#/components/schemas/UserProfileBase"
+          },
           {
             "type": "object",
             "properties": {
-              "apiKey": { "type": "string", "description": "Your API key (UUID format). Self-only field." },
-              "keyHasUploadsAccess": { "type": "boolean" },
-              "uploads": { "type": "integer", "minimum": 0 },
-              "limits": { "$ref": "#/components/schemas/UserLimits" },
+              "apiKey": {
+                "type": "string",
+                "description": "Your API key (UUID format). Self-only field."
+              },
+              "keyHasUploadsAccess": {
+                "type": "boolean"
+              },
+              "uploads": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "limits": {
+                "$ref": "#/components/schemas/UserLimits"
+              },
               "publicUploads": {
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/PublicUpload" }
+                "items": {
+                  "$ref": "#/components/schemas/PublicUpload"
+                }
               }
             },
-            "required": ["apiKey", "keyHasUploadsAccess", "uploads", "limits"]
+            "required": [
+              "apiKey",
+              "keyHasUploadsAccess",
+              "uploads",
+              "limits"
+            ]
           }
         ]
       },
@@ -1036,48 +1737,84 @@
         "properties": {
           "plan": {
             "type": "string",
-            "enum": ["free", "plus", "enterprise"],
+            "enum": [
+              "free",
+              "plus",
+              "enterprise"
+            ],
             "description": "Active plan."
           },
           "maxFileSize": {
-            "type": ["integer", "null"],
+            "type": [
+              "integer",
+              "null"
+            ],
             "description": "Maximum size per file in bytes. 50 MB on free. `null` on plus and enterprise (no per-file limit; only weekly quota applies)."
           },
           "usage": {
             "type": "object",
             "description": "Weekly usage limit state. The window is a rolling 7-day period anchored to your first upload after each reset.",
             "properties": {
-              "used": { "type": "integer", "description": "Bytes uploaded in the current window." },
-              "limit": { "type": "integer", "description": "Total bytes allowed per window. 2 GB free, 20 GB plus, 50 GB enterprise." },
+              "used": {
+                "type": "integer",
+                "description": "Bytes uploaded in the current window."
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Total bytes allowed per window. 2 GB free, 20 GB plus, 50 GB enterprise."
+              },
               "windowStart": {
-                "type": ["string", "null"],
+                "type": [
+                  "string",
+                  "null"
+                ],
                 "format": "date-time",
                 "description": "ISO timestamp when the current window started. `null` if you have never uploaded or the previous window expired without activity."
               },
               "windowEnd": {
-                "type": ["string", "null"],
+                "type": [
+                  "string",
+                  "null"
+                ],
                 "format": "date-time",
                 "description": "ISO timestamp when the current window ends and usage resets. `null` if `windowStart` is `null`."
               },
               "resetsInSeconds": {
-                "type": ["integer", "null"],
+                "type": [
+                  "integer",
+                  "null"
+                ],
                 "description": "Seconds until the current window resets. `null` if `windowStart` is `null`."
               }
             },
-            "required": ["used", "limit", "windowStart", "windowEnd", "resetsInSeconds"]
+            "required": [
+              "used",
+              "limit",
+              "windowStart",
+              "windowEnd",
+              "resetsInSeconds"
+            ]
           }
         },
-        "required": ["plan", "maxFileSize", "usage"]
+        "required": [
+          "plan",
+          "maxFileSize",
+          "usage"
+        ]
       },
       "UserProfilePublic": {
         "allOf": [
-          { "$ref": "#/components/schemas/UserProfileBase" },
+          {
+            "$ref": "#/components/schemas/UserProfileBase"
+          },
           {
             "type": "object",
             "properties": {
               "publicUploads": {
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/PublicUpload" }
+                "items": {
+                  "$ref": "#/components/schemas/PublicUpload"
+                }
               },
               "blockedByYou": {
                 "type": "boolean",
@@ -1092,12 +1829,18 @@
         "properties": {
           "user": {
             "oneOf": [
-              { "$ref": "#/components/schemas/UserProfileSelf" },
-              { "$ref": "#/components/schemas/UserProfilePublic" }
+              {
+                "$ref": "#/components/schemas/UserProfileSelf"
+              },
+              {
+                "$ref": "#/components/schemas/UserProfilePublic"
+              }
             ]
           }
         },
-        "required": ["user"]
+        "required": [
+          "user"
+        ]
       },
       "Error": {
         "type": "object",

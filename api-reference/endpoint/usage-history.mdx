@@ -1,0 +1,24 @@
+---
+title: "Get Usage History"
+openapi: "GET /usage-history"
+---
+
+Fetch your daily upload activity for the last 365 days, along with aggregate stats. This is the same data that powers the Upload Activity heatmap in the Snipp Console, exposed so you can rebuild it in your own tools.
+
+## Behavior
+
+- Authenticated with your `api-key`. Returns activity for the key's owner only.
+- `history` is ascending by date. Days with no uploads are omitted, so the array is sparse.
+- `bytes` and `count` reflect successful uploads. A reservation that fails mid-upload is rolled back and does not appear.
+- `stats.currentStreak` counts consecutive days with uploads ending on the current UTC day. It is `0` if you have not uploaded today.
+- `stats.biggestDay` is `null` when there is no activity in the window.
+- All dates are UTC.
+
+## Examples
+
+Fetch your usage history:
+
+```bash
+curl -X GET "https://api.snipp.gg/usage-history" \
+  -H "api-key: YOUR_API_KEY"
+```

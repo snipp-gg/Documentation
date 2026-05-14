@@ -114,7 +114,8 @@
           {
             "group": "Users",
             "pages": [
-              "api-reference/endpoint/users"
+              "api-reference/endpoint/users",
+              "api-reference/endpoint/usage-history"
             ]
           },
           {
@@ -165,7 +166,8 @@
               "relay-reference/endpoint/banner",
               "relay-reference/endpoint/blocks",
               "relay-reference/endpoint/block",
-              "relay-reference/endpoint/unblock"
+              "relay-reference/endpoint/unblock",
+              "relay-reference/endpoint/usage-history"
             ]
           },
           {
@@ -191,7 +193,16 @@
     }
   },
   "contextual": {
-    "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {
