@@ -1343,6 +1343,10 @@
                             "type": "integer",
                             "description": "Total likes on the post."
                           },
+                          "commentCount": {
+                            "type": "integer",
+                            "description": "Total comments on the post."
+                          },
                           "author": {
                             "type": "string"
                           },
