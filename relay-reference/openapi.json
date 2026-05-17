@@ -1335,6 +1335,14 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "views": {
+                            "type": "integer",
+                            "description": "Total view count for the post (auto-incremented on this request when applicable)."
+                          },
+                          "likeCount": {
+                            "type": "integer",
+                            "description": "Total likes on the post."
+                          },
                           "author": {
                             "type": "string"
                           },
