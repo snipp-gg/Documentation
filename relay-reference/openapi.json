@@ -114,6 +114,14 @@
                             "windowEnd": "2026-05-08T00:00:00.000Z",
                             "resetsInSeconds": 172800
                           }
+                        },
+                        "subscription": {
+                          "plan": "plus",
+                          "status": "active",
+                          "started_at": "2025-05-08T00:00:00.000Z",
+                          "expires_at": "2026-05-08T00:00:00.000Z",
+                          "cancel_at_period_end": false,
+                          "gifted": false
                         }
                       }
                     }
@@ -300,6 +308,37 @@
                           "type": "integer",
                           "description": "Total comments on the post."
                         },
+                        "author": {
+                          "type": "object",
+                          "nullable": true,
+                          "description": "The post's uploader. Null if the user has been deleted.",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "Snowflake ID of the author."
+                            },
+                            "username": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "nickname": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "avatar": {
+                              "type": "string",
+                              "nullable": true,
+                              "description": "Avatar URL, or null if unset."
+                            },
+                            "verified": {
+                              "type": "boolean"
+                            },
+                            "plus": {
+                              "type": "boolean",
+                              "description": "Whether the author has Snipp PLUS."
+                            }
+                          }
+                        },
                         "file": {
                           "type": "object",
                           "description": "File metadata. May be absent for older uploads.",
@@ -349,6 +388,14 @@
                         "likeCount": 7,
                         "liked": false,
                         "commentCount": 3,
+                        "author": {
+                          "id": "123456789012345678",
+                          "username": "playerone",
+                          "nickname": "Player One",
+                          "avatar": "https://cdn.snipp.gg/avatars/123456789012345678/avatar.png",
+                          "verified": false,
+                          "plus": true
+                        },
                         "file": {
                           "size": 2621440,
                           "size_formatted": "2.50 MB",
@@ -2882,6 +2929,9 @@
               "limits": {
                 "$ref": "#/components/schemas/UserLimits"
               },
+              "subscription": {
+                "$ref": "#/components/schemas/UserSubscription"
+              },
               "publicUploads": {
                 "type": "array",
                 "items": {
@@ -2893,10 +2943,46 @@
               "apiKey",
               "relayKey",
               "uploads",
-              "limits"
+              "limits",
+              "subscription"
             ]
           }
         ]
+      },
+      "UserSubscription": {
+        "type": "object",
+        "description": "Current subscription / plan lifecycle for the authenticated user. Self-only field.",
+        "properties": {
+          "plan": {
+            "type": "string",
+            "enum": ["free", "plus", "enterprise"],
+            "description": "Effective plan."
+          },
+          "status": {
+            "type": ["string", "null"],
+            "enum": ["active", "trialing", "past_due", "canceled", "expired", "incomplete", "gifted", null],
+            "description": "Subscription status. `gifted` means the plan came from a redeemed code or admin comp. `null` for free users."
+          },
+          "started_at": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "When the paid subscription began. `null` for free or gifted plans."
+          },
+          "expires_at": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "When access ends or, for renewing subscriptions, the next billing date. `null` means no fixed expiry."
+          },
+          "cancel_at_period_end": {
+            "type": "boolean",
+            "description": "True when the user has canceled but still has access until `expires_at`. Always false for gifted plans."
+          },
+          "gifted": {
+            "type": "boolean",
+            "description": "True when the current plan comes from a redeemed gift code or admin-applied comp."
+          }
+        },
+        "required": ["plan", "status", "started_at", "expires_at", "cancel_at_period_end", "gifted"]
       },
       "UserLimits": {
         "type": "object",

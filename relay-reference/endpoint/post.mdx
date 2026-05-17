@@ -8,6 +8,7 @@ Fetch a post by its share code.
 ## Behavior
 
 - Albums (posts with more than one file) include `urls` and `isAlbum: true`.
+- The `author` object describes the post's uploader. `author` is `null` if the user has been deleted.
 - Use `fileName` from the `files` array when calling [`/deleteUpload`](/relay-reference/endpoint/delete) to address a specific file. On albums, `/deleteUpload` removes just that file; on single-file posts it deletes the post.
 - Hits to this endpoint count a view toward the post. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour. Views are only counted on public, non-moderated posts.
 - Private posts are only visible to the owner. Requests for another user's private post return `404`.
@@ -47,6 +48,14 @@ Single-file post:
     "likeCount": 42,
     "liked": false,
     "commentCount": 3,
+    "author": {
+      "id": "123456789012345678",
+      "username": "playerone",
+      "nickname": "Player One",
+      "avatar": "https://cdn.snipp.gg/avatars/123456789012345678/avatar.png",
+      "verified": false,
+      "plus": true
+    },
     "file": {
       "size": 2487312,
       "size_formatted": "2.37 MB",
@@ -89,6 +98,14 @@ Album post (includes `urls` and `isAlbum`):
     "likeCount": 42,
     "liked": false,
     "commentCount": 3,
+    "author": {
+      "id": "123456789012345678",
+      "username": "playerone",
+      "nickname": "Player One",
+      "avatar": "https://cdn.snipp.gg/avatars/123456789012345678/avatar.png",
+      "verified": false,
+      "plus": true
+    },
     "file": {
       "size": 2487312,
       "size_formatted": "2.37 MB",

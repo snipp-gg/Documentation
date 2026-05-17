@@ -7,8 +7,9 @@ Fetch either your own profile (`@me`) or another user's public profile.
 
 ## Behavior
 
-- `id=@me` returns your full account profile, including `apiKey`, `relayKey`, `limits`, `uploads`, and your settings.
+- `id=@me` returns your full account profile, including `apiKey`, `relayKey`, `limits`, `subscription`, `uploads`, and your settings.
 - `theme` is your selected color theme. It is only returned on the `@me` profile, never on other users. It is `null` if you have not picked one. Set it with [`/theme`](/relay-reference/endpoint/theme).
+- `subscription` is only returned on `@me` and reflects your current plan and lifecycle. See the Subscription block below.
 - `id=<userId>` returns a public-safe profile for that user.
 - `badges` is always included and follows this order: `verified`, `staff`, `partner`, `bugHunterTier`, `translator`, `plus`.
 - `includePosts` controls `publicUploads`.
@@ -71,10 +72,31 @@ curl -X GET "https://relay.snipp.gg/users/USER_ID?includePosts=true&postsLimit=1
         "windowEnd": "2026-05-19T00:00:00Z",
         "resetsInSeconds": 345600
       }
+    },
+    "subscription": {
+      "plan": "plus",
+      "status": "active",
+      "started_at": "2026-01-04T09:30:00Z",
+      "expires_at": "2027-01-04T09:30:00Z",
+      "cancel_at_period_end": false,
+      "gifted": false
     }
   }
 }
 ```
+
+## Subscription block
+
+Returned only on `@me`. Describes the user's current plan and how they got it.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `plan` | `"free" \| "plus" \| "enterprise"` | Current effective plan. |
+| `status` | string \| null | `active`, `trialing`, `past_due`, `canceled`, `expired`, `incomplete`, or `gifted` for redeemed/comp'd accounts. `null` for free users. |
+| `started_at` | timestamp \| null | When the paid subscription began. `null` for free or gifted plans. |
+| `expires_at` | timestamp \| null | When access ends. For renewing subscriptions this is the next billing date. `null` means no fixed expiry (e.g. permanent comp). |
+| `cancel_at_period_end` | boolean | `true` when the user has canceled but still has access until `expires_at`. Always `false` for gifted plans. |
+| `gifted` | boolean | `true` when the current plan comes from a redeemed gift code or an admin-applied comp, not a Stripe subscription. |
 
 A non-self request returns a public-safe profile with `blockedByYou` and (by default) `publicUploads`.
 
