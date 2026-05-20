@@ -54,6 +54,23 @@ Not all API keys have the same permissions. Each key clearly indicates whether u
 
 You can check your key's permissions by calling `GET /users/@me` and reviewing the `keyHasUploadsAccess` field.
 
+### Team Access Keys
+
+[Teams](/concepts/plans#teams) (an Enterprise feature) each have a dedicated **access key**. A team key works exactly like a personal API key — pass it in the `api-key` header — but uploads made with it go to the team's shared gallery instead of a personal account.
+
+```
+api-key: YOUR_TEAM_ACCESS_KEY
+```
+
+Key differences when uploading with a team key:
+
+- Files are stored in the **team gallery**, not a personal gallery.
+- Uploads count against the **team's** weekly quota, never a member's personal quota.
+- Team posts are always **unlisted** or **private**. A `post-privacy: public` header is downgraded to `unlisted`.
+- Only the team owner can regenerate or delete the key, from the team's settings page.
+
+Anyone who holds a team key can upload with it, so treat it like any other credential and share it only with trusted team members.
+
 ### Security Best Practices
 
 - **Never expose your API key** in client-side code, public repositories, or shared documents.

@@ -14,6 +14,7 @@ Snipp offers three tiers to suit different needs. All plans include full API acc
 | **Weekly Usage Limit** | 2 GB | 20 GB | 50 GB |
 | **Upload Rate** | 8 uploads/sec | 8 uploads/sec | 8 uploads/sec |
 | **API Access** | Yes | Yes | Yes |
+| **Teams** | No | No | Yes |
 | **Plus Badge** | No | Yes | Yes |
 | **Priority Support** | No | Yes | Yes |
 
@@ -72,6 +73,19 @@ Call `GET /users/@me` to see your current plan status and weekly storage usage. 
 | `limits.usage.windowStart` | When the current window started, or `null` if there is no active window |
 | `limits.usage.windowEnd` | When the current window resets, or `null` if there is no active window |
 | `limits.usage.resetsInSeconds` | Seconds until the current window resets, or `null` if there is no active window |
+
+## Teams
+
+Enterprise accounts can create **Teams** — shared workspaces with their own gallery, upload quota, and access key.
+
+- An Enterprise user can create up to **3 teams**.
+- Each team holds up to **5 members**, including the owner.
+- Only **Enterprise** users can create or join a team.
+- Each team has its own rolling 7-day **50 GB** quota, separate from any member's personal quota. Uploads to a team never count against a member's personal limit.
+- Team posts can be **unlisted** or **private** only — they never appear on Discover, and have no likes or views.
+- Only members of a team can view or comment on that team's posts.
+
+Each team has a single **access key**. Anyone holding it can upload to the team gallery; only the team owner can regenerate or delete it. See [Team Access Keys](/authentication#team-access-keys).
 
 ## Upgrading
 
