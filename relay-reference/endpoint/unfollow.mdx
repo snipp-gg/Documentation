@@ -1,0 +1,51 @@
+---
+title: "Unfollow User"
+openapi: "POST /unfollow"
+---
+
+Unfollow a user, or remove one of your own followers.
+
+## Behavior
+
+- Pass `targetId` to stop following that user.
+- Pass `removeFollower` to remove that user from your own followers list. They will need to follow you again to see your posts in their feed.
+- Exactly one of `targetId` or `removeFollower` must be provided. If both are present, `removeFollower` takes precedence.
+- Unfollowing a user who is not followed succeeds without error.
+
+## Examples
+
+Unfollow a user you currently follow:
+
+```bash
+curl -X POST "https://relay.snipp.gg/unfollow" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"targetId": "123456789012345678"}'
+```
+
+Remove a follower:
+
+```bash
+curl -X POST "https://relay.snipp.gg/unfollow" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"removeFollower": "123456789012345678"}'
+```
+
+## Responses
+
+Unfollow:
+
+```json
+{
+  "following": false
+}
+```
+
+Remove follower:
+
+```json
+{
+  "removed": true
+}
+```

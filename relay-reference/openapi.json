@@ -1639,6 +1639,304 @@
         }
       }
     },
+    "/follow": {
+      "post": {
+        "summary": "Follow User",
+        "description": "Follow a user by ID. Following an already-followed user succeeds without error. You cannot follow yourself, suspended users, or users who have blocked you (or whom you have blocked).",
+        "operationId": "followUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "targetId": {
+                    "type": "string",
+                    "description": "The user ID to follow"
+                  }
+                },
+                "required": [
+                  "targetId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Follow status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "following": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid target or cannot follow yourself",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Blocked relationship or account suspended",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/unfollow": {
+      "post": {
+        "summary": "Unfollow User",
+        "description": "Unfollow a user by ID, or remove one of your own followers. Exactly one of `targetId` or `removeFollower` must be provided. If both are present, `removeFollower` takes precedence.",
+        "operationId": "unfollowUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "targetId": {
+                    "type": "string",
+                    "description": "The user ID to unfollow"
+                  },
+                  "removeFollower": {
+                    "type": "string",
+                    "description": "The follower user ID to remove from your followers"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Unfollow or remove-follower status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "following": {
+                      "type": "boolean",
+                      "nullable": true
+                    },
+                    "removed": {
+                      "type": "boolean",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing targetId and removeFollower",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Account suspended",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/followers": {
+      "get": {
+        "summary": "List Followers",
+        "description": "Return the list of users following the given profile. Capped at 200 results, newest first. Suspended users are excluded.",
+        "operationId": "listFollowers",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "description": "User ID whose followers to list. Defaults to the authenticated user.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Follower list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/FollowListUser"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/following": {
+      "get": {
+        "summary": "List Following",
+        "description": "Return the list of users a given profile is following. Capped at 200 results, newest first. Suspended users are excluded.",
+        "operationId": "listFollowing",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "description": "User ID whose following list to fetch. Defaults to the authenticated user.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Following list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/FollowListUser"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/like": {
       "post": {
         "summary": "Like Post",
@@ -3113,6 +3411,41 @@
           "error": {
             "type": "string",
             "description": "Error message"
+          }
+        }
+      },
+      "FollowListUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "nickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "plus": {
+            "type": "boolean"
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "staff": {
+            "type": "boolean"
+          },
+          "youFollow": {
+            "type": "boolean"
+          },
+          "isYou": {
+            "type": "boolean"
           }
         }
       }

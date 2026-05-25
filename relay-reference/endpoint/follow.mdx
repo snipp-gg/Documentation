@@ -1,0 +1,30 @@
+---
+title: "Follow User"
+openapi: "POST /follow"
+---
+
+Follow a user by ID.
+
+## Behavior
+
+- Following an already-followed user succeeds without error.
+- You cannot follow yourself.
+- You cannot follow a user who has blocked you, or whom you have blocked.
+- Suspended users cannot be followed.
+
+## Examples
+
+```bash
+curl -X POST "https://relay.snipp.gg/follow" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"targetId": "123456789012345678"}'
+```
+
+## Responses
+
+```json
+{
+  "following": true
+}
+```

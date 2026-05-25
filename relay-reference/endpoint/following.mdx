@@ -1,0 +1,40 @@
+---
+title: "List Following"
+openapi: "GET /following"
+---
+
+Return the list of users a given profile is following.
+
+## Behavior
+
+- Pass `id` as a query parameter to list who that user is following. Omit it to list who you are following.
+- Capped at 200 results, newest first.
+- Suspended users are excluded.
+- Each entry includes a `youFollow` flag indicating whether you also follow that user, and `isYou` for your own account.
+
+## Examples
+
+```bash
+curl -X GET "https://relay.snipp.gg/following?id=123456789012345678" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "users": [
+    {
+      "id": "987654321098765432",
+      "username": "alice",
+      "nickname": "Alice",
+      "avatar": "https://i.snipp.gg/avatars/987654321098765432/abc.webp",
+      "plus": true,
+      "verified": false,
+      "staff": false,
+      "youFollow": true,
+      "isYou": false
+    }
+  ]
+}
+```

@@ -168,6 +168,10 @@
               "relay-reference/endpoint/blocks",
               "relay-reference/endpoint/block",
               "relay-reference/endpoint/unblock",
+              "relay-reference/endpoint/followers",
+              "relay-reference/endpoint/following",
+              "relay-reference/endpoint/follow",
+              "relay-reference/endpoint/unfollow",
               "relay-reference/endpoint/usage-history"
             ]
           },
