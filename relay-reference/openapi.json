@@ -3193,6 +3193,16 @@
           },
           "badges": {
             "$ref": "#/components/schemas/Badges"
+          },
+          "followerCount": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of users following this account."
+          },
+          "followingCount": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of accounts this user follows."
           }
         },
         "required": [
@@ -3205,7 +3215,9 @@
           "translator",
           "bugHunterTier",
           "suspended",
-          "badges"
+          "badges",
+          "followerCount",
+          "followingCount"
         ]
       },
       "UserProfileSelf": {
@@ -3382,6 +3394,10 @@
               "blockedByYou": {
                 "type": "boolean",
                 "description": "Whether you have blocked this user. Only present on non-self profiles."
+              },
+              "following": {
+                "type": "boolean",
+                "description": "Whether you (the requesting user) follow this user. Only present on non-self profiles."
               }
             }
           }
