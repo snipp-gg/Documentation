@@ -39,6 +39,11 @@ footer span:has(a[href*="mintlify"]) {
   --color-primary-light: #a3a3a3 !important;
 }
 
+.nav-tabs-item[data-active="true"],
+.nav-tabs-item[data-active="true"]:hover {
+  color: var(--color-primary) !important;
+}
+
 .bg-primary-dark {
   background-color: #232323 !important;
 }
