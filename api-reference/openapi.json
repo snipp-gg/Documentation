@@ -81,7 +81,7 @@
                         "nickname": "Snipp",
                         "bio": null,
                         "socials": null,
-                        "apiKey": "00000000-0000-0000-0000-000000000000",
+                        "apiKey": "aB3xK9mP2qR7sT1vW4yZ6cD8fG0hJ5kL",
                         "keyHasUploadsAccess": true,
                         "plus": true,
                         "enterprise": false,
@@ -1703,7 +1703,7 @@
             "properties": {
               "apiKey": {
                 "type": "string",
-                "description": "Your API key (UUID format). Self-only field."
+                "description": "Your API key. Self-only field."
               },
               "keyHasUploadsAccess": {
                 "type": "boolean"
