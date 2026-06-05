@@ -108,14 +108,15 @@
             "group": "Posts",
             "pages": [
               "api-reference/endpoint/post",
-              "api-reference/endpoint/report"
+              "api-reference/endpoint/report-post"
             ]
           },
           {
             "group": "Users",
             "pages": [
               "api-reference/endpoint/users",
-              "api-reference/endpoint/usage-history"
+              "api-reference/endpoint/usage-history",
+              "api-reference/endpoint/report-user"
             ]
           },
           {
@@ -154,7 +155,7 @@
               "relay-reference/endpoint/comments",
               "relay-reference/endpoint/comment-create",
               "relay-reference/endpoint/comment-delete",
-              "relay-reference/endpoint/report"
+              "relay-reference/endpoint/report-post"
             ]
           },
           {
@@ -172,7 +173,8 @@
               "relay-reference/endpoint/following",
               "relay-reference/endpoint/follow",
               "relay-reference/endpoint/unfollow",
-              "relay-reference/endpoint/usage-history"
+              "relay-reference/endpoint/usage-history",
+              "relay-reference/endpoint/report-user"
             ]
           },
           {

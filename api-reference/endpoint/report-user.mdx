@@ -1,0 +1,78 @@
+---
+title: "Report a User"
+openapi: "POST /report-user"
+---
+
+Report a user for violating community guidelines. Reports are reviewed by the moderation team.
+
+## Endpoint
+
+### Report a User
+
+```
+POST /report-user
+```
+
+Submit a report for a user using their ID. An optional reason can be provided to help moderators review the report.
+
+**Request body:**
+
+```json
+{
+  "targetUserId": "123456789012345678",
+  "reason": "This user is impersonating someone else"
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `targetUserId` | string | Yes | The ID of the user to report |
+| `reason` | string | No | Reason for the report (max 200 characters) |
+
+**Response:**
+
+```json
+{
+  "success": true
+}
+```
+
+## Errors
+
+| Code | Error | When |
+|------|-------|------|
+| `400` | Missing or invalid user | `targetUserId` is empty, missing, or not a valid ID |
+| `400` | Reason too long | `reason` exceeds 200 characters |
+| `403` | User is already suspended | The user has already been actioned by moderators |
+| `403` | You cannot report yourself | `targetUserId` is your own ID |
+| `403` | User has blocked you | The reported user has blocked you |
+| `404` | User not found | The user does not exist |
+| `429` | Rate limit exceeded | Too many requests |
+
+## Examples
+
+Report a user:
+
+```bash
+curl -X POST "https://api.snipp.gg/report-user" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"targetUserId": "123456789012345678", "reason": "Impersonation"}'
+```
+
+Report a user without a reason:
+
+```bash
+curl -X POST "https://api.snipp.gg/report-user" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"targetUserId": "123456789012345678"}'
+```
+
+## Responses
+
+```json
+{
+  "success": true
+}
+```

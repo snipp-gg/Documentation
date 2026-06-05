@@ -1245,7 +1245,7 @@
         }
       }
     },
-    "/report": {
+    "/report-post": {
       "post": {
         "summary": "Report Post",
         "description": "Report a post for violating community guidelines. The post must be public and not your own. Reports are reviewed by the moderation team.",
@@ -1322,6 +1322,104 @@
           },
           "404": {
             "description": "Post not found or private",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/report-user": {
+      "post": {
+        "summary": "Report User",
+        "description": "Report a user for violating community guidelines. The user must exist and cannot be yourself. Reports are reviewed by the moderation team.",
+        "operationId": "reportUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "targetUserId": {
+                    "type": "string",
+                    "description": "The ID of the user to report"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "Optional reason for the report",
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "targetUserId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Report submitted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or invalid user, or reason too long",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User already suspended, reporting yourself, or the user has blocked you",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
             "content": {
               "application/json": {
                 "schema": {
