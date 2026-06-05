@@ -116,6 +116,7 @@
             "pages": [
               "api-reference/endpoint/users",
               "api-reference/endpoint/usage-history",
+              "api-reference/endpoint/analytics",
               "api-reference/endpoint/report-user"
             ]
           },
@@ -174,6 +175,7 @@
               "relay-reference/endpoint/follow",
               "relay-reference/endpoint/unfollow",
               "relay-reference/endpoint/usage-history",
+              "relay-reference/endpoint/analytics",
               "relay-reference/endpoint/report-user"
             ]
           },

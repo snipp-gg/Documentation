@@ -1620,6 +1620,437 @@
           }
         }
       }
+    },
+    "/analytics": {
+      "get": {
+        "summary": "Get Analytics",
+        "description": "Returns the authenticated user's own analytics: posts, uploads, data uploaded and comments received over time, plus lifetime totals. This is the data behind the Analytics page in the Snipp Console, exposed so you can rebuild it yourself. Requires an active Plus subscription. All dates are UTC.",
+        "operationId": "getAnalytics",
+        "parameters": [
+          {
+            "name": "range",
+            "in": "query",
+            "required": false,
+            "description": "Window in days for the series and deltas. One of 7, 30, 90, 365. Defaults to 30 if omitted or invalid.",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                7,
+                30,
+                90,
+                365
+              ],
+              "default": 30
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analytics for the authenticated user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "analytics": {
+                      "type": "object",
+                      "properties": {
+                        "range": {
+                          "type": "integer",
+                          "description": "The window applied to `series` and `deltas`."
+                        },
+                        "buckets": {
+                          "type": "object",
+                          "description": "Today, last 7 days and last 30 days totals for each metric.",
+                          "properties": {
+                            "posts": {
+                              "type": "object",
+                              "description": "Posts created.",
+                              "properties": {
+                                "today": {
+                                  "type": "integer"
+                                },
+                                "week": {
+                                  "type": "integer",
+                                  "description": "Total over the last 7 days."
+                                },
+                                "month": {
+                                  "type": "integer",
+                                  "description": "Total over the last 30 days."
+                                }
+                              }
+                            },
+                            "uploads": {
+                              "type": "object",
+                              "description": "Files uploaded.",
+                              "properties": {
+                                "today": {
+                                  "type": "integer"
+                                },
+                                "week": {
+                                  "type": "integer",
+                                  "description": "Total over the last 7 days."
+                                },
+                                "month": {
+                                  "type": "integer",
+                                  "description": "Total over the last 30 days."
+                                }
+                              }
+                            },
+                            "bytes": {
+                              "type": "object",
+                              "description": "Bytes uploaded.",
+                              "properties": {
+                                "today": {
+                                  "type": "integer"
+                                },
+                                "week": {
+                                  "type": "integer",
+                                  "description": "Total over the last 7 days."
+                                },
+                                "month": {
+                                  "type": "integer",
+                                  "description": "Total over the last 30 days."
+                                }
+                              }
+                            },
+                            "comments": {
+                              "type": "object",
+                              "description": "Comments received on your posts.",
+                              "properties": {
+                                "today": {
+                                  "type": "integer"
+                                },
+                                "week": {
+                                  "type": "integer",
+                                  "description": "Total over the last 7 days."
+                                },
+                                "month": {
+                                  "type": "integer",
+                                  "description": "Total over the last 30 days."
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "totals": {
+                          "type": "object",
+                          "description": "Lifetime totals.",
+                          "properties": {
+                            "posts": {
+                              "type": "integer",
+                              "description": "Total posts created."
+                            },
+                            "views": {
+                              "type": "integer",
+                              "description": "Total views across all your posts."
+                            },
+                            "comments": {
+                              "type": "integer",
+                              "description": "Total comments received on your posts."
+                            },
+                            "bytes": {
+                              "type": "integer",
+                              "description": "Total bytes uploaded."
+                            }
+                          }
+                        },
+                        "series": {
+                          "type": "object",
+                          "description": "Daily values over the selected range. Each array has one entry per day, oldest first. There is no views series because views are not dated.",
+                          "properties": {
+                            "posts": {
+                              "type": "array",
+                              "description": "Posts created per day.",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "day": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "description": "UTC date, `YYYY-MM-DD`."
+                                  },
+                                  "value": {
+                                    "type": "integer",
+                                    "description": "Metric total for this day."
+                                  }
+                                }
+                              }
+                            },
+                            "uploads": {
+                              "type": "array",
+                              "description": "Files uploaded per day.",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "day": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "description": "UTC date, `YYYY-MM-DD`."
+                                  },
+                                  "value": {
+                                    "type": "integer",
+                                    "description": "Metric total for this day."
+                                  }
+                                }
+                              }
+                            },
+                            "bytes": {
+                              "type": "array",
+                              "description": "Bytes uploaded per day.",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "day": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "description": "UTC date, `YYYY-MM-DD`."
+                                  },
+                                  "value": {
+                                    "type": "integer",
+                                    "description": "Metric total for this day."
+                                  }
+                                }
+                              }
+                            },
+                            "comments": {
+                              "type": "array",
+                              "description": "Comments received per day.",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "day": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "description": "UTC date, `YYYY-MM-DD`."
+                                  },
+                                  "value": {
+                                    "type": "integer",
+                                    "description": "Metric total for this day."
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "deltas": {
+                          "type": "object",
+                          "description": "Current range window vs the preceding window of equal length.",
+                          "properties": {
+                            "posts": {
+                              "type": "object",
+                              "description": "Posts created.",
+                              "properties": {
+                                "current": {
+                                  "type": "integer",
+                                  "description": "Total for the current range window."
+                                },
+                                "previous": {
+                                  "type": "integer",
+                                  "description": "Total for the preceding window of equal length."
+                                },
+                                "change": {
+                                  "type": "number",
+                                  "nullable": true,
+                                  "description": "Fractional change vs the previous window. `null` when the previous window was zero."
+                                }
+                              }
+                            },
+                            "uploads": {
+                              "type": "object",
+                              "description": "Files uploaded.",
+                              "properties": {
+                                "current": {
+                                  "type": "integer",
+                                  "description": "Total for the current range window."
+                                },
+                                "previous": {
+                                  "type": "integer",
+                                  "description": "Total for the preceding window of equal length."
+                                },
+                                "change": {
+                                  "type": "number",
+                                  "nullable": true,
+                                  "description": "Fractional change vs the previous window. `null` when the previous window was zero."
+                                }
+                              }
+                            },
+                            "bytes": {
+                              "type": "object",
+                              "description": "Bytes uploaded.",
+                              "properties": {
+                                "current": {
+                                  "type": "integer",
+                                  "description": "Total for the current range window."
+                                },
+                                "previous": {
+                                  "type": "integer",
+                                  "description": "Total for the preceding window of equal length."
+                                },
+                                "change": {
+                                  "type": "number",
+                                  "nullable": true,
+                                  "description": "Fractional change vs the previous window. `null` when the previous window was zero."
+                                }
+                              }
+                            },
+                            "comments": {
+                              "type": "object",
+                              "description": "Comments received.",
+                              "properties": {
+                                "current": {
+                                  "type": "integer",
+                                  "description": "Total for the current range window."
+                                },
+                                "previous": {
+                                  "type": "integer",
+                                  "description": "Total for the preceding window of equal length."
+                                },
+                                "change": {
+                                  "type": "number",
+                                  "nullable": true,
+                                  "description": "Fractional change vs the previous window. `null` when the previous window was zero."
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "analytics": {
+                    "range": 30,
+                    "buckets": {
+                      "posts": {
+                        "today": 2,
+                        "week": 11,
+                        "month": 47
+                      },
+                      "uploads": {
+                        "today": 3,
+                        "week": 14,
+                        "month": 63
+                      },
+                      "bytes": {
+                        "today": 1048576,
+                        "week": 8388608,
+                        "month": 27918336
+                      },
+                      "comments": {
+                        "today": 0,
+                        "week": 4,
+                        "month": 18
+                      }
+                    },
+                    "totals": {
+                      "posts": 666,
+                      "views": 1695,
+                      "comments": 18,
+                      "bytes": 27918336
+                    },
+                    "series": {
+                      "posts": [
+                        {
+                          "day": "2026-05-06",
+                          "value": 1
+                        },
+                        {
+                          "day": "2026-05-07",
+                          "value": 0
+                        }
+                      ],
+                      "uploads": [
+                        {
+                          "day": "2026-05-06",
+                          "value": 2
+                        },
+                        {
+                          "day": "2026-05-07",
+                          "value": 0
+                        }
+                      ],
+                      "bytes": [
+                        {
+                          "day": "2026-05-06",
+                          "value": 524288
+                        },
+                        {
+                          "day": "2026-05-07",
+                          "value": 0
+                        }
+                      ],
+                      "comments": [
+                        {
+                          "day": "2026-05-06",
+                          "value": 1
+                        },
+                        {
+                          "day": "2026-05-07",
+                          "value": 0
+                        }
+                      ]
+                    },
+                    "deltas": {
+                      "posts": {
+                        "current": 47,
+                        "previous": 41,
+                        "change": 0.1463
+                      },
+                      "uploads": {
+                        "current": 63,
+                        "previous": 55,
+                        "change": 0.1454
+                      },
+                      "bytes": {
+                        "current": 27918336,
+                        "previous": 25000000,
+                        "change": 0.1167
+                      },
+                      "comments": {
+                        "current": 18,
+                        "previous": 22,
+                        "change": -0.1818
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. The account is suspended or is not a Plus subscriber.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

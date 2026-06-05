@@ -1,0 +1,54 @@
+---
+title: "Get Analytics"
+openapi: "GET /analytics"
+---
+
+Fetch your own analytics: posts, uploads, data uploaded and comments received over time, plus lifetime totals. This is the same data that powers the Analytics page in the Snipp Console, exposed so you can rebuild it in your own tools.
+
+## Behavior
+
+- Authenticated with your `relay-key`. Returns analytics for the key's owner only.
+- Requires an active Plus subscription. Without it the endpoint returns `403`.
+- `range` selects the window for `series` and `deltas`. Valid values are 7, 30, 90 and 365. It defaults to 30 if omitted or invalid. `buckets` are always today, last 7 days and last 30 days regardless of `range`.
+- `series` arrays have one entry per day across the window, oldest first, including days with no activity (value `0`).
+- `totals` are lifetime. `totals.views` is the sum of views across all your posts. There is no views series because views are not dated.
+- `deltas.change` is the fractional change against the preceding window of equal length, or `null` when that window was zero.
+- All dates are UTC.
+
+## Examples
+
+Fetch your analytics for the last 90 days:
+
+```bash
+curl -X GET "https://relay.snipp.gg/analytics?range=90" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "analytics": {
+    "range": 30,
+    "buckets": {
+      "posts": { "today": 2, "week": 11, "month": 47 },
+      "uploads": { "today": 3, "week": 14, "month": 63 },
+      "bytes": { "today": 1048576, "week": 8388608, "month": 27918336 },
+      "comments": { "today": 0, "week": 4, "month": 18 }
+    },
+    "totals": { "posts": 666, "views": 1695, "comments": 18, "bytes": 27918336 },
+    "series": {
+      "posts": [{ "day": "2026-05-06", "value": 1 }, { "day": "2026-05-07", "value": 0 }],
+      "uploads": [{ "day": "2026-05-06", "value": 2 }, { "day": "2026-05-07", "value": 0 }],
+      "bytes": [{ "day": "2026-05-06", "value": 524288 }, { "day": "2026-05-07", "value": 0 }],
+      "comments": [{ "day": "2026-05-06", "value": 1 }, { "day": "2026-05-07", "value": 0 }]
+    },
+    "deltas": {
+      "posts": { "current": 47, "previous": 41, "change": 0.1463 },
+      "uploads": { "current": 63, "previous": 55, "change": 0.1454 },
+      "bytes": { "current": 27918336, "previous": 25000000, "change": 0.1167 },
+      "comments": { "current": 18, "previous": 22, "change": -0.1818 }
+    }
+  }
+}
+```
