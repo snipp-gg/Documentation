@@ -13,6 +13,7 @@ Fetch your own analytics: posts, uploads, data uploaded, comments received and l
 - `series` arrays have one entry per day across the window, oldest first, including days with no activity (value `0`).
 - `totals` are lifetime. `totals.views` is the sum of views across all your posts. There is no views series because views are not dated.
 - `deltas.change` is the fractional change against the preceding window of equal length, or `null` when that window was zero.
+- `payout` is the creator payout estimate for the current calendar month, for partners only. `payout.eligible` is `false` for non-partners; when `true`, `payout.payout` is the estimated dollar share and `payout.series` is the daily score for the month. The estimate is live and may change as engagement changes through the month.
 - All dates are UTC.
 
 ## Examples
@@ -52,6 +53,11 @@ curl -X GET "https://relay.snipp.gg/analytics?range=90" \
       "comments": { "current": 18, "previous": 22, "change": -0.1818 },
       "likes": { "current": 38, "previous": 31, "change": 0.2258 }
     }
+  },
+  "payout": {
+    "eligible": true,
+    "payout": 24.47,
+    "series": [{ "day": "2026-06-01", "value": 0 }, { "day": "2026-06-02", "value": 15 }]
   }
 }
 ```

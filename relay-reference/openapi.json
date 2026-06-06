@@ -3489,6 +3489,35 @@
                           }
                         }
                       }
+                    },
+                    "payout": {
+                      "type": "object",
+                      "description": "Creator payout estimate for the current calendar month, partners only.",
+                      "properties": {
+                        "eligible": {
+                          "type": "boolean",
+                          "description": "`true` only for partners. `false` otherwise, with no other payout fields."
+                        },
+                        "payout": {
+                          "type": "number",
+                          "description": "Estimated dollar share of the creator pool this month. Live estimate, may change as engagement changes."
+                        },
+                        "series": {
+                          "type": "array",
+                          "description": "Daily payout score for the current month, oldest first.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "day": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 },
@@ -3608,6 +3637,14 @@
                         "change": 0.2258
                       }
                     }
+                  },
+                  "payout": {
+                    "eligible": true,
+                    "payout": 24.47,
+                    "series": [
+                      { "day": "2026-06-01", "value": 0 },
+                      { "day": "2026-06-02", "value": 15 }
+                    ]
                   }
                 }
               }
