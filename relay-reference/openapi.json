@@ -3775,7 +3775,9 @@
           },
           "bugHunterTier": {
             "type": "integer",
-            "minimum": 0
+            "minimum": 0,
+            "maximum": 2,
+            "description": "Bug hunter badge tier. 0 is no badge, 1 is Bug Hunter, 2 is Elite Bug Hunter."
           },
           "translator": {
             "type": "boolean"
@@ -3876,7 +3878,9 @@
           },
           "bugHunterTier": {
             "type": "integer",
-            "minimum": 0
+            "minimum": 0,
+            "maximum": 2,
+            "description": "Bug hunter badge tier. 0 is no badge, 1 is Bug Hunter, 2 is Elite Bug Hunter."
           },
           "suspended": {
             "type": "boolean"
