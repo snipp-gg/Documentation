@@ -8,6 +8,7 @@ Fetch a post by its share code.
 ## Behavior
 
 - Albums (posts with more than one file) include `urls` and `isAlbum: true`.
+- Video posts that are public or unlisted include `thumbnailUrl`, a generated still frame.
 - The `author` object describes the post's uploader. `author` is `null` if the user has been deleted.
 - Use `fileName` from the `files` array when calling [`/deleteUpload`](/relay-reference/endpoint/delete) to address a specific file. On albums, `/deleteUpload` removes just that file; on single-file posts it deletes the post.
 - Hits to this endpoint count a view toward the post. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour. Views are only counted on public, non-moderated posts.
