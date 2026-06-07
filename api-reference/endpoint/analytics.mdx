@@ -3,7 +3,7 @@ title: "Get Analytics"
 openapi: "GET /analytics"
 ---
 
-Fetch your own analytics: posts, uploads, data uploaded, comments received and likes received over time, plus lifetime totals. This is the same data that powers the Analytics page in the Snipp Console, exposed so you can rebuild it in your own tools.
+Fetch your own analytics: posts, uploads, data uploaded, comments received, likes received and followers gained over time, plus lifetime totals. This is the same data that powers the Analytics page in the Snipp Console, exposed so you can rebuild it in your own tools.
 
 ## Behavior
 
@@ -35,7 +35,8 @@ curl -X GET "https://api.snipp.gg/analytics?range=90" \
       "uploads": { "today": 3, "week": 14, "month": 63 },
       "bytes": { "today": 1048576, "week": 8388608, "month": 27918336 },
       "comments": { "today": 0, "week": 4, "month": 18 },
-      "likes": { "today": 1, "week": 9, "month": 38 }
+      "likes": { "today": 1, "week": 9, "month": 38 },
+      "followers": { "today": 1, "week": 6, "month": 21 }
     },
     "totals": { "posts": 666, "views": 1695, "comments": 18, "likes": 412, "bytes": 27918336 },
     "series": {
@@ -43,14 +44,16 @@ curl -X GET "https://api.snipp.gg/analytics?range=90" \
       "uploads": [{ "day": "2026-05-06", "value": 2 }, { "day": "2026-05-07", "value": 0 }],
       "bytes": [{ "day": "2026-05-06", "value": 524288 }, { "day": "2026-05-07", "value": 0 }],
       "comments": [{ "day": "2026-05-06", "value": 1 }, { "day": "2026-05-07", "value": 0 }],
-      "likes": [{ "day": "2026-05-06", "value": 3 }, { "day": "2026-05-07", "value": 1 }]
+      "likes": [{ "day": "2026-05-06", "value": 3 }, { "day": "2026-05-07", "value": 1 }],
+      "followers": [{ "day": "2026-05-06", "value": 2 }, { "day": "2026-05-07", "value": 0 }]
     },
     "deltas": {
       "posts": { "current": 47, "previous": 41, "change": 0.1463 },
       "uploads": { "current": 63, "previous": 55, "change": 0.1454 },
       "bytes": { "current": 27918336, "previous": 25000000, "change": 0.1167 },
       "comments": { "current": 18, "previous": 22, "change": -0.1818 },
-      "likes": { "current": 38, "previous": 31, "change": 0.2258 }
+      "likes": { "current": 38, "previous": 31, "change": 0.2258 },
+      "followers": { "current": 21, "previous": 17, "change": 0.2353 }
     }
   }
 }

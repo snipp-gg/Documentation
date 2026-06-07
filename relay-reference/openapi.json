@@ -3139,7 +3139,7 @@
     "/analytics": {
       "get": {
         "summary": "Get Analytics",
-        "description": "Returns the authenticated user's own analytics: posts, uploads, data uploaded and comments received over time, plus lifetime totals. This is the data behind the Analytics page in the Snipp Console, exposed so you can rebuild it yourself. Requires an active Plus subscription. All dates are UTC.",
+        "description": "Returns the authenticated user's own analytics: posts, uploads, data uploaded, comments received, likes received and followers gained over time, plus lifetime totals. This is the data behind the Analytics page in the Snipp Console, exposed so you can rebuild it yourself. Requires an active Plus subscription. All dates are UTC.",
         "operationId": "getAnalytics",
         "parameters": [
           {
@@ -3249,6 +3249,23 @@
                             "likes": {
                               "type": "object",
                               "description": "Likes received on your posts.",
+                              "properties": {
+                                "today": {
+                                  "type": "integer"
+                                },
+                                "week": {
+                                  "type": "integer",
+                                  "description": "Total over the last 7 days."
+                                },
+                                "month": {
+                                  "type": "integer",
+                                  "description": "Total over the last 30 days."
+                                }
+                              }
+                            },
+                            "followers": {
+                              "type": "object",
+                              "description": "Followers gained.",
                               "properties": {
                                 "today": {
                                   "type": "integer"
@@ -3384,6 +3401,24 @@
                                   }
                                 }
                               }
+                            },
+                            "followers": {
+                              "type": "array",
+                              "description": "Followers gained per day.",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "day": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "description": "UTC date, `YYYY-MM-DD`."
+                                  },
+                                  "value": {
+                                    "type": "integer",
+                                    "description": "Metric total for this day."
+                                  }
+                                }
+                              }
                             }
                           }
                         },
@@ -3485,6 +3520,25 @@
                                   "description": "Fractional change vs the previous window. `null` when the previous window was zero."
                                 }
                               }
+                            },
+                            "followers": {
+                              "type": "object",
+                              "description": "Followers gained.",
+                              "properties": {
+                                "current": {
+                                  "type": "integer",
+                                  "description": "Total for the current range window."
+                                },
+                                "previous": {
+                                  "type": "integer",
+                                  "description": "Total for the preceding window of equal length."
+                                },
+                                "change": {
+                                  "type": "number",
+                                  "nullable": true,
+                                  "description": "Fractional change vs the previous window. `null` when the previous window was zero."
+                                }
+                              }
                             }
                           }
                         }
@@ -3549,6 +3603,11 @@
                         "today": 1,
                         "week": 9,
                         "month": 38
+                      },
+                      "followers": {
+                        "today": 1,
+                        "week": 6,
+                        "month": 21
                       }
                     },
                     "totals": {
@@ -3608,6 +3667,16 @@
                           "day": "2026-05-07",
                           "value": 1
                         }
+                      ],
+                      "followers": [
+                        {
+                          "day": "2026-05-06",
+                          "value": 2
+                        },
+                        {
+                          "day": "2026-05-07",
+                          "value": 0
+                        }
                       ]
                     },
                     "deltas": {
@@ -3635,6 +3704,11 @@
                         "current": 38,
                         "previous": 31,
                         "change": 0.2258
+                      },
+                      "followers": {
+                        "current": 21,
+                        "previous": 17,
+                        "change": 0.2353
                       }
                     }
                   },
