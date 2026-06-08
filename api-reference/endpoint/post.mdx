@@ -8,7 +8,7 @@ Fetch a post by its share code.
 ## Behavior
 
 - Albums (posts with more than one file) include `urls` and `isAlbum: true`.
-- Video posts that are public or unlisted include `thumbnailUrl`, a generated still frame.
+- Video posts include `thumbnailUrl`, a generated still frame. For private posts it is a signed URL with the same 24-hour expiry as the file URL.
 - Use `fileName` from the `files` array when calling [`/deleteUpload`](/api-reference/endpoint/delete) to address a specific file. On albums, `/deleteUpload` removes just that file; on single-file posts it deletes the post.
 - Liking and commenting are Relay-only actions; see the [Relay Reference](/relay-reference/introduction) to perform them.
 - Private posts are only visible to the owner. Requests for another user's private post return `404`.

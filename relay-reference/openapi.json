@@ -273,7 +273,7 @@
                         },
                         "thumbnailUrl": {
                           "type": "string",
-                          "description": "URL to a generated thumbnail image. Only present for public and unlisted video posts."
+                          "description": "URL to a generated thumbnail still frame. Present for video posts; signed (24-hour expiry) for private posts."
                         },
                         "title": {
                           "type": "string",
