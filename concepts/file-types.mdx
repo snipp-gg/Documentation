@@ -37,18 +37,10 @@ Snipp supports a range of image and video formats for uploading and sharing.
 
 The Snipp Discord bot is invite-only. Add it to your server or as a user app from [snipp.gg/bot](https://snipp.gg/bot). There is no HTTP endpoint for the bot.
 
-The bot accepts images (`.png`, `.jpg`, `.webp`, `.gif`) and
-MP4 videos (`.mp4`). `.mov` and `.mkv` uploads are **not supported**
-through the bot. Upload those from the [web uploader](https://snipp.gg/upload)
-or the [`/upload` endpoint](/api-reference/endpoint/upload), or convert
-them to MP4 first.
-
-<Note>
-  Videos uploaded through the Discord bot are **not** remuxed with
-  faststart. They play back correctly but may take slightly longer to
-  start on very large files. In practice this is a non-issue because
-  Discord's attachment size cap keeps these uploads small.
-</Note>
+The bot accepts images only (`.png`, `.jpg`, `.webp`, `.gif`). Videos
+are **not supported** through the bot. Upload those from the
+[web uploader](https://snipp.gg/upload) or the
+[`/upload` endpoint](/api-reference/endpoint/upload).
 
 ## File Size Limits
 
