@@ -11,6 +11,7 @@ Add one or more files to an existing album post. Use this to grow a post's file 
 |--------|----------|-------------|
 | `relay-key` | Yes | Your Relay key |
 | `post-code` | Yes | The share code of the post to append to |
+| `include-metadata` | No | `true` to keep EXIF metadata. Omitted or `false` strips it (default). |
 
 ## Behavior
 
@@ -19,6 +20,7 @@ Add one or more files to an existing album post. Use this to grow a post's file 
 - Albums cap at **9 files total**. Requests that would exceed the cap are rejected.
 - Newly added files inherit the post's existing privacy. If the post is **private**, returned `url`s are signed with a 24-hour expiry.
 - Video files (`.mp4`, `.mov`, `.mkv`) are remuxed to MP4 with `+faststart`. See [File Types](/concepts/file-types) for details.
+- EXIF metadata is stripped from PNG, JPG, and WebP files by default. Send `include-metadata: true` to keep it.
 - Each new file is auto-moderated. If any file (or the post's title or description) is flagged, the entire post, including existing files, is quarantined and marked `moderated`.
 
 ## Examples

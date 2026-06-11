@@ -449,6 +449,16 @@
               ],
               "default": "album"
             }
+          },
+          {
+            "name": "include-metadata",
+            "in": "header",
+            "required": false,
+            "description": "By default, Snipp strips EXIF metadata (camera, GPS location, timestamp) from PNG, JPG, and WebP uploads to protect your privacy. Set to `true` to keep the original metadata.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "requestBody": {
@@ -908,26 +918,6 @@
             }
           },
           {
-            "name": "title",
-            "in": "header",
-            "required": false,
-            "description": "New title (max 30 characters). Send empty string to clear.",
-            "schema": {
-              "type": "string",
-              "maxLength": 30
-            }
-          },
-          {
-            "name": "description",
-            "in": "header",
-            "required": false,
-            "description": "New description (max 200 characters). Send empty string to clear.",
-            "schema": {
-              "type": "string",
-              "maxLength": 200
-            }
-          },
-          {
             "name": "post-privacy",
             "in": "header",
             "required": false,
@@ -942,6 +932,28 @@
             }
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 30,
+                    "description": "New title (max 30 characters). Send empty string to clear. Use a form field rather than a header so emoji and accented characters are preserved."
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "description": "New description (max 200 characters). Send empty string to clear. Use a form field rather than a header so emoji and accented characters are preserved."
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Upload updated successfully",
@@ -1049,6 +1061,16 @@
             "description": "The share code of the post to append to",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "include-metadata",
+            "in": "header",
+            "required": false,
+            "description": "By default, Snipp strips EXIF metadata (camera, GPS location, timestamp) from PNG, JPG, and WebP uploads to protect your privacy. Set to `true` to keep the original metadata.",
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
         ],
