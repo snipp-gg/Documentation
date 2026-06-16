@@ -13,7 +13,7 @@ Fetch a post by its share code.
 - Liking and commenting are Relay-only actions; see the [Relay Reference](/relay-reference/introduction) to perform them.
 - Private posts are only visible to the owner. Requests for another user's private post return `404`.
 - URLs for private posts are returned as signed URLs with a 24-hour expiry. After that, request the endpoint again for a fresh signed URL.
-- Moderated posts may still be returned, but their file URL may be unavailable.
+- Moderated posts are only fully returned to their owner, with `moderated: true` on the post. Requests by anyone else return `403` with `moderated: true`.
 
 ## Examples
 

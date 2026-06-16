@@ -372,6 +372,26 @@
               }
             }
           },
+          "403": {
+            "description": "Post has been moderated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "moderated": {
+                      "type": "boolean",
+                      "description": "Present and true when the post has been moderated"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "404": {
             "description": "Post not found",
             "content": {
