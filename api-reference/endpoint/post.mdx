@@ -14,6 +14,7 @@ Fetch a post by its share code.
 - Private posts are only visible to the owner. Requests for another user's private post return `404`.
 - URLs for private posts are returned as signed URLs with a 24-hour expiry. After that, request the endpoint again for a fresh signed URL.
 - Moderated posts are only fully returned to their owner, with `moderated: true` on the post. Requests by anyone else return `403` with `moderated: true`.
+- Restricted posts carry `restricted: true` on the post when returned to their owner. A restricted post is forced to `unlisted` and cannot be set back to public; see [Edit Upload](/api-reference/endpoint/edit).
 
 ## Examples
 

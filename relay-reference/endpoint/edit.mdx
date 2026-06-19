@@ -12,6 +12,7 @@ Update an existing upload's title, description, or privacy level.
 - Send `title` or `description` as multipart form fields. This is required for non-ASCII values such as emoji or accented characters, which cannot be carried in HTTP headers. The `title` and `description` headers still work for plain ASCII values but are discouraged.
 - Send an empty string for `title` or `description` to clear the field.
 - `title` is truncated to 30 characters, `description` to 200 characters.
+- A restricted post cannot be made public. Setting `post-privacy` to `public` on a restricted post returns `403`. You can still switch it between `private` and `unlisted`.
 
 ## Examples
 

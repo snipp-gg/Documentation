@@ -1110,7 +1110,7 @@
             }
           },
           "403": {
-            "description": "No permission to edit uploads or not the owner",
+            "description": "No permission to edit uploads, not the owner, post is moderated, or post is restricted and cannot be made public",
             "content": {
               "application/json": {
                 "schema": {
