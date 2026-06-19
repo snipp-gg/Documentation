@@ -265,6 +265,18 @@
                               "height": {
                                 "type": "integer",
                                 "description": "File height in pixels. Present per file when known; absent for older uploads."
+                              },
+                              "mime_type": {
+                                "type": "string",
+                                "description": "File MIME type. Present per file when known; absent for older uploads."
+                              },
+                              "size": {
+                                "type": "integer",
+                                "description": "File size in bytes. Present per file when known; absent for older uploads."
+                              },
+                              "size_formatted": {
+                                "type": "string",
+                                "description": "Human-readable file size. Present when size is known."
                               }
                             }
                           }
