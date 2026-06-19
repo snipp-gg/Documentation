@@ -267,6 +267,14 @@
                               },
                               "url": {
                                 "type": "string"
+                              },
+                              "width": {
+                                "type": "integer",
+                                "description": "File width in pixels. Present per file when known; absent for older uploads."
+                              },
+                              "height": {
+                                "type": "integer",
+                                "description": "File height in pixels. Present per file when known; absent for older uploads."
                               }
                             }
                           }
