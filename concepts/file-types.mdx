@@ -37,10 +37,7 @@ Snipp supports a range of image and video formats for uploading and sharing.
 
 The Snipp Discord bot is invite-only. Add it to your server or as a user app from [snipp.gg/bot](https://snipp.gg/bot). There is no HTTP endpoint for the bot.
 
-The bot accepts images only (`.png`, `.jpg`, `.webp`, `.gif`). Videos
-are **not supported** through the bot. Upload those from the
-[web uploader](https://snipp.gg/upload) or the
-[`/upload` endpoint](/api-reference/endpoint/upload).
+The bot accepts images (`.png`, `.jpg`, `.webp`, `.gif`) for every plan. Video uploads through the bot are a **Plus and Enterprise** feature and are capped at **100 MB** per file (Discord's own attachment limit). Free accounts can still upload videos from the [web uploader](https://snipp.gg/upload) or the [`/upload` endpoint](/api-reference/endpoint/upload).
 
 ## File Size Limits
 
@@ -52,7 +49,11 @@ Maximum file size depends on your plan:
 | Plus | No per-file limit |
 | Enterprise | No per-file limit |
 
-Plus and Enterprise have no per-file cap. Individual uploads are only bounded by your weekly quota (20 GB on Plus, 50 GB on Enterprise). The absolute upload limit is **50 GB per request**. Files larger than your plan's limit return a `400` error.
+Plus and Enterprise have no per-file cap. Individual uploads are only bounded by your weekly quota (20 GB on Plus, 50 GB on Enterprise). The absolute upload limit is **50 GB per request**. Files larger than your plan's limit return a `413` error.
+
+<Info>
+  Videos have a hard ceiling of **30 GB** per file on Plus and Enterprise; larger videos are rejected. Free accounts are still bound by the 50 MB per-file cap above.
+</Info>
 
 <Info>
   Upgrading to [Plus](https://snipp.gg/plus) removes the 50 MB per-file cap. Upload anything up to your full weekly quota in a single file.

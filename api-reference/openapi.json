@@ -2505,7 +2505,7 @@
           },
           "usage": {
             "type": "object",
-            "description": "Weekly usage limit state. The window is a rolling 7-day period anchored to your first upload after each reset.",
+            "description": "Weekly usage limit state. The window is a fixed 7-day period anchored to your first upload after each reset, and fully resets once 7 days pass.",
             "properties": {
               "used": {
                 "type": "integer",
