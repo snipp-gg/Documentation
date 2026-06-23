@@ -761,7 +761,7 @@
             }
           },
           "400": {
-            "description": "No file, unsupported type, file too large, or all files failed",
+            "description": "No file, unsupported type, or all files failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -2576,7 +2576,7 @@
             }
           },
           "400": {
-            "description": "No file, invalid type, or file too large",
+            "description": "No file or invalid type",
             "content": {
               "application/json": {
                 "schema": {
@@ -2665,7 +2665,7 @@
             }
           },
           "400": {
-            "description": "No file, invalid type, or file too large",
+            "description": "No file or invalid type",
             "content": {
               "application/json": {
                 "schema": {
