@@ -12,6 +12,7 @@ Browse public uploads from the community. Returns up to 50 items, newest first.
 - Blocked users are filtered both ways: posts from users you have blocked, and posts from users who have blocked you, are excluded.
 - Hits to this endpoint count a view toward each returned post. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour.
 - Files that no longer exist on the CDN are skipped silently.
+- `priority` is `true` when the post's video is served over priority delivery, and `false` for standard delivery.
 
 ## Examples
 
@@ -34,6 +35,7 @@ curl -X GET "https://relay.snipp.gg/discover" \
       "views": 128,
       "likeCount": 42,
       "commentCount": 3,
+      "priority": false,
       "author": "Player One",
       "authorId": "123456789012345678",
       "authorUsername": "playerone",

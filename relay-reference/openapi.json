@@ -363,6 +363,10 @@
                             }
                           }
                         },
+                        "priority": {
+                          "type": "boolean",
+                          "description": "True when the post's video is served over priority delivery, false for standard delivery."
+                        },
                         "file": {
                           "type": "object",
                           "description": "File metadata. May be absent for older uploads.",
@@ -420,6 +424,7 @@
                           "verified": false,
                           "plus": true
                         },
+                        "priority": false,
                         "file": {
                           "size": 2621440,
                           "size_formatted": "2.50 MB",
@@ -856,6 +861,11 @@
                           "url": {
                             "type": "string"
                           },
+                          "title": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Post title, or null when none is set"
+                          },
                           "size": {
                             "type": "integer",
                             "description": "File size in bytes"
@@ -868,6 +878,10 @@
                             "type": "string",
                             "format": "date-time",
                             "description": "ISO 8601 timestamp"
+                          },
+                          "priority": {
+                            "type": "boolean",
+                            "description": "True when the post's video is served over priority delivery, false for standard delivery."
                           }
                         }
                       }
@@ -1412,6 +1426,10 @@
                           "commentCount": {
                             "type": "integer",
                             "description": "Total comments on the post."
+                          },
+                          "priority": {
+                            "type": "boolean",
+                            "description": "True when the post's video is served over priority delivery, false for standard delivery."
                           },
                           "author": {
                             "type": "string"
