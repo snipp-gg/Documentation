@@ -69,7 +69,7 @@ curl -X GET "https://relay.snipp.gg/users/USER_ID?includePosts=true&postsLimit=1
       "maxFileSize": null,
       "usage": {
         "used": 5242880,
-        "quota": 21474836480,
+        "limit": 21474836480,
         "usedPercent": 0.02,
         "windowStart": "2026-05-12T00:00:00Z",
         "windowEnd": "2026-05-19T00:00:00Z",
@@ -130,9 +130,13 @@ A non-self request returns a public-safe profile with `blockedByYou`, `following
     "followingCount": 30,
     "publicUploads": [
       {
-        "code": "AbCd1234",
         "url": "https://i.snipp.gg/987654321098765432/a1b2c3d4e5f6789012345678abcdef01.png",
-        "postPrivacy": "public"
+        "code": "AbCd1234",
+        "title": "My screenshot",
+        "description": null,
+        "created": "2026-04-22T18:30:00Z",
+        "public": true,
+        "isAlbum": false
       }
     ]
   }

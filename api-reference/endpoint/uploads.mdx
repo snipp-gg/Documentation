@@ -11,6 +11,7 @@ Fetch your most recent uploads. Defaults to 30. Pass `?limit=N` to control the c
 - Each upload includes `code` for the associated post when one exists.
 - `isAlbum` is `true` when that upload belongs to an album post.
 - `title` is the post's title, or `null` when none is set.
+- `thumbnailUrl` is only present when the post has a thumbnail.
 - `priority` is `true` when the post's video is served over priority delivery, and `false` for standard delivery.
 - URLs for private uploads are returned as signed URLs with a 24-hour expiry. After that, request the endpoint again for a fresh signed URL.
 
@@ -30,6 +31,7 @@ curl -X GET "https://api.snipp.gg/uploads?limit=100" \
       "code": "AbCd1234",
       "isAlbum": true,
       "url": "https://i.snipp.gg/364836696149458944/16483ec5681c5fc2b5cc08dd49b7dbae",
+      "thumbnailUrl": "https://i.snipp.gg/thumbnails/364836696149458944/16483ec5681c5fc2b5cc08dd49b7dbae.jpg",
       "title": "Nice shot",
       "size": 2487312,
       "size_formatted": "2.37 MB",

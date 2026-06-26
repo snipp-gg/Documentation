@@ -108,6 +108,7 @@
                           "usage": {
                             "used": 1073741824,
                             "limit": 21474836480,
+                            "usedPercent": 5,
                             "windowStart": "2026-05-01T00:00:00.000Z",
                             "windowEnd": "2026-05-08T00:00:00.000Z",
                             "resetsInSeconds": 172800
@@ -154,7 +155,8 @@
                             "title": "Launch teaser",
                             "description": "Public post",
                             "created": "2025-01-02T00:00:00.000Z",
-                            "public": true
+                            "public": true,
+                            "isAlbum": false
                           }
                         ]
                       }
@@ -321,6 +323,14 @@
                         "priority": {
                           "type": "boolean",
                           "description": "True when the post's video is served over priority delivery, false for standard delivery."
+                        },
+                        "moderated": {
+                          "type": "boolean",
+                          "description": "Present and true only in owner-only responses for a moderated post."
+                        },
+                        "restricted": {
+                          "type": "boolean",
+                          "description": "Present and true only in owner-only responses for a restricted post, which is forced to unlisted."
                         },
                         "file": {
                           "type": "object",
@@ -504,6 +514,16 @@
               "type": "boolean",
               "default": false
             }
+          },
+          {
+            "name": "priority",
+            "in": "header",
+            "required": false,
+            "description": "Eligible videos use priority (adaptive bitrate) streaming by default, spending your priority minutes. Set to `false` to upload in standard quality instead and save your minutes. The post's `priority` field reflects whether the video ended up on adaptive streaming.",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "requestBody": {
@@ -589,6 +609,10 @@
                                 "unlisted",
                                 "private"
                               ]
+                            },
+                            "priority": {
+                              "type": "boolean",
+                              "description": "`true` when the upload is a video placed on priority (adaptive) streaming."
                             }
                           }
                         }
@@ -685,6 +709,10 @@
                             "fileCount": {
                               "type": "integer"
                             },
+                            "priority": {
+                              "type": "boolean",
+                              "description": "Album mode: `true` when any file in the album is a video placed on priority (adaptive) streaming."
+                            },
                             "posts": {
                               "type": "array",
                               "items": {
@@ -698,6 +726,9 @@
                                   },
                                   "postPrivacy": {
                                     "type": "string"
+                                  },
+                                  "priority": {
+                                    "type": "boolean"
                                   }
                                 }
                               }
@@ -806,6 +837,10 @@
                           },
                           "url": {
                             "type": "string"
+                          },
+                          "thumbnailUrl": {
+                            "type": "string",
+                            "description": "Thumbnail URL. Only present when the post has a thumbnail."
                           },
                           "title": {
                             "type": "string",
@@ -1126,6 +1161,16 @@
               "type": "boolean",
               "default": false
             }
+          },
+          {
+            "name": "priority",
+            "in": "header",
+            "required": false,
+            "description": "Appended videos use priority (adaptive) streaming by default, spending your priority minutes. Set to `false` to add them in standard quality instead. The post's `priority` field reflects whether any file in the album is on adaptive streaming.",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "requestBody": {
@@ -1177,6 +1222,10 @@
                         "fileCount": {
                           "type": "integer",
                           "description": "Total files in the album after append"
+                        },
+                        "priority": {
+                          "type": "boolean",
+                          "description": "`true` when any file in the album is a video on priority (adaptive) streaming."
                         }
                       }
                     },
@@ -1875,7 +1924,7 @@
                         },
                         "series": {
                           "type": "object",
-                          "description": "Daily values over the selected range. Each array has one entry per day, oldest first. There is no views series because views are not dated.",
+                          "description": "Daily values over the selected range. Each array has one entry per day, oldest first.",
                           "properties": {
                             "posts": {
                               "type": "array",
@@ -1898,6 +1947,24 @@
                             "uploads": {
                               "type": "array",
                               "description": "Files uploaded per day.",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "day": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "description": "UTC date, `YYYY-MM-DD`."
+                                  },
+                                  "value": {
+                                    "type": "integer",
+                                    "description": "Metric total for this day."
+                                  }
+                                }
+                              }
+                            },
+                            "views": {
+                              "type": "array",
+                              "description": "Views received per day.",
                               "items": {
                                 "type": "object",
                                 "properties": {
@@ -2013,6 +2080,25 @@
                             "uploads": {
                               "type": "object",
                               "description": "Files uploaded.",
+                              "properties": {
+                                "current": {
+                                  "type": "integer",
+                                  "description": "Total for the current range window."
+                                },
+                                "previous": {
+                                  "type": "integer",
+                                  "description": "Total for the preceding window of equal length."
+                                },
+                                "change": {
+                                  "type": "number",
+                                  "nullable": true,
+                                  "description": "Fractional change vs the previous window. `null` when the previous window was zero."
+                                }
+                              }
+                            },
+                            "views": {
+                              "type": "object",
+                              "description": "Views received.",
                               "properties": {
                                 "current": {
                                   "type": "integer",
@@ -2174,6 +2260,16 @@
                           "value": 0
                         }
                       ],
+                      "views": [
+                        {
+                          "day": "2026-05-06",
+                          "value": 84
+                        },
+                        {
+                          "day": "2026-05-07",
+                          "value": 31
+                        }
+                      ],
                       "bytes": [
                         {
                           "day": "2026-05-06",
@@ -2225,6 +2321,11 @@
                         "current": 63,
                         "previous": 55,
                         "change": 0.1454
+                      },
+                      "views": {
+                        "current": 1240,
+                        "previous": 1080,
+                        "change": 0.1481
                       },
                       "bytes": {
                         "current": 27918336,
@@ -2347,12 +2448,17 @@
           },
           "public": {
             "type": "boolean"
+          },
+          "isAlbum": {
+            "type": "boolean",
+            "description": "Whether the upload belongs to an album post."
           }
         },
         "required": [
           "url",
           "code",
-          "public"
+          "public",
+          "isAlbum"
         ]
       },
       "UserProfileBase": {
@@ -2529,6 +2635,12 @@
                 "type": "integer",
                 "description": "Total bytes allowed per window. 2 GB free, 20 GB plus, 50 GB enterprise."
               },
+              "usedPercent": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Percentage of the window quota used (0-100)."
+              },
               "windowStart": {
                 "type": [
                   "string",
@@ -2556,6 +2668,7 @@
             "required": [
               "used",
               "limit",
+              "usedPercent",
               "windowStart",
               "windowEnd",
               "resetsInSeconds"

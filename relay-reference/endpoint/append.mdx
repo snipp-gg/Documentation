@@ -12,6 +12,7 @@ Add one or more files to an existing album post. Use this to grow a post's file 
 | `relay-key` | Yes | Your Relay key |
 | `post-code` | Yes | The share code of the post to append to |
 | `include-metadata` | No | `true` to keep file metadata. Omitted or `false` strips it (default). |
+| `priority` | No | `false` to opt appended video files out of priority (adaptive) streaming. Omitted or `true` keeps it on (default), subject to your remaining priority minutes. |
 
 ## Behavior
 
@@ -21,6 +22,7 @@ Add one or more files to an existing album post. Use this to grow a post's file 
 - Newly added files inherit the post's existing privacy. If the post is **private**, returned `url`s are signed with a 24-hour expiry.
 - Video files (`.mp4`, `.mov`, `.mkv`) are remuxed to MP4 with `+faststart`. See [File Types](/concepts/file-types) for details.
 - Metadata (EXIF on images, container metadata on videos) is stripped by default. Send `include-metadata: true` to keep it.
+- Appended videos use priority (adaptive) streaming by default, spending [priority minutes](/concepts/plans). Send `priority: false` to add them in standard quality instead. The post's `priority` field is `true` when any file in the album is on adaptive streaming.
 - Each new file is auto-moderated. If any file (or the post's title or description) is flagged, the entire post, including existing files, is quarantined and marked `moderated`.
 
 ## Examples
@@ -53,7 +55,8 @@ curl -X POST "https://relay.snipp.gg/appendUpload" \
     "code": "AbCd1234",
     "url": "https://snipp.gg/p/AbCd1234",
     "postPrivacy": "public",
-    "fileCount": 5
+    "fileCount": 5,
+    "priority": false
   },
   "files": [
     {

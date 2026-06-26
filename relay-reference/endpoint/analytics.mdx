@@ -11,7 +11,7 @@ Fetch your own analytics: posts, uploads, data uploaded, comments received, like
 - Requires an active Plus subscription. Without it the endpoint returns `403`.
 - `range` selects the window for `series` and `deltas`. Valid values are 7, 30, 90 and 365. It defaults to 30 if omitted or invalid. `buckets` are always today, last 7 days and last 30 days regardless of `range`.
 - `series` arrays have one entry per day across the window, oldest first, including days with no activity (value `0`).
-- `totals` are lifetime. `totals.views` is the sum of views across all your posts. There is no views series because views are not dated.
+- `totals` are lifetime. `totals.views` is the sum of views across all your posts.
 - `deltas.change` is the fractional change against the preceding window of equal length, or `null` when that window was zero.
 - `payout` is the creator payout estimate for the current calendar month, for partners only. `payout.eligible` is `false` for non-partners; when `true`, `payout.payout` is the estimated dollar share and `payout.series` is the daily score for the month. The estimate is live and may change as engagement changes through the month.
 - All dates are UTC.
@@ -46,7 +46,8 @@ curl -X GET "https://relay.snipp.gg/analytics?range=90" \
       "bytes": [{ "day": "2026-05-06", "value": 524288 }, { "day": "2026-05-07", "value": 0 }],
       "comments": [{ "day": "2026-05-06", "value": 1 }, { "day": "2026-05-07", "value": 0 }],
       "likes": [{ "day": "2026-05-06", "value": 3 }, { "day": "2026-05-07", "value": 1 }],
-      "followers": [{ "day": "2026-05-06", "value": 2 }, { "day": "2026-05-07", "value": 0 }]
+      "followers": [{ "day": "2026-05-06", "value": 2 }, { "day": "2026-05-07", "value": 0 }],
+      "views": [{ "day": "2026-05-06", "value": 24 }, { "day": "2026-05-07", "value": 11 }]
     },
     "deltas": {
       "posts": { "current": 47, "previous": 41, "change": 0.1463 },
@@ -54,7 +55,8 @@ curl -X GET "https://relay.snipp.gg/analytics?range=90" \
       "bytes": { "current": 27918336, "previous": 25000000, "change": 0.1167 },
       "comments": { "current": 18, "previous": 22, "change": -0.1818 },
       "likes": { "current": 38, "previous": 31, "change": 0.2258 },
-      "followers": { "current": 21, "previous": 17, "change": 0.2353 }
+      "followers": { "current": 21, "previous": 17, "change": 0.2353 },
+      "views": { "current": 1695, "previous": 1402, "change": 0.2090 }
     }
   },
   "payout": {

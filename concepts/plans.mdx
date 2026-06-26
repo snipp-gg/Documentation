@@ -13,7 +13,7 @@ Snipp offers three tiers to suit different needs. All plans include full API acc
 | **Max File Size** | 50 MB | No per-file limit | No per-file limit |
 | **Weekly Usage Limit** | 2 GB | 20 GB | 50 GB |
 | **Upload Rate** | 8 uploads/sec | 8 uploads/sec | 8 uploads/sec |
-| **Priority Streaming** | Standard quality | 300 min/week | 1,000 min/week |
+| **Priority Streaming** | 10 min/month | 100 min/month | Custom |
 | **API Access** | Yes | Yes | Yes |
 | **Teams** | No | No | Yes |
 | **Plus Badge** | No | Yes | Yes |
@@ -31,15 +31,15 @@ Deleting a file does not restore weekly quota. The limit measures upload through
 
 ## Priority Minutes
 
-Plus and Enterprise accounts get **priority streaming** for short videos. Priority videos are served with adaptive bitrate (HLS), which means fast seeking and multiple quality levels from 240p up to the source resolution. Free accounts always play videos in standard quality, served directly from storage with no adaptive bitrate.
+Every account gets **priority streaming** for short videos. Priority videos are served with adaptive bitrate (HLS), which means fast seeking and multiple quality levels from 240p up to the source resolution. Once the budget is spent, videos fall back to standard quality, served directly from storage with no adaptive bitrate.
 
-Each paid plan gets a weekly budget of priority minutes:
+Each plan gets a monthly budget of priority minutes:
 
 | Plan | Priority Minutes |
 |------|------------------|
-| Free | Standard quality only |
-| Plus | 300 minutes/week |
-| Enterprise | 1,000 minutes/week |
+| Free | 10 minutes/month |
+| Plus | 100 minutes/month |
+| Enterprise | Custom allowance |
 
 A video's **duration** counts against the budget, not its file size. Only videos use priority minutes; images never do.
 
@@ -47,9 +47,9 @@ A video's **duration** counts against the budget, not its file size. Only videos
   There is a **60-minute** per-video cap. Videos longer than 60 minutes always play in standard quality regardless of how much budget you have left.
 </Note>
 
-The priority-minutes budget shares the same weekly window model as your usage limit: it is anchored to first use and fully resets after 7 days.
+The priority-minutes budget uses a rolling 30-day window: it is anchored to first use and fully resets after 30 days.
 
-When your weekly budget runs out, videos still upload and play normally. They simply fall back to standard quality instead of priority streaming, with no block or error. The only exception is the Discord bot, which rejects videos that would exceed your remaining budget, because it relies on streaming to generate thumbnails.
+When your monthly budget runs out, videos still upload and play normally. They simply fall back to standard quality instead of priority streaming, with no block or error. The only exception is the Discord bot, which rejects videos that would exceed your remaining budget, because it relies on streaming to generate thumbnails.
 
 ## Checking Your Plan
 
