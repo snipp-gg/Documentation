@@ -450,6 +450,123 @@
         }
       }
     },
+    "/gifs": {
+      "get": {
+        "summary": "List Public GIFs",
+        "description": "List public GIFs across Snipp, newest first, like a public GIF feed. No authentication required. Defaults to 30. Pass `?limit=N` (max 50) and `?offset=N` to page.",
+        "operationId": "listGifs",
+        "security": [],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum GIFs to return (1-50, default 30).",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Number of rows to skip for pagination (default 0).",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of public GIFs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "gifs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "string",
+                            "description": "Share code for the post"
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "Direct URL to the GIF"
+                          },
+                          "thumbnailUrl": {
+                            "type": "string",
+                            "description": "Thumbnail URL. Only present when the post has a thumbnail."
+                          },
+                          "title": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Post title, or null when none is set"
+                          },
+                          "description": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Post description, or null when none is set"
+                          },
+                          "created": {
+                            "type": "string",
+                            "format": "date-time",
+                            "nullable": true,
+                            "description": "ISO 8601 creation timestamp"
+                          },
+                          "views": {
+                            "type": "integer",
+                            "description": "View count"
+                          }
+                        }
+                      }
+                    },
+                    "hasMore": {
+                      "type": "boolean",
+                      "description": "Whether another page is likely available."
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "Offset used for this response."
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "Limit used for this response."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to retrieve GIFs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/upload": {
       "post": {
         "summary": "Upload File(s)",

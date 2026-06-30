@@ -1,0 +1,42 @@
+---
+title: "List Public GIFs"
+openapi: "GET /gifs"
+---
+
+Browse public GIFs across Snipp, newest first, like a public GIF feed. Defaults to 30. Pass `?limit=N` (max 50) and `?offset=N` to page.
+
+## Behavior
+
+- No authentication required. Rate limited per IP.
+- Only posts whose first file is a `.gif` are returned.
+- Returns public posts only. Unlisted, private, draft, moderated, and team posts are excluded, as are posts from suspended accounts.
+- `thumbnailUrl` is only present when the post has a thumbnail.
+- `title` and `description` are `null` when none is set.
+- `hasMore` is `true` when another page is likely available. Page with `offset`.
+
+## Examples
+
+```bash
+curl -X GET "https://api.snipp.gg/gifs?limit=50&offset=0"
+```
+
+## Responses
+
+```json
+{
+  "gifs": [
+    {
+      "code": "AbCd1234",
+      "url": "https://i.snipp.gg/364836696149458944/16483ec5681c5fc2b5cc08dd49b7dbae.gif",
+      "thumbnailUrl": "https://i.snipp.gg/364836696149458944/thumb/16483ec5681c5fc2b5cc08dd49b7dbae.jpg",
+      "title": "Nice loop",
+      "description": null,
+      "created": "2026-03-27T11:42:18.000Z",
+      "views": 128
+    }
+  ],
+  "hasMore": true,
+  "offset": 0,
+  "limit": 50
+}
+```

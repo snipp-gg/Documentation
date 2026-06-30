@@ -108,6 +108,7 @@
             "group": "Posts",
             "pages": [
               "api-reference/endpoint/post",
+              "api-reference/endpoint/gifs",
               "api-reference/endpoint/report-post"
             ]
           },
@@ -152,6 +153,7 @@
             "pages": [
               "relay-reference/endpoint/post",
               "relay-reference/endpoint/discover",
+              "relay-reference/endpoint/gifs",
               "relay-reference/endpoint/like",
               "relay-reference/endpoint/comments",
               "relay-reference/endpoint/comment-create",
