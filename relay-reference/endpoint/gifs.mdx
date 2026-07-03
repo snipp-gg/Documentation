@@ -3,13 +3,15 @@ title: "List Public GIFs"
 openapi: "GET /gifs"
 ---
 
-Browse public GIFs across Snipp, newest first, like a public GIF feed. Defaults to 30. Pass `?limit=N` (max 50) and `?offset=N` to page.
+Browse public GIFs across Snipp, newest first, like a public GIF feed. Defaults to 30. Pass `?limit=N` (max 50) and `?offset=N` to page. Pass `?search=kitty cat` to match word prefixes in the title or description.
 
 ## Behavior
 
 - No authentication required. Rate limited per IP.
 - Only posts whose first file is a `.gif` are returned.
 - Returns public posts only. Unlisted, private, draft, moderated, and team posts are excluded, as are posts from suspended accounts.
+- `?search` matches word prefixes (case-insensitive) in the title or description. `kitt` matches "kitty" and "kitten" but not "skittle", since it must match the start of a word.
+- Multiple words are combined with AND, order independent. `kit cat` matches a post whose title or description has a word starting with "kit" and a word starting with "cat", anywhere. Up to 6 words are used.
 - `thumbnailUrl` is only present when the post has a thumbnail.
 - `title` and `description` are `null` when none is set.
 - `hasMore` is `true` when another page is likely available. Page with `offset`.
@@ -18,6 +20,10 @@ Browse public GIFs across Snipp, newest first, like a public GIF feed. Defaults 
 
 ```bash
 curl -X GET "https://relay.snipp.gg/gifs?limit=50&offset=0"
+```
+
+```bash
+curl -X GET "https://relay.snipp.gg/gifs?search=kitty"
 ```
 
 ## Responses

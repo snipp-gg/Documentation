@@ -453,7 +453,7 @@
     "/gifs": {
       "get": {
         "summary": "List Public GIFs",
-        "description": "List public GIFs across Snipp, newest first, like a public GIF feed. No authentication required. Defaults to 30. Pass `?limit=N` (max 50) and `?offset=N` to page.",
+        "description": "List public GIFs across Snipp, newest first, like a public GIF feed. No authentication required. Defaults to 30. Pass `?limit=N` (max 50) and `?offset=N` to page. Pass `?search=kitty cat` to match word prefixes in the title or description; multiple words are combined with AND, order independent.",
         "operationId": "listGifs",
         "security": [],
         "parameters": [
@@ -476,6 +476,15 @@
             "schema": {
               "type": "integer",
               "minimum": 0
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Filter to GIFs whose title or description has words starting with these terms (case-insensitive prefix match). Multiple space-separated words are combined with AND, order independent. Up to 6 words are used.",
+            "schema": {
+              "type": "string"
             }
           }
         ],
