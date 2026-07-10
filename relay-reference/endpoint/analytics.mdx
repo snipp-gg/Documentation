@@ -13,7 +13,7 @@ Fetch your own analytics: posts, uploads, data uploaded, comments received, like
 - `series` arrays have one entry per day across the window, oldest first, including days with no activity (value `0`).
 - `totals` are lifetime. `totals.views` is the sum of views across all your posts.
 - `deltas.change` is the fractional change against the preceding window of equal length, or `null` when that window was zero.
-- `payout` is the creator payout estimate for the current calendar month, for partners only. `payout.eligible` is `false` for non-partners; when `true`, `payout.payout` is the estimated dollar share and `payout.series` is the daily score for the month. The estimate is live and may change as engagement changes through the month.
+- `payout` is the creator payout estimate for the current biweekly payout period, for monetized creators only. `payout.eligible` is `false` for non-monetized accounts; when `true`, `payout.payout` is the estimated dollar share and `payout.series` is the daily score for the period. The estimate is live and may change as engagement changes through the period.
 - All dates are UTC.
 
 ## Examples

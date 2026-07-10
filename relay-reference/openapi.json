@@ -109,7 +109,7 @@
                           "usage": {
                             "used": 1073741824,
                             "limit": 21474836480,
-                            "usedPercent": 0.05,
+                            "usedPercent": 5,
                             "windowStart": "2026-05-01T00:00:00.000Z",
                             "windowEnd": "2026-05-08T00:00:00.000Z",
                             "resetsInSeconds": 172800
@@ -3828,19 +3828,19 @@
                     },
                     "payout": {
                       "type": "object",
-                      "description": "Creator payout estimate for the current calendar month, partners only.",
+                      "description": "Creator payout estimate for the current biweekly payout period, monetized creators only.",
                       "properties": {
                         "eligible": {
                           "type": "boolean",
-                          "description": "`true` only for partners. `false` otherwise, with no other payout fields."
+                          "description": "`true` only for monetized creators. `false` otherwise, with no other payout fields."
                         },
                         "payout": {
                           "type": "number",
-                          "description": "Estimated dollar share of the creator pool this month. Live estimate, may change as engagement changes."
+                          "description": "Estimated dollar share of the creator pool this period. Live estimate, may change as engagement changes."
                         },
                         "series": {
                           "type": "array",
-                          "description": "Daily payout score for the current month, oldest first.",
+                          "description": "Daily payout score for the current payout period, oldest first.",
                           "items": {
                             "type": "object",
                             "properties": {
@@ -4395,7 +4395,7 @@
               },
               "usedPercent": {
                 "type": "number",
-                "description": "Fraction of the window used, `used` over `limit`."
+                "description": "Percentage of the window quota used, rounded to the nearest integer (0-100+; can exceed 100 when over quota)."
               },
               "windowStart": {
                 "type": [

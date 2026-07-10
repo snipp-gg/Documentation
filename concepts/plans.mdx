@@ -49,7 +49,7 @@ A video's **duration** counts against the budget, not its file size. Only videos
 
 The priority-minutes budget uses a rolling 30-day window: it is anchored to first use and fully resets after 30 days.
 
-When your monthly budget runs out, videos still upload and play normally. They simply fall back to standard quality instead of priority streaming, with no block or error. The only exception is the Discord bot, which rejects videos that would exceed your remaining budget, because it relies on streaming to generate thumbnails.
+When your monthly budget runs out, videos still upload and play normally. They simply fall back to standard quality instead of priority streaming, with no block or error.
 
 ## Checking Your Plan
 
@@ -101,13 +101,13 @@ Call `GET /users/@me` to see your current plan status and weekly storage usage. 
 
 ## Teams
 
-Enterprise accounts can create **Teams** — shared workspaces with their own gallery, upload quota, and access key.
+Enterprise accounts can create **Teams**: shared workspaces with their own gallery, upload quota, and access key.
 
 - An Enterprise user can create up to **3 teams**.
 - Each team holds up to **100 members**, including the owner.
 - Only **Enterprise** users can create or join a team.
 - Each team has its own 7-day **50 GB** quota, separate from any member's personal quota. It follows the same fixed-window model: anchored to the team's first upload and fully reset after 7 days. Uploads to a team never count against a member's personal limit.
-- Team posts can be **unlisted** or **private** only — they never appear on Discover, and have no likes or views.
+- Team posts can be **unlisted** or **private** only. They never appear on Discover, and have no likes or views.
 - Only members of a team can view or comment on that team's posts.
 
 Each team has a single **access key**. Anyone holding it can upload to the team gallery; only the team owner can regenerate or delete it. See [Team Access Keys](/authentication#team-access-keys).

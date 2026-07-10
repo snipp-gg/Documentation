@@ -59,6 +59,10 @@ A missing, empty, or unrecognized relay key returns `401`.
 | `GET` | `/blocks` | List your blocked users. |
 | `POST` | `/block` | Block a user by ID. |
 | `POST` | `/unblock` | Unblock a user by ID. |
+| `POST` | `/follow` | Follow a user by ID. |
+| `POST` | `/unfollow` | Unfollow a user, or remove one of your own followers. |
+| `GET` | `/followers` | List the users following a profile. |
+| `GET` | `/following` | List the users a profile is following. |
 | `POST` | `/like` | Like or unlike a post. |
 | `GET` | `/comments` | List comments on a post. |
 | `POST` | `/comment` | Create a comment on a post. |
@@ -68,6 +72,10 @@ A missing, empty, or unrecognized relay key returns `401`.
 | `PATCH` | `/profile` | Update profile fields. |
 | `POST` | `/profile/avatar` | Upload a new avatar. |
 | `POST` | `/profile/banner` | Upload a new banner. |
+| `PATCH` | `/theme` | Set your account color theme. Plus only. |
+| `GET` | `/gifs` | Browse public GIFs across Snipp, newest first. No auth required. |
+| `GET` | `/usage-history` | Fetch your daily upload activity for the last 365 days. |
+| `GET` | `/analytics` | Fetch your analytics over time plus lifetime totals. Plus only. |
 | `GET` | `/region` | Return the region serving the request. No auth required. |
 
 ## View Counting
