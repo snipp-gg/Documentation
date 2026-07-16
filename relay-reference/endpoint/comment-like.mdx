@@ -1,0 +1,32 @@
+---
+title: "Like Comment"
+openapi: "POST /comment-like"
+---
+
+Like a comment. Calling it twice removes the like.
+
+## Behavior
+
+- Likes are blocked on comments belonging to moderated posts, and on private posts you do not own.
+- You cannot like a comment whose author has blocked you.
+- The comment author gets a notification, unless they have turned off like notifications.
+
+## Examples
+
+```bash
+curl -X POST "https://relay.snipp.gg/comment-like" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"commentId": "00000000-0000-4000-8000-000000000000"}'
+```
+
+## Responses
+
+`liked` reflects the state after the call. Calling the endpoint again toggles it back.
+
+```json
+{
+  "liked": true,
+  "likes": 4
+}
+```

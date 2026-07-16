@@ -1,0 +1,45 @@
+---
+title: "Notification Preferences"
+openapi: "POST /notification-prefs"
+---
+
+Read and update which notifications and emails you receive. `GET` returns the current values, `POST` updates them.
+
+## Behavior
+
+- Send only the keys you want to change. Anything you leave out keeps its current value.
+- `notifications.likes` covers both post likes and comment likes.
+- Some notifications cannot be turned off and are not listed here: post removals, post restrictions, and account changes. The same applies to security and transactional emails such as login links, email changes, moderation notices and suspensions.
+- `emails.payouts` (creator payout and referral emails) is on by default.
+
+## Examples
+
+```bash
+curl -X GET "https://relay.snipp.gg/notification-prefs" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+```bash
+curl -X POST "https://relay.snipp.gg/notification-prefs" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"notifications": {"likes": false}, "emails": {"payouts": false}}'
+```
+
+## Responses
+
+Both methods return the full set of preferences after the call.
+
+```json
+{
+  "notifications": {
+    "follows": true,
+    "likes": false,
+    "comments": true,
+    "payouts": true
+  },
+  "emails": {
+    "payouts": true
+  }
+}
+```

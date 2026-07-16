@@ -1,0 +1,25 @@
+---
+title: "Unread Count"
+openapi: "GET /notifications/unread"
+---
+
+Number of unread notifications, for a badge.
+
+## Behavior
+
+- Counts raw notifications, not the aggregated groups returned by [List Notifications](/relay-reference/endpoint/notifications). Three people liking the same post count as three unread, but render as one entry.
+
+## Examples
+
+```bash
+curl -X GET "https://relay.snipp.gg/notifications/unread" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "unread": 4
+}
+```

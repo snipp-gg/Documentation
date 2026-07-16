@@ -158,6 +158,7 @@
               "relay-reference/endpoint/comments",
               "relay-reference/endpoint/comment-create",
               "relay-reference/endpoint/comment-delete",
+              "relay-reference/endpoint/comment-like",
               "relay-reference/endpoint/report-post"
             ]
           },
@@ -179,6 +180,15 @@
               "relay-reference/endpoint/usage-history",
               "relay-reference/endpoint/analytics",
               "relay-reference/endpoint/report-user"
+            ]
+          },
+          {
+            "group": "Notifications",
+            "pages": [
+              "relay-reference/endpoint/notifications",
+              "relay-reference/endpoint/notifications-unread",
+              "relay-reference/endpoint/notifications-read",
+              "relay-reference/endpoint/notification-prefs"
             ]
           },
           {

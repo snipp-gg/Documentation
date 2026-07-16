@@ -2337,6 +2337,14 @@
                           },
                           "plus": {
                             "type": "boolean"
+                          },
+                          "likes": {
+                            "type": "integer",
+                            "description": "Number of likes on the comment"
+                          },
+                          "liked": {
+                            "type": "boolean",
+                            "description": "Whether the authenticated user has liked the comment"
                           }
                         }
                       }
@@ -4059,6 +4067,302 @@
           }
         }
       }
+    },
+    "/notifications": {
+      "get": {
+        "summary": "List Notifications",
+        "description": "List your notifications, newest first. Likes, comment likes and follows are aggregated into groups.",
+        "operationId": "listNotifications",
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "social",
+                "system"
+              ]
+            },
+            "description": "Filter by category. `social` is follows, likes, comment likes and comments; `system` is everything else."
+          },
+          {
+            "name": "before",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Cursor. Pass the `createdAt` of the last entry you received to fetch the next page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notification list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "notifications": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Notification"
+                      }
+                    },
+                    "hasMore": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/unread": {
+      "get": {
+        "summary": "Unread Count",
+        "description": "Number of unread notifications. Cheap enough to poll for a badge.",
+        "operationId": "getUnreadNotificationCount",
+        "responses": {
+          "200": {
+            "description": "Unread count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "unread": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/read": {
+      "post": {
+        "summary": "Mark Notifications Read",
+        "description": "Mark every unread notification as read.",
+        "operationId": "markNotificationsRead",
+        "responses": {
+          "200": {
+            "description": "Notifications marked read",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "read": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notification-prefs": {
+      "get": {
+        "summary": "Get Notification Preferences",
+        "description": "Read your notification and email preferences.",
+        "operationId": "getNotificationPrefs",
+        "responses": {
+          "200": {
+            "description": "Current preferences",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationPrefs"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Update Notification Preferences",
+        "description": "Update notification and email preferences. Send only the keys you want to change; the rest keep their current value.",
+        "operationId": "updateNotificationPrefs",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationPrefs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated preferences",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationPrefs"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comment-like": {
+      "post": {
+        "summary": "Like Comment",
+        "description": "Like a comment. Calling it twice removes the like.",
+        "operationId": "toggleCommentLike",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "commentId": {
+                    "type": "string",
+                    "description": "The ID of the comment"
+                  }
+                },
+                "required": [
+                  "commentId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Like state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "liked": {
+                      "type": "boolean"
+                    },
+                    "likes": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid comment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Cannot like (suspended, moderated post, or blocked by the comment author)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Comment or post not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -4516,6 +4820,129 @@
           },
           "isYou": {
             "type": "boolean"
+          }
+        }
+      },
+      "NotificationActor": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "nickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "verified": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Notification": {
+        "type": "object",
+        "description": "A notification group. Likes, comment likes and follows are aggregated, so one entry can represent several underlying events.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID of the most recent notification in the group"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "follow",
+              "like",
+              "comment",
+              "comment_like",
+              "mention",
+              "post_moderated",
+              "post_restricted",
+              "monetized",
+              "demonetized",
+              "payout_sent",
+              "payout_failed"
+            ]
+          },
+          "postCode": {
+            "type": "string",
+            "nullable": true,
+            "description": "Share code of the related post"
+          },
+          "body": {
+            "type": "string",
+            "nullable": true,
+            "description": "Comment excerpt, or the payout amount for payout notifications"
+          },
+          "read": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of the most recent event in the group"
+          },
+          "actors": {
+            "type": "array",
+            "description": "Users behind the notification, newest first. Capped at 10 even when actorCount is higher.",
+            "items": {
+              "$ref": "#/components/schemas/NotificationActor"
+            }
+          },
+          "actorCount": {
+            "type": "integer",
+            "description": "Total number of distinct users in the group"
+          },
+          "postCount": {
+            "type": "integer",
+            "description": "Number of posts covered by the group (a single user liking several of your posts collapses into one entry)"
+          },
+          "postThumb": {
+            "type": "string",
+            "nullable": true,
+            "description": "Thumbnail of the related post. Null for videos without a thumbnail and for moderated posts."
+          },
+          "postText": {
+            "type": "string",
+            "nullable": true,
+            "description": "Text of the related post (title, falling back to description). Null for moderated posts and posts with no text."
+          }
+        }
+      },
+      "NotificationPrefs": {
+        "type": "object",
+        "properties": {
+          "notifications": {
+            "type": "object",
+            "description": "In-app notification toggles. Moderation and account notifications cannot be disabled and are not listed here.",
+            "properties": {
+              "follows": {
+                "type": "boolean"
+              },
+              "likes": {
+                "type": "boolean",
+                "description": "Covers both post likes and comment likes"
+              },
+              "comments": {
+                "type": "boolean"
+              },
+              "payouts": {
+                "type": "boolean"
+              }
+            }
+          },
+          "emails": {
+            "type": "object",
+            "description": "Email toggles. Security, moderation and transactional emails cannot be disabled and are not listed here.",
+            "properties": {
+              "payouts": {
+                "type": "boolean",
+                "description": "Creator payout and referral emails. On by default."
+              }
+            }
           }
         }
       }

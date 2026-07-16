@@ -8,6 +8,7 @@ List comments on a post. Pass `shareCode` as a query parameter or `code` as a he
 ## Behavior
 
 - Returns each comment with the author's username, nickname, avatar, verified flag, and PLUS flag.
+- `likes` is the total like count on the comment, and `liked` is whether you have liked it. Use [Like Comment](/relay-reference/endpoint/comment-like) to toggle.
 - Comments from suspended users and from users you have blocked are filtered out.
 - Private posts and moderated posts are visible only to the owner.
 
@@ -32,7 +33,9 @@ curl -X GET "https://relay.snipp.gg/comments?shareCode=AbCd1234" \
       "nickname": "Player One",
       "avatar": "https://i.snipp.gg/avatars/123456789012345678/avatar.png",
       "isVerified": false,
-      "plus": true
+      "plus": true,
+      "likes": 3,
+      "liked": false
     }
   ]
 }

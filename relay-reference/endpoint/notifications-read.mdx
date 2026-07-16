@@ -1,0 +1,26 @@
+---
+title: "Mark Notifications Read"
+openapi: "POST /notifications/read"
+---
+
+Mark every unread notification as read.
+
+## Behavior
+
+- Marks all unread notifications at once. There is no way to mark a single one.
+- Read notifications stay in the list until you clear them, they just no longer count toward the unread badge.
+
+## Examples
+
+```bash
+curl -X POST "https://relay.snipp.gg/notifications/read" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "read": true
+}
+```

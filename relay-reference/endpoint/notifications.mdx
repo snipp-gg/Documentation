@@ -1,0 +1,67 @@
+---
+title: "List Notifications"
+openapi: "GET /notifications"
+---
+
+List your notifications, newest first.
+
+## Behavior
+
+- Likes, comment likes and follows are **aggregated**. One entry can stand for several events, so read `actorCount` and `postCount` rather than assuming one entry means one person.
+  - Likes on the same post group together: `actorCount` is how many people liked it.
+  - A single person liking several of your posts groups together: `postCount` is how many posts.
+  - Comment likes group by comment. Comments never group, since each carries its own text.
+- `actors` is capped at 10 even when `actorCount` is higher. It is enough to render an avatar row.
+- Grouping is applied per page, so an aggregated entry only covers events within the same page of results.
+- `mention` notifications fire when someone @-mentions you in a post description or a comment. They are always delivered and cannot be turned off. `body` holds the text the mention appeared in.
+- `body` carries the comment excerpt for comment, comment-like, and mention notifications, and the payout amount for payout notifications. Do not render it as an excerpt without checking `type` first.
+- `postText` is the related post's text (its title, falling back to its description). Use it as the excerpt for post likes, the way `body` is used for comments.
+- `postThumb` is null for videos with no thumbnail and for posts that have been moderated.
+
+## Pagination
+
+Pass the `createdAt` of the last entry you received as `before` to fetch the next page. Keep going while `hasMore` is true.
+
+## Examples
+
+```bash
+curl -X GET "https://relay.snipp.gg/notifications?tab=social" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+```bash
+curl -X GET "https://relay.snipp.gg/notifications?before=2026-07-13T10:00:00Z" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "notifications": [
+    {
+      "id": "00000000-0000-4000-8000-000000000000",
+      "type": "like",
+      "postCode": "AbCd1234",
+      "body": null,
+      "read": false,
+      "createdAt": "2026-07-13T10:00:00Z",
+      "actors": [
+        {
+          "username": "playerone",
+          "nickname": "Player One",
+          "avatar": "https://i.snipp.gg/avatars/123456789012345678/avatar.png",
+          "verified": false
+        }
+      ],
+      "actorCount": 3,
+      "postCount": 1,
+      "postThumb": "https://i.snipp.gg/123456789012345678/thumb/clip.jpg",
+      "postText": "clutch 1v3 on dust2"
+    }
+  ],
+  "hasMore": false
+}
+```
+
+The entry above means "Player One and 2 others liked your post".

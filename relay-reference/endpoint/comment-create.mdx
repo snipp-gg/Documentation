@@ -10,6 +10,7 @@ Add a comment to a post.
 - Comments are limited to **200 characters**.
 - A post holds up to **500 comments**.
 - Commenting is blocked on moderated posts and on private posts you do not own.
+- Any `@username` in the comment sends that user a mention notification.
 
 ## Examples
 
@@ -35,7 +36,9 @@ Returns the created comment plus the post's full updated comment list.
     "nickname": "Player One",
     "avatar": "https://i.snipp.gg/avatars/123456789012345678/avatar.png",
     "isVerified": false,
-    "plus": true
+    "plus": true,
+    "likes": 0,
+    "liked": false
   },
   "comments": [
     {
@@ -47,7 +50,9 @@ Returns the created comment plus the post's full updated comment list.
       "nickname": "Player One",
       "avatar": "https://i.snipp.gg/avatars/123456789012345678/avatar.png",
       "isVerified": false,
-      "plus": true
+      "plus": true,
+      "likes": 0,
+      "liked": false
     }
   ]
 }

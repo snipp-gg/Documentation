@@ -5,7 +5,7 @@ description: "Base URL, authentication, endpoints, and behavior for the Snipp Re
 
 ## Overview
 
-Relay is the Snipp API geared toward the full user experience. It mirrors the public API for uploads and posts, and adds the discover feed, likes, comments, blocking, profile editing, avatar and banner uploads, and view counting.
+Relay is the Snipp API geared toward the full user experience. It mirrors the public API for uploads and posts, and adds the discover feed, likes, comments, notifications, blocking, profile editing, avatar and banner uploads, and view counting.
 
 Relay is intended for first-party clients (for example, the Snipp mobile app). For third-party integrations and SDKs, use the [public API](/api-reference/introduction) at `api.snipp.gg`.
 
@@ -67,6 +67,12 @@ A missing, empty, or unrecognized relay key returns `401`.
 | `GET` | `/comments` | List comments on a post. |
 | `POST` | `/comment` | Create a comment on a post. |
 | `DELETE` | `/comment` | Delete a comment. |
+| `POST` | `/comment-like` | Like or unlike a comment. |
+| `GET` | `/notifications` | List your notifications, newest first. |
+| `GET` | `/notifications/unread` | Number of unread notifications. |
+| `POST` | `/notifications/read` | Mark every notification as read. |
+| `GET` | `/notification-prefs` | Read your notification and email preferences. |
+| `POST` | `/notification-prefs` | Update your notification and email preferences. |
 | `POST` | `/report-post` | Report a post. |
 | `POST` | `/report-user` | Report a user. |
 | `PATCH` | `/profile` | Update profile fields. |
