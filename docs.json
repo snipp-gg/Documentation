@@ -202,8 +202,8 @@
     ]
   },
   "logo": {
-    "light": "https://cdn.snipp.gg/logo_dark.png",
-    "dark": "https://cdn.snipp.gg/logo_light.png"
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
   },
   "navbar": {
     "links": [],
@@ -229,7 +229,7 @@
     "socials": {
       "discord": "https://snipp.gg/discord",
       "github": "https://snipp.gg/github",
-      "x": "https://x.com/SnippGG"
+      "x": "https://snipp.gg/x"
     }
   }
 }
