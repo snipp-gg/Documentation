@@ -57,6 +57,7 @@ The bot enforces the same per-file and weekly-usage caps as the API. Uploads cou
 A few bot-specific notes:
 
 - Videos are not supported through the bot. Upload videos via the website or API.
+- PNG uploads have their metadata stripped, matching the platform default. JPEG and WebP metadata is currently preserved on bot uploads.
 - Allowed types: `.png`, `.jpg`, `.jpeg`, `.webp`, `.gif`.
 - Discord caps attachments at 10 MB for free users and higher for Nitro. Larger files must be uploaded via the website or API.
 - The 8-uploads-per-second abuse guard from the API also applies to the bot.

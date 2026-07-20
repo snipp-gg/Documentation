@@ -26,6 +26,7 @@ Upload between 1 and 9 files in a single request. Every upload automatically cre
 - **Video uploads:** `.mp4`, `.mov`, and `.mkv` files are remuxed to MP4 with `+faststart` so the browser can begin playback before the full file has downloaded. `.mov` and `.mkv` uploads are stored (and returned) with an `.mp4` extension. If remuxing fails, the original file is stored unchanged. See [File Types](/concepts/file-types) for details.
 - **Metadata:** Metadata (camera, GPS location, timestamp) is stripped by default. For images, EXIF is removed from PNG, JPG, and WebP up to 100 MB (larger images are stored unchanged). For videos, container metadata is removed during the MP4 remux. Send `include-metadata: true` to keep it.
 - **Priority streaming:** Eligible videos are streamed with adaptive bitrate by default, spending [priority minutes](/concepts/plans). Send `priority: false` to upload in standard quality instead and save your minutes. The post's `priority` field reflects whether the video ended up on adaptive streaming.
+- **Failures:** when every file in the request fails, the response is `400`. For a single-file upload the reason is returned directly as `error` (for example `Weekly usage limit exceeded.`). For multi-file uploads the response is `All files failed to upload.` with a `failed` array naming each file by `index`.
 
 ## Examples
 

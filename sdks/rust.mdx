@@ -16,7 +16,7 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-snipp = "1"
+snipp = "2"
 tokio = { version = "1", features = ["full"] }
 ```
 
@@ -128,9 +128,17 @@ Delete an upload by its filename. On albums, only that file is removed; on singl
 client.delete_upload("a3f7b2c91d4e8f0612ab34cd56ef7890.png").await?;
 ```
 
+### `report_post(code, reason)`
+
+Report a post. Pass an empty string to omit the reason (max 200 chars).
+
+```rust
+client.report_post("AbC123", "Spam").await?;
+```
+
 ## Error Handling
 
-All errors are returned as `SnippError`, which covers API errors, HTTP errors, deserialization failures, and IO errors.
+All errors are returned as `SnippError`, which covers API errors, HTTP errors, local input validation, deserialization failures, and IO errors.
 
 ```rust
 match client.get_user("nonexistent", None).await {

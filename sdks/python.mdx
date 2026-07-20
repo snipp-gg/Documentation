@@ -4,7 +4,7 @@ description: "Official Python wrapper for the Snipp API."
 ---
 
 <Card horizontal icon="github" href="https://github.com/snipp-gg/snipp-py">
-  snipp-gg/snipp
+  snipp-gg/snipp-py
 </Card>
 <Card horizontal icon="python" href="https://pypi.org/project/snipp">
   snipp
@@ -58,14 +58,14 @@ post = client.get_post("AbCd1234")
 print(post["post"]["url"])
 ```
 
-### `upload(file, privacy="unlisted", title=None, description=None, post_type=None)`
+### `upload(file, privacy=None, title=None, description=None, post_type=None)`
 
 Upload a file. Accepts a file path string, bytes, or a file-like object.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `file` | `str \| bytes \| BinaryIO` | File path, raw bytes, or file object. |
-| `privacy` | `str` | `"public"`, `"unlisted"`, or `"private"`. |
+| `privacy` | `str \| None` | `"public"`, `"unlisted"`, or `"private"`. Defaults to `private` when omitted. |
 | `title` | `str \| None` | Optional post title (max 30 chars). |
 | `description` | `str \| None` | Optional post description (max 200 chars). |
 | `post_type` | `str \| None` | `"album"` (default) or `"individual"`. Only applies when uploading two or more files. |
@@ -122,6 +122,14 @@ Delete an upload by its filename. On albums, only that file is removed; on singl
 
 ```python
 client.delete_upload("a3f7b2c91d4e8f0612ab34cd56ef7890.png")
+```
+
+### `report_post(code, reason="")`
+
+Report a post, with an optional reason (max 200 chars).
+
+```python
+client.report_post("AbC123", "Spam")
 ```
 
 ## Error Handling

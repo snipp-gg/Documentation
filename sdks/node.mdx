@@ -129,6 +129,14 @@ Delete an upload by its filename. On albums, only that file is removed; on singl
 await client.deleteUpload("a3f7b2c91d4e8f0612ab34cd56ef7890.png");
 ```
 
+### `reportPost(code, reason?)`
+
+Report a post, with an optional reason (max 200 chars).
+
+```javascript
+await client.reportPost("AbC123", "Spam");
+```
+
 ## Error Handling
 
 All API errors throw a `SnippError` with `status` and `message` properties.

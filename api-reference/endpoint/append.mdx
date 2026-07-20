@@ -24,6 +24,7 @@ Add one or more files to an existing album post. Use this to grow a post's file 
 - Metadata (EXIF on images, container metadata on videos) is stripped by default. Send `include-metadata: true` to keep it.
 - Appended videos use priority (adaptive) streaming by default, spending [priority minutes](/concepts/plans). Send `priority: false` to add them in standard quality instead. The post's `priority` field is `true` when any file in the album is on adaptive streaming.
 - Each new file is auto-moderated. If any file (or the post's title or description) is flagged, the entire post, including existing files, is quarantined and marked `moderated`.
+- **Failures:** when every file in the request fails, the response is `400`. For a single-file upload the reason is returned directly as `error` (for example `Weekly usage limit exceeded.`). For multi-file uploads the response is `All files failed to upload.` with a `failed` array naming each file by `index`.
 
 ## Examples
 
@@ -80,7 +81,7 @@ If some files fail, a `failed` array is included alongside `files`:
   "failed": [
     {
       "index": 4,
-      "error": "Album cap of 9 files exceeded",
+      "error": "Failed to process file.",
       "status": "failed"
     }
   ]

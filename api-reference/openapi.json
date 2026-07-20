@@ -148,6 +148,7 @@
                           "translator": false,
                           "plus": true
                         },
+                        "blockedByYou": false,
                         "publicUploads": [
                           {
                             "url": "https://i.snipp.gg/987654321098765432/example",

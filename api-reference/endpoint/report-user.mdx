@@ -45,7 +45,7 @@ Submit a report for a user using their ID. An optional reason can be provided to
 | `400` | Reason too long | `reason` exceeds 200 characters |
 | `403` | User is already suspended | The user has already been actioned by moderators |
 | `403` | You cannot report yourself | `targetUserId` is your own ID |
-| `403` | User has blocked you | The reported user has blocked you |
+| `403` | You cannot report this user | A block exists between you and the reported user |
 | `404` | User not found | The user does not exist |
 | `429` | Rate limit exceeded | Too many requests |
 
