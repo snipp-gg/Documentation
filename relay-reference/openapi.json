@@ -2826,11 +2826,6 @@
                     "minLength": 4,
                     "maxLength": 15
                   },
-                  "email": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "description": "Cannot be removed. A confirmation link is sent to the new address and the change only applies once it is opened."
-                  },
                   "socials": {
                     "type": "object",
                     "additionalProperties": true,

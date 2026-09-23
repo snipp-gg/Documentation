@@ -10,7 +10,7 @@ Update your profile fields. Send only the fields you want to change.
 - `bio` is capped at 200 characters.
 - `nickname` is capped at 15 characters.
 - `username` must be 4-15 characters, letters, numbers, and underscores only.
-- `email` must be a valid email and at most 50 characters. It cannot be removed, so sending `null` or an empty string is rejected. A new address does not take effect right away: a confirmation link is sent to it and the address only changes once that link is opened.
+- `email` is not accepted here. Change it on the website.
 - `socials` is an object keyed by `roblox`, `github`, `spotify`, `youtube`, `tiktok`, `X`, `bluesky`, `discord`. Each value must be a URL on the platform's domain.
 - `avatar` and `banner` only accept URLs that point to your own `avatars/{userId}/` or `banners/{userId}/` prefix on the Snipp CDN. Use [`/profile/avatar`](/relay-reference/endpoint/avatar) or [`/profile/banner`](/relay-reference/endpoint/banner) to upload first.
 - `customEmbed` is PLUS-only. Object fields:
@@ -30,12 +30,11 @@ curl -X PATCH "https://relay.snipp.gg/profile" \
 
 ## Responses
 
-Only the fields you sent are echoed back alongside the confirmation message. `email` is never echoed back; `emailChangePending` tells you whether a confirmation link was sent.
+Only the fields you sent are echoed back alongside the confirmation message.
 
 ```json
 {
   "message": "Profile updated successfully!",
-  "emailChangePending": false,
   "bio": "Building things at Snipp",
   "nickname": "Snipp"
 }
