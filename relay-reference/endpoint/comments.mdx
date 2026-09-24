@@ -10,7 +10,7 @@ List comments on a post. Pass `shareCode` as a query parameter or `code` as a he
 - Returns each comment with the author's username, nickname, avatar, verified flag, and PLUS flag.
 - `likes` is the total like count on the comment, and `liked` is whether you have liked it. Use [Like Comment](/relay-reference/endpoint/comment-like) to toggle.
 - Comments from suspended users and from users you have blocked are filtered out.
-- Private posts and moderated posts are visible only to the owner.
+- Private posts, drafts, and moderated posts are visible only to the owner, and team posts only to members of that team. Anyone else gets a `404`.
 
 ## Examples
 

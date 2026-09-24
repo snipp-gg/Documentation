@@ -10,6 +10,7 @@ Unfollow a user, or remove one of your own followers.
 - Pass `targetId` to stop following that user.
 - Pass `removeFollower` to remove that user from your own followers list. They will need to follow you again to see your posts in their feed.
 - Exactly one of `targetId` or `removeFollower` must be provided. If both are present, `removeFollower` takes precedence.
+- The ID must be numeric. A missing or non-numeric ID returns `400`.
 - Unfollowing a user who is not followed succeeds without error.
 
 ## Examples

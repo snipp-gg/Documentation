@@ -16,7 +16,8 @@ List your notifications, newest first.
 - `mention` notifications fire when someone @-mentions you in a post description or a comment. They are always delivered and cannot be turned off. `body` holds the text the mention appeared in.
 - `body` carries the comment excerpt for comment, comment-like, and mention notifications, and the payout amount for payout notifications. Do not render it as an excerpt without checking `type` first.
 - `postText` is the related post's text (its title, falling back to its description). Use it as the excerpt for post likes, the way `body` is used for comments.
-- `postThumb` is null for videos with no thumbnail and for posts that have been moderated.
+- `postThumb` is null for videos with no thumbnail. `postThumb` and `postText` are both null for posts that have been moderated.
+- If the related post is no longer visible to you (it was made private, is a draft, or belongs to a team you are not in), `postThumb`, `postText` and `body` are all null. `body` is also null when every actor on the entry has been suspended.
 
 ## Pagination
 

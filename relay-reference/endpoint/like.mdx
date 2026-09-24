@@ -7,7 +7,7 @@ Like a post. Calling it twice removes the like.
 
 ## Behavior
 
-- Likes are blocked on moderated posts and on private posts you do not own.
+- Likes are blocked on moderated posts with `403`. Private posts you do not own, drafts, and posts by a suspended user return `404`.
 - Team posts cannot be liked. Members get a `403`; everyone else gets a `404`.
 
 ## Examples

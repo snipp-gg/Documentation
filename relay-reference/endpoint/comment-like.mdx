@@ -7,7 +7,7 @@ Like a comment. Calling it twice removes the like.
 
 ## Behavior
 
-- Likes are blocked on comments belonging to moderated posts, and on private posts you do not own.
+- Likes are blocked on comments belonging to moderated posts with `403`. Comments on private posts you do not own, drafts, and team posts you are not a member of return `404`.
 - You cannot like a comment whose author has blocked you.
 - The comment author gets a notification, unless they have turned off like notifications.
 

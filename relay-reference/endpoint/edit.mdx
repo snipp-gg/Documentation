@@ -13,6 +13,7 @@ Update an existing upload's title, description, privacy level, or priority strea
 - Send an empty string for `title` or `description` to clear the field.
 - `title` is truncated to 30 characters, `description` to 200 characters.
 - A newly added `@username` in the description sends that user a mention notification. Mentions already present before the edit are not re-notified.
+- A moderated post cannot be edited. The request returns `403`.
 - A restricted post cannot be made public. Setting `post-privacy` to `public` on a restricted post returns `403`. You can still switch it between `private` and `unlisted`.
 - `priority` is `true` or `false` and moves the post's videos on or off priority (adaptive) streaming. Turning it on with no priority minutes left returns `403`. Any other value returns `400`.
 - The response always carries `priority`, reflecting where the post's videos ended up.

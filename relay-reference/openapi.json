@@ -109,7 +109,7 @@
                         "uploads": 42,
                         "limits": {
                           "plan": "plus",
-                          "maxFileSize": null,
+                          "maxFileSize": 21474836480,
                           "usage": {
                             "used": 1073741824,
                             "limit": 21474836480,
@@ -126,7 +126,9 @@
                           "expires_at": "2026-05-08T00:00:00.000Z",
                           "cancel_at_period_end": false,
                           "gifted": false
-                        }
+                        },
+                        "followerCount": 128,
+                        "followingCount": 47
                       }
                     }
                   },
@@ -141,7 +143,7 @@
                         "nickname": "Creator",
                         "bio": "Hello world",
                         "socials": {
-                          "x": "snippgg"
+                          "X": "https://x.com/snippgg"
                         },
                         "plus": true,
                         "ultra": false,
@@ -161,6 +163,10 @@
                           "translator": false,
                           "plus": true
                         },
+                        "blockedByYou": false,
+                        "followerCount": 312,
+                        "followingCount": 58,
+                        "following": true,
                         "publicUploads": [
                           {
                             "url": "https://i.snipp.gg/987654321098765432/example",
@@ -188,6 +194,16 @@
               }
             }
           },
+          "403": {
+            "description": "The target user has blocked you, or is suspended. A suspended user's response includes `suspended: true` and their `username`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "404": {
             "description": "User not found",
             "content": {
@@ -204,7 +220,7 @@
     "/posts/{code}": {
       "get": {
         "summary": "Get Post",
-        "description": "Fetch a post by its share code. Returns the post's metadata including its direct file URL, title, description, privacy level, and creation date. Private posts are only visible to the owner.",
+        "description": "Fetch a post by its share code. Returns the post's metadata including its direct file URL, title, description, privacy level, and creation date. Private posts and drafts are only visible to the owner, and posts by a suspended user return `404` to everyone else.",
         "operationId": "getPost",
         "parameters": [
           {
@@ -446,7 +462,7 @@
             }
           },
           "403": {
-            "description": "Post has been moderated",
+            "description": "Post has been moderated, or its author has blocked you",
             "content": {
               "application/json": {
                 "schema": {
@@ -976,7 +992,7 @@
     "/convert": {
       "post": {
         "summary": "Convert a File",
-        "description": "Convert one image or video to another format and get the converted file back in the response. Nothing is stored and no upload quota is consumed. Send the file as multipart/form-data and name the target format in the `convert-target` header. Images can become png, jpeg, webp, avif or gif; GIFs can become png, jpeg, webp, avif or mp4; videos can become mp4, mp3 or gif. Video to GIF requires Snipp+. Files are capped at 50 MB on the free plan, and Snipp+ and Ultra have no per-file cap, the same as upload. Video to GIF is limited to the first 10 seconds. Metadata is stripped from every converted file.",
+        "description": "Convert one image or video to another format and get the converted file back in the response. Nothing is stored and no upload quota is consumed. Send the file as multipart/form-data and name the target format in the `convert-target` header. Images can become png, jpeg, webp, avif or gif; GIFs can become png, jpeg, webp, avif or mp4; videos can become mp4, mp3 or gif. Video to GIF requires Snipp+. Files are capped at 50 MB on the free plan, 20 GB on Snipp+, and 50 GB on Ultra and team keys. Video to GIF is limited to the first 10 seconds. Metadata is stripped from every converted file.",
         "operationId": "convertFile",
         "parameters": [
           {
@@ -1126,7 +1142,7 @@
     "/uploads": {
       "get": {
         "summary": "List Uploads",
-        "description": "List your uploads, newest first. Returns all by default. Pass `?limit=N` to cap the response (max 1000).",
+        "description": "List your personal uploads, newest first. Team posts are not included, and each file of an album is its own entry. Returns all by default. Pass `?limit=N` to cap the response (max 1000).",
         "operationId": "listUploads",
         "parameters": [
           {
@@ -1177,7 +1193,7 @@
                           },
                           "size": {
                             "type": "integer",
-                            "description": "File size in bytes"
+                            "description": "Size in bytes of the whole post. Every file of an album carries the same value."
                           },
                           "size_formatted": {
                             "type": "string",
@@ -1287,7 +1303,7 @@
             }
           },
           "403": {
-            "description": "No permission to delete uploads",
+            "description": "No permission to delete uploads, or the post is moderated",
             "content": {
               "application/json": {
                 "schema": {
@@ -1450,7 +1466,7 @@
             }
           },
           "403": {
-            "description": "Not your upload, a restricted post cannot be made public, or no priority minutes remain.",
+            "description": "Not your upload, the post is moderated, a restricted post cannot be made public, or no priority minutes remain.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2235,7 +2251,7 @@
             }
           },
           "400": {
-            "description": "Missing targetId and removeFollower",
+            "description": "Missing or non-numeric targetId and removeFollower",
             "content": {
               "application/json": {
                 "schema": {
@@ -3221,7 +3237,7 @@
     "/report-post": {
       "post": {
         "summary": "Report Post",
-        "description": "Report a post for violating community guidelines. The post must not be private or a draft, and not your own. Reports are reviewed by the moderation team.",
+        "description": "Report a post for violating community guidelines. The post must not be private, a draft, or a team post, and not your own. Reports are reviewed by the moderation team.",
         "operationId": "reportPost",
         "requestBody": {
           "required": true,
@@ -3284,7 +3300,7 @@
             }
           },
           "403": {
-            "description": "Post already moderated, reporting own post, or author has blocked you",
+            "description": "Account suspended, post already moderated, reporting own post, or author has blocked you",
             "content": {
               "application/json": {
                 "schema": {
@@ -3294,7 +3310,7 @@
             }
           },
           "404": {
-            "description": "Post not found or private",
+            "description": "Post not found, private, a draft, or a team post",
             "content": {
               "application/json": {
                 "schema": {
@@ -3382,7 +3398,7 @@
             }
           },
           "403": {
-            "description": "User already suspended, reporting yourself, or the user has blocked you",
+            "description": "Account suspended, user already suspended, reporting yourself, or the user has blocked you",
             "content": {
               "application/json": {
                 "schema": {
@@ -3480,7 +3496,7 @@
             }
           },
           "403": {
-            "description": "Reporting your own comment, moderated post, or blocked by the comment author",
+            "description": "Account suspended, reporting your own comment, moderated post, or blocked by the comment author",
             "content": {
               "application/json": {
                 "schema": {
@@ -5033,11 +5049,8 @@
             "description": "Active plan."
           },
           "maxFileSize": {
-            "type": [
-              "integer",
-              "null"
-            ],
-            "description": "Maximum size per file in bytes. 50 MB on free. `null` on plus and ultra (no per-file limit; only weekly quota applies)."
+            "type": "integer",
+            "description": "Maximum size per file in bytes. 50 MB on free. On Snipp+ and Ultra it equals your weekly quota (20 GB on Snipp+, 50 GB on Ultra). Videos are capped at 30 GB on every plan."
           },
           "usage": {
             "type": "object",
@@ -5230,7 +5243,7 @@
           "body": {
             "type": "string",
             "nullable": true,
-            "description": "Comment excerpt, or the payout amount for payout notifications"
+            "description": "Comment excerpt, or the payout amount for payout notifications. Null when the related post is no longer visible to you, or every actor has been suspended."
           },
           "read": {
             "type": "boolean"
@@ -5258,12 +5271,12 @@
           "postThumb": {
             "type": "string",
             "nullable": true,
-            "description": "Thumbnail of the related post. Null for videos without a thumbnail and for moderated posts."
+            "description": "Thumbnail of the related post. Null for videos without a thumbnail, for moderated posts, and for posts no longer visible to you."
           },
           "postText": {
             "type": "string",
             "nullable": true,
-            "description": "Text of the related post (title, falling back to description). Null for moderated posts and posts with no text."
+            "description": "Text of the related post (title, falling back to description). Null for moderated posts, posts no longer visible to you, and posts with no text."
           }
         }
       },

@@ -3,11 +3,12 @@ title: "List Uploads"
 openapi: "GET /uploads"
 ---
 
-Fetch your uploads. Returns all of them by default. Pass `?limit=N` to cap the response (max 1000).
+Fetch your personal uploads. Team posts are not included. Returns all of them by default. Pass `?limit=N` to cap the response (max 1000).
 
 ## Behavior
 
 - Returns uploads newest first.
+- Each file is its own entry, so an album appears once per file. `size` is the size of the whole post, not the single file.
 - Each upload includes `code` for the associated post when one exists.
 - `isAlbum` is `true` when that upload belongs to an album post.
 - `title` is the post's title, or `null` when none is set.
@@ -30,7 +31,7 @@ curl -X GET "https://relay.snipp.gg/uploads" \
     {
       "code": "AbCd1234",
       "isAlbum": true,
-      "url": "https://i.snipp.gg/364836696149458944/16483ec5681c5fc2b5cc08dd49b7dbae",
+      "url": "https://i.snipp.gg/364836696149458944/16483ec5681c5fc2b5cc08dd49b7dbae.mp4",
       "thumbnailUrl": "https://i.snipp.gg/364836696149458944/thumb/16483ec5681c5fc2b5cc08dd49b7dbae.jpg",
       "title": "Nice shot",
       "size": 2487312,

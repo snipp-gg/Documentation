@@ -20,6 +20,7 @@ Fetch either your own profile (`@me`) or another user's public profile.
 - `followerCount` and `followingCount` are always included on both `@me` and non-self profiles.
 - Non-self profiles include a `following` boolean indicating whether you (the requesting user) follow that user.
 - If the target user has blocked **you**, the endpoint returns `403` with `"You have been blocked by this user."`.
+- If the target user is suspended, the endpoint returns `403` with `suspended: true` and their `username`.
 
 ## Examples
 
@@ -62,11 +63,20 @@ curl -X GET "https://relay.snipp.gg/users/USER_ID?includePosts=true&postsLimit=1
     "created": "2026-01-04T09:30:00Z",
     "customEmbed": null,
     "theme": "pastel_blue",
+    "badges": {
+      "verified": false,
+      "staff": false,
+      "partner": false,
+      "bugHunterTier": 0,
+      "translator": false,
+      "plus": true
+    },
+    "uploads": 42,
     "apiKey": "aB3xK9mP2qR7sT1vW4yZ6cD8fG0hJ5kL",
     "relayKey": "Zy7wV4uT1sR8qP5nM2kJ9hG6fD3bC0aX",
     "limits": {
       "plan": "plus",
-      "maxFileSize": null,
+      "maxFileSize": 21474836480,
       "usage": {
         "used": 5242880,
         "limit": 21474836480,

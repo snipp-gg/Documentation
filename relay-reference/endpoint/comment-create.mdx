@@ -9,7 +9,7 @@ Add a comment to a post.
 
 - Comments are limited to **200 characters**.
 - A post holds up to **500 comments**.
-- Commenting is blocked on moderated posts and on private posts you do not own.
+- Commenting is blocked on moderated posts with `403`. Private posts you do not own, drafts, team posts you are not a member of, and posts by a suspended user return `404`.
 - Any `@username` in the comment sends that user a mention notification.
 
 ## Examples

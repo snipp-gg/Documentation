@@ -9,25 +9,25 @@ The Snipp Discord bot mirrors core upload features of the website. Once your Dis
 
 ## Linking Your Account
 
-Before using the bot, link your Discord account at [snipp.gg](https://snipp.gg/api/auth/discord). The bot looks up your Snipp profile by Discord ID. Without a linked account, every command returns a "No Snipp Account Found" prompt.
+Before using the bot, link your Discord account at [snipp.gg](https://snipp.gg/api/auth/discord). The bot looks up your Snipp profile by Discord ID. Without a linked account, `/gallery` and `/usage` return a "No Snipp Account Found" prompt, and `/upload` shows it after you submit the modal.
 
 ## Commands
 
 ### `/upload`
 
-Opens a modal where you attach one or more files, set privacy (public, unlisted, private), pick album or single mode, and optionally add a title and description.
+Opens a modal where you attach one or more files, set privacy (public, unlisted, private), pick Album or Individual mode (up to 10 files), and optionally add a title and description.
 
 Behavior matches the website:
 
 - Single file → one post.
 - Multiple files in album mode → one album post.
-- Multiple files in single mode → individual posts per file.
+- Multiple files in Individual mode → one post per file. Title and description are only applied to single-file and album posts.
 
-File-size and weekly-usage limits apply identically to API uploads. See [Plans](/concepts/plans).
+Each file is checked against your plan's per-file limit (50 MB on Free, 20 GB on PLUS, 50 GB on Ultra). A file over the limit fails with `File size exceeds 50 MB limit` on its own; the other files in the same submission still upload. Weekly usage is charged exactly as for API uploads. See [Plans](/concepts/plans).
 
 ### `/gallery`
 
-Shows your 9 most recent uploads with previews and direct share links. Private files include short-lived signed URLs so previews still render in Discord.
+Shows your 9 most recent image files with previews and their post share links. Files over 10 MB show the link without a preview. Private files include short-lived signed URLs so previews still render in Discord.
 
 ### `/usage`
 
@@ -37,21 +37,21 @@ Shows your current plan, max file size, and weekly usage with a progress bar. Th
 - Orange between 75% and 99%
 - Red at 100% or higher
 
-When the weekly cap is hit the embed shows `Weekly usage exceeded • Resets Mon 3:00 PM`. Otherwise it shows the reset time on its own.
+When the weekly cap is hit the embed shows `Weekly usage exceeded • Resets September 28, 2026 3:00 PM`. Otherwise it shows the reset time on its own. Reset times are Discord timestamps, so they render in your own timezone.
 
 Example output:
 
 ```
 Plan: PLUS
-Max File Size: Unlimited
+Max File Size: 20.00 GB
 
 Weekly Uploads: 5.00 GB / 20.00 GB
 > █████░░░░░░░░░░░░░░░ 25% used
-Resets Mon 3:00 PM
+Resets September 28, 2026 3:00 PM
 
 Monthly Priority Minutes: 35 / 300 min
 > ██░░░░░░░░░░░░░░░░░░ 12% used
-Resets Aug 22 8:30 PM
+Resets October 22, 2026 8:30 PM
 ```
 
 ## Limits and Restrictions
@@ -64,7 +64,7 @@ A few bot-specific notes:
 - PNG, JPEG, WebP and GIF uploads have their metadata stripped, matching the platform default.
 - Allowed types: `.png`, `.jpg`, `.jpeg`, `.webp`, `.gif`.
 - Discord caps attachments at 10 MB for free users and higher for Nitro. Larger files must be uploaded via the website or API.
-- The 8-uploads-per-second abuse guard from the API also applies to the bot.
+- The bot has its own abuse guard, checked per submission: more than 15 in a minute is rejected, and more than 8 in one second suspends the account.
 
 ## Suspended Accounts
 

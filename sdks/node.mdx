@@ -74,7 +74,7 @@ Upload a file. Accepts a `File`, `Blob`, `Buffer`, or `Uint8Array`.
 | `filename` | `string` | Filename sent with the upload (defaults to `"upload"`). |
 | `title` | `string` | Optional post title (max 30 chars). |
 | `description` | `string` | Optional post description (max 200 chars). |
-| `postType` | `"album" \| "individual"` | `album` (default) or `individual`. Only applies when uploading two or more files. |
+| `postType` | `"album" \| "individual"` | Sent as the `post-type` header. Has no effect through `upload()`, which sends a single file; use `appendUpload` to build an album. |
 
 ```javascript
 import { readFileSync } from "node:fs";

@@ -27,6 +27,7 @@ Upload between 1 and 50 files in a single request. Every upload automatically cr
 - **Metadata:** Metadata (camera, GPS location, timestamp) is stripped by default. For images, metadata is removed from PNG, JPG, WebP and GIF at any size, without re-encoding, so the pixels are untouched. Display orientation is preserved on JPG and WebP, and GIF animation and looping are preserved. For videos, container metadata is removed during the MP4 remux. Send `include-metadata: true` to keep it.
 - **Priority streaming:** Eligible videos are streamed with adaptive bitrate by default, spending [priority minutes](/concepts/plans). Send `priority: false` to upload in standard quality instead and save your minutes. The post's `priority` field reflects whether the video ended up on adaptive streaming.
 - **Failures:** when every file in the request fails, the response is `400`. For a single-file upload the reason is returned directly as `error` (for example `Weekly usage limit exceeded.`). For multi-file uploads the response is `All files failed to upload.` with a `failed` array naming each file by `index`.
+- **Album with one surviving file:** when an album request ends with exactly one stored file, no album is created and the response uses the individual shape (`post.posts` with one entry).
 
 ## Examples
 
@@ -86,7 +87,7 @@ Single file:
 }
 ```
 
-`priority` is `true` when the upload is a video that was placed on priority (adaptive) streaming, and `false` otherwise.
+`priority` is `true` when the upload is a video queued for priority (adaptive) streaming, and `false` otherwise. Priority minutes are charged after the response; if your budget runs out first, the video falls back to standard quality and [`GET /posts/{code}`](/api-reference/endpoint/post) reports `priority: false`.
 
 Album (two or more files, default): one `post` containing every file.
 

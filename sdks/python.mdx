@@ -39,13 +39,13 @@ client = SnippClient(api_key="YOUR_API_KEY", region="eu-west-1")  # or "us-west-
 
 ## Methods
 
-### `get_user(user_id, include_posts=None, posts_limit=None)`
+### `get_user(user_id="@me", include_posts=None, posts_limit=None)`
 
-Fetch a user by ID. Pass `"@me"` for the authenticated user.
+Fetch a user by ID. Pass `"@me"` or omit it for the authenticated user.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `user_id` | `str` | User ID or `"@me"`. |
+| `user_id` | `str` | User ID or `"@me"`. Defaults to `"@me"`. |
 | `include_posts` | `bool \| None` | Include the user's public uploads. |
 | `posts_limit` | `int \| None` | Number of posts to return (1 to 50). |
 
@@ -76,7 +76,7 @@ Upload a file. Accepts a file path string, bytes, or a file-like object.
 | `privacy` | `str \| None` | `"public"`, `"unlisted"`, or `"private"`. Defaults to `private` when omitted. |
 | `title` | `str \| None` | Optional post title (max 30 chars). |
 | `description` | `str \| None` | Optional post description (max 200 chars). |
-| `post_type` | `str \| None` | `"album"` (default) or `"individual"`. Only applies when uploading two or more files. |
+| `post_type` | `str \| None` | Sent as the `post-type` header. Has no effect through `upload()`, which sends a single file; use `append_upload` to build an album. |
 
 ```python
 result = client.upload("image.png", privacy="unlisted", title="My screenshot")

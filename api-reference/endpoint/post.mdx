@@ -8,14 +8,17 @@ Fetch a post by its share code.
 ## Behavior
 
 - Albums (posts with more than one file) include `urls` and `isAlbum: true`.
-- Video posts include `thumbnailUrl`, a generated still frame. For private posts it is a signed URL with the same 24-hour expiry as the file URL.
+- Video posts include `thumbnailUrl`, a generated still frame. For private posts it is a signed URL with the same 24-hour expiry as the file URL. Videos added with [`/appendUpload`](/api-reference/endpoint/append) do not get a thumbnail.
 - Use `fileName` from the `files` array when calling [`/deleteUpload`](/api-reference/endpoint/delete) to address a specific file. On albums, `/deleteUpload` removes just that file; on single-file posts it deletes the post.
 - Liking and commenting are Relay-only actions; see the [Relay Reference](/relay-reference/introduction) to perform them.
 - Private posts are only visible to the owner. Requests for another user's private post return `404`.
+- Draft posts are only visible to their owner; anyone else gets `404`.
+- Posts whose owner is suspended return `404` to everyone except the owner.
 - Team posts are only visible to members of that team; everyone else gets a `404`. They omit `likeCount`, since team posts cannot be liked. `commentCount` is still returned.
 - URLs for private posts are returned as signed URLs with a 24-hour expiry. After that, request the endpoint again for a fresh signed URL.
-- Moderated posts are only fully returned to their owner, with `moderated: true` on the post. Requests by anyone else return `403` with `moderated: true`.
-- Restricted posts carry `restricted: true` on the post when returned to their owner. A restricted post is forced to `unlisted` and cannot be set back to public; see [Edit Upload](/api-reference/endpoint/edit).
+- Moderated posts are only fully returned to their owner, with `moderated: true` on the post. Anyone else who could otherwise see the post gets `403` with `moderated: true`.
+- If the post's author has blocked you, the endpoint returns `403` with `You have been blocked by the author of this post.`
+- Restricted posts carry `restricted: true` on the post when returned to their owner. A restricted post keeps its privacy but is hidden from Discover, profiles and feeds, and it cannot be made public; see [Edit Upload](/api-reference/endpoint/edit).
 - `priority` is `true` when the post's video is served over priority delivery, and `false` for standard delivery.
 
 ## Examples

@@ -50,7 +50,7 @@ A missing, empty, or unrecognized relay key returns `401`.
 
 ### Team Access Keys
 
-[Teams](/concepts/plans#teams) (an Ultra feature) each have a dedicated **access key**. Pass it in the `relay-key` header in place of a personal relay key, and uploads go to the team's shared gallery instead of a personal account. It works on `/upload`, `/appendUpload`, `/editUpload`, and `/deleteUpload`; every other endpoint is personal only and returns `401` for a team key.
+[Teams](/concepts/plans#teams) (an Ultra feature) each have a dedicated **access key**. Pass it in the `relay-key` header in place of a personal relay key, and uploads go to the team's shared gallery instead of a personal account. It works on `/upload`, `/appendUpload`, `/editUpload`, `/deleteUpload`, and `/convert`; every other endpoint is personal only and returns `401` for a team key.
 
 ```
 relay-key: YOUR_TEAM_ACCESS_KEY
@@ -63,6 +63,7 @@ Key differences when uploading with a team key:
 - Team-key uploads are always created **private**, regardless of the `post-privacy` header, and their privacy cannot be changed afterward. Team posts are never **unlisted** or **public**.
 - Only the team owner can regenerate or delete the key, from the team's settings page.
 - If the team's subscription lapses, uploads with the key return `403`. Editing and deleting existing team posts keep working.
+- If the team owner's account is suspended, the key is refused with `403` on every endpoint that accepts it.
 
 Anyone who holds a team key can upload with it, so treat it like any other credential and share it only with trusted team members.
 
@@ -73,7 +74,7 @@ Anyone who holds a team key can upload with it, so treat it like any other crede
 | `GET` | `/users/{id}` | Fetch a user profile. Use `@me` for your own account. |
 | `GET` | `/posts/{code}` | Fetch a single post by share code. |
 | `POST` | `/upload` | Upload an image or video file. |
-| `GET` | `/uploads` | List all of your uploads. |
+| `GET` | `/uploads` | List your personal uploads. |
 | `PATCH` | `/editUpload` | Update title, description, or privacy of a post. |
 | `POST` | `/appendUpload` | Add files to an existing album. |
 | `DELETE` | `/deleteUpload` | Delete a file or post. |
@@ -106,6 +107,7 @@ Anyone who holds a team key can upload with it, so treat it like any other crede
 | `GET` | `/usage-history` | Fetch your daily upload activity for the last 365 days. |
 | `GET` | `/analytics` | Fetch your analytics over time plus lifetime totals. PLUS only. |
 | `GET` | `/region` | Return the region serving the request. No auth required. |
+| `POST` | `/convert` | Convert one image or video to another format and get the bytes back. |
 
 ## View Counting
 

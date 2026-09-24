@@ -58,7 +58,7 @@ You can check whether gallery access is enabled by calling `GET /users/@me` and 
 
 ### Team Access Keys
 
-[Teams](/concepts/plans#teams) (an Ultra feature) each have a dedicated **access key**. A team key works exactly like a personal API key (pass it in the `api-key` header), but uploads made with it go to the team's shared gallery instead of a personal account.
+[Teams](/concepts/plans#teams) (an Ultra feature) each have a dedicated **access key**. A team key is passed in the same `api-key` header as a personal API key, and uploads made with it go to the team's shared gallery instead of a personal account. It is only accepted on `POST /upload`, `POST /appendUpload`, `PATCH /editUpload`, `DELETE /deleteUpload`, and `POST /convert`. Every other endpoint, including `GET /users/@me`, `GET /uploads`, and `GET /posts/{code}`, returns `401` for a team key. Read team posts with a member's personal key.
 
 ```
 api-key: YOUR_TEAM_ACCESS_KEY
@@ -70,9 +70,10 @@ Key differences when uploading with a team key:
 - Uploads count against the **team's** weekly quota, never a member's personal quota.
 - Team-key uploads are always created **private**, regardless of the `post-privacy` header, and their privacy cannot be changed afterward. Team posts are never **unlisted** or **public**.
 - Only the team owner can regenerate or delete the key, from the team's settings page.
-- If the team's subscription lapses, uploads with the key return `403`. Reading, editing, and deleting existing team posts keep working.
+- If the team's subscription lapses, `POST /upload`, `POST /appendUpload`, and `POST /convert` with the key return `403` with `This team's subscription has lapsed. Renew it to upload again.` Editing and deleting existing team posts keep working.
+- If the team owner's account is suspended, the key is refused on every endpoint with the same `403` a suspended personal key gets: `Your account has been suspended. Uploads and certain features are restricted.`
 
-The same key also works on the [Relay API](/relay-reference/introduction), passed in its `relay-key` header, on `/upload`, `/appendUpload`, `/editUpload`, and `/deleteUpload`.
+The same key also works on the [Relay API](/relay-reference/introduction), passed in its `relay-key` header, on `/upload`, `/appendUpload`, `/editUpload`, `/deleteUpload`, and `/convert`.
 
 Anyone who holds a team key can upload with it, so treat it like any other credential and share it only with trusted team members.
 

@@ -46,13 +46,14 @@ Maximum file size depends on your plan:
 | Plan | Max File Size |
 |------|---------------|
 | Free | 50 MB |
-| PLUS | No per-file limit |
-| Ultra | No per-file limit |
+| PLUS | 20 GB |
+| Ultra | 50 GB |
+| Team keys | 50 GB |
 
-PLUS and Ultra have no per-file cap. Individual uploads are only bounded by your weekly quota (20 GB on PLUS, 50 GB on Ultra). The absolute upload limit is **50 GB per file**. Files larger than your plan's limit return a `413` error.
+PLUS and Ultra have no per-file cap beyond your weekly quota: a single file can use the whole week's allowance (20 GB on PLUS, 50 GB on Ultra). Team keys are capped at **50 GB per file**. A file larger than your plan's limit is rejected with `File size exceeds the 50 MB limit.` (20 GB on PLUS, 50 GB on Ultra and team keys), like any other per-file failure. When the whole request's declared size already exceeds your weekly quota, it is refused up front with `413` and the same message.
 
 <Info>
-  Videos have a hard ceiling of **30 GB** per file on PLUS and Ultra; larger videos are rejected. Free accounts are still bound by the 50 MB per-file cap above.
+  Videos have a hard ceiling of **30 GB** per file. It only applies on Ultra and team keys, since PLUS is already capped at 20 GB and Free at 50 MB. A larger video is rejected with `400` and `Video exceeds the 30 GB limit.`.
 </Info>
 
 <Info>
@@ -61,7 +62,7 @@ PLUS and Ultra have no per-file cap. Individual uploads are only bounded by your
 
 ## Unsupported Files
 
-If you upload a file with an unsupported format, the API returns a `400` error:
+The type is detected from the file's own bytes, not its name or the declared content type. If you upload a file with an unsupported format, the API returns a `400` error:
 
 ```json
 {

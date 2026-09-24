@@ -93,6 +93,7 @@ Separate from per-endpoint rate limits, every account has a [weekly usage limit]
 - When every file in the request is rejected, the status is `400`. A multi-file request returns `error: "All files failed to upload."` alongside the same `failed` array. A single-file request returns the reason at the top level, with `quota`, `used` and `resetsAt` beside it whenever the quota was reserved per file: `POST /appendUpload`, and `POST /upload` on a team key.
 - A single-file `POST /upload` on a personal key is the exception. Its quota is reserved during the insert, so it returns `400` with `error: "Weekly usage limit exceeded."` and no quota fields.
 - The Website internal chunked-upload route returns `413` with the same fields at the top level.
+- A personal-key `POST /upload` or `POST /appendUpload` whose declared `Content-Length` already exceeds your weekly quota is refused with `413` before any file is read. The message is the per-file one (`File size exceeds the 50 MB limit.` on Free, `20 GB` on PLUS, `50 GB` on Ultra). Team keys skip this check.
 - The Website internal `/api/v1/album` route moves the rejected file to the `failed` array like `/upload`: `200` when at least one file was stored, `400` when every file failed. The fields sit at the top level only when a single file was sent.
 
 Check your remaining usage anytime via `GET /users/@me` (`limits.usage`).

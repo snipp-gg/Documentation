@@ -49,6 +49,7 @@ Submit a report for a comment using its ID. An optional reason can be provided t
 |------|-------|------|
 | `400` | Invalid comment. | `commentId` is empty, missing, or not a valid ID |
 | `400` | Reason cannot exceed 200 characters. | `reason` exceeds 200 characters |
+| `403` | Your account has been suspended. Reports are restricted. | Your account is suspended |
 | `403` | You cannot report your own comment. | The comment is yours |
 | `403` | Comments are disabled on moderated posts. | The post has been moderated |
 | `403` | You cannot report this comment. | The comment author has blocked you |

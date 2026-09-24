@@ -43,6 +43,7 @@ Submit a report for a user using their ID. An optional reason can be provided to
 |------|-------|------|
 | `400` | Missing or invalid user. | `targetUserId` is empty, missing, or not a valid ID |
 | `400` | Reason cannot exceed 200 characters. | `reason` exceeds 200 characters |
+| `403` | Your account has been suspended. Reports are restricted. | Your account is suspended |
 | `403` | This user has already been suspended. | The user has already been actioned by moderators |
 | `403` | You cannot report yourself. | `targetUserId` is your own ID |
 | `403` | You cannot report this user. | The reported user has blocked you |

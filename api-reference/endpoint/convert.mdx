@@ -21,7 +21,7 @@ Convert one image or video to another format and get the converted file back in 
 - **Video to GIF requires Snipp+** and uses the first 10 seconds only, at 15fps and 480px wide.
 - **MP4 output** is remuxed with `+faststart` when the source is already H.264, and transcoded otherwise.
 - **Metadata is always stripped.** Images are re-encoded without it and videos are written with `-map_metadata -1`. JPG orientation is applied to the pixels first, so photos stay the right way up.
-- Files are capped at 50 MB on the free plan. Snipp+ and Ultra have no per-file cap, the same as [`/upload`](/api-reference/endpoint/upload). Conversion runs inside the request, so a large video can take a while to come back.
+- Files are capped at 50 MB on Free, 20 GB on Snipp+ and 50 GB on Ultra and team keys, the same per-file limits as [`/upload`](/api-reference/endpoint/upload). The cap matches the plan's weekly quota, but converting consumes none of it. Conversion runs inside the request, so a large video can take a while to come back.
 - Rate limited to 10 conversions per minute. Converting does not count toward your weekly upload limit.
 - To host the result, pipe it into [`POST /upload`](/api-reference/endpoint/upload). Note that avif and mp3 are not accepted upload types, so those two are download-only.
 

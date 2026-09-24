@@ -10,7 +10,7 @@ Snipp offers three tiers to suit different needs. All plans include full API acc
 | | Free | PLUS | Ultra |
 |--|------|------|------------|
 | **Price** | Free | $4.99/mo | $49/mo |
-| **Max File Size** | 50 MB | No per-file limit | No per-file limit |
+| **Max File Size** | 50 MB | 20 GB (your weekly quota) | 50 GB (your weekly quota) |
 | **Weekly Usage Limit** | 2 GB | 20 GB | 50 GB |
 | **Upload Rate** | 20 uploads / 30 seconds | 20 uploads / 30 seconds | 20 uploads / 30 seconds |
 | **Priority Streaming** | 10 min/month | 100 min/month | 300 min/month |
@@ -71,7 +71,7 @@ Call `GET /users/@me` to see your current plan status and weekly storage usage. 
     "uploads": 42,
     "limits": {
       "plan": "plus",
-      "maxFileSize": null,
+      "maxFileSize": 21474836480,
       "usage": {
         "used": 1073741824,
         "limit": 21474836480,
@@ -91,7 +91,7 @@ Call `GET /users/@me` to see your current plan status and weekly storage usage. 
 | `ultra` | `true` if you have an Ultra plan |
 | `uploads` | Total number of files you have uploaded |
 | `limits.plan` | Active plan (`free`, `plus`, or `ultra`) |
-| `limits.maxFileSize` | Maximum size per file in bytes. `null` on PLUS and Ultra (no per-file limit; only weekly quota applies) |
+| `limits.maxFileSize` | Maximum size per file in bytes. 50 MB on free; on PLUS and Ultra it equals the weekly quota (`limits.usage.limit`) |
 | `limits.usage.used` | Bytes uploaded in the current window |
 | `limits.usage.limit` | Total bytes allowed per window |
 | `limits.usage.usedPercent` | Percentage of the weekly cap consumed, rounded to the nearest integer (0–100+) |

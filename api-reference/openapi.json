@@ -108,7 +108,7 @@
                         "uploads": 42,
                         "limits": {
                           "plan": "plus",
-                          "maxFileSize": null,
+                          "maxFileSize": 21474836480,
                           "usage": {
                             "used": 1073741824,
                             "limit": 21474836480,
@@ -427,7 +427,7 @@
             }
           },
           "403": {
-            "description": "Post has been moderated",
+            "description": "Post has been moderated, or the author has blocked you",
             "content": {
               "application/json": {
                 "schema": {
@@ -757,7 +757,7 @@
                             },
                             "priority": {
                               "type": "boolean",
-                              "description": "`true` when the upload is a video placed on priority (adaptive) streaming."
+                              "description": "`true` when the upload is a video queued for priority (adaptive) streaming. Minutes are charged after the response; if the budget runs out first, GET /posts/{code} reports `false`."
                             }
                           }
                         }
@@ -870,7 +870,7 @@
                             },
                             "priority": {
                               "type": "boolean",
-                              "description": "Album mode: `true` when any file in the album is a video placed on priority (adaptive) streaming."
+                              "description": "Album mode: `true` when any file in the album is a video queued for priority (adaptive) streaming."
                             },
                             "posts": {
                               "type": "array",
@@ -922,7 +922,7 @@
             }
           },
           "403": {
-            "description": "Account suspended",
+            "description": "Account suspended, or the team's subscription has lapsed",
             "content": {
               "application/json": {
                 "schema": {
@@ -957,7 +957,7 @@
     "/convert": {
       "post": {
         "summary": "Convert a File",
-        "description": "Convert one image or video to another format and get the converted file back in the response. Nothing is stored and no upload quota is consumed. Send the file as multipart/form-data and name the target format in the `convert-target` header. Images can become png, jpeg, webp, avif or gif; GIFs can become png, jpeg, webp, avif or mp4; videos can become mp4, mp3 or gif. Video to GIF requires Snipp+. Files are capped at 50 MB on the free plan, and Snipp+ and Ultra have no per-file cap, the same as upload. Video to GIF is limited to the first 10 seconds. Metadata is stripped from every converted file.",
+        "description": "Convert one image or video to another format and get the converted file back in the response. Nothing is stored and no upload quota is consumed. Send the file as multipart/form-data and name the target format in the `convert-target` header. Images can become png, jpeg, webp, avif or gif; GIFs can become png, jpeg, webp, avif or mp4; videos can become mp4, mp3 or gif. Video to GIF requires Snipp+. Files are capped at 50 MB on Free, 20 GB on Snipp+ and 50 GB on Ultra and team keys, the same per-file limits as upload. Video to GIF is limited to the first 10 seconds. Metadata is stripped from every converted file.",
         "operationId": "convertFile",
         "parameters": [
           {
@@ -1158,7 +1158,7 @@
                           },
                           "size": {
                             "type": "integer",
-                            "description": "File size in bytes"
+                            "description": "Size in bytes of the post the entry belongs to. On album entries this is the whole album's size, repeated on every file row."
                           },
                           "size_formatted": {
                             "type": "string",
@@ -1224,7 +1224,7 @@
             "name": "file",
             "in": "header",
             "required": true,
-            "description": "Filename (32 hex chars + extension, e.g. a1b2c3d4e5f6...png)",
+            "description": "Filename (32 hex chars + extension, e.g. a1b2c3d4e5f6...png). The extension may be omitted.",
             "schema": {
               "type": "string"
             }
@@ -1268,7 +1268,7 @@
             }
           },
           "403": {
-            "description": "No permission to delete uploads",
+            "description": "Account suspended, no permission to delete uploads, or the file belongs to a moderated post",
             "content": {
               "application/json": {
                 "schema": {
@@ -1414,7 +1414,7 @@
             }
           },
           "403": {
-            "description": "No permission to edit uploads, not the owner, post is moderated, or post is restricted and cannot be made public",
+            "description": "Account suspended, no permission to edit uploads, not the owner, post is moderated, post is restricted and cannot be made public, or a team post's privacy cannot be changed",
             "content": {
               "application/json": {
                 "schema": {
@@ -1645,7 +1645,7 @@
             }
           },
           "403": {
-            "description": "Account suspended, no permission to modify uploads, not the owner, or post is moderated",
+            "description": "Account suspended, team subscription lapsed, no permission to modify uploads, not the owner, or post is moderated",
             "content": {
               "application/json": {
                 "schema": {
@@ -2941,11 +2941,8 @@
             "description": "Active plan."
           },
           "maxFileSize": {
-            "type": [
-              "integer",
-              "null"
-            ],
-            "description": "Maximum size per file in bytes. 50 MB on free. `null` on plus and ultra (no per-file limit; only weekly quota applies)."
+            "type": "integer",
+            "description": "Maximum size per file in bytes. 50 MB on free. On plus and ultra it equals the weekly quota (`usage.limit`)."
           },
           "usage": {
             "type": "object",
