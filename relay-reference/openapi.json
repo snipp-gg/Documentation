@@ -4638,6 +4638,142 @@
         }
       }
     },
+    "/sessions": {
+      "get": {
+        "summary": "List Sessions",
+        "description": "List every device signed in to your account on the website, most recently active first.",
+        "operationId": "listSessions",
+        "responses": {
+          "200": {
+            "description": "Active sessions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Session"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Log Out Sessions",
+        "description": "Log out one website session by `id`, or every website session with `all: true`. Your relay key is not a session and is never affected.",
+        "operationId": "revokeSessions",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The session to log out, from `GET /sessions`."
+                  },
+                  "all": {
+                    "type": "boolean",
+                    "description": "Set to `true` to log out every website session instead of one."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logged out",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Device logged out."
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of sessions logged out. Only returned with `all: true`.",
+                      "example": 2
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid session.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Device not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/comment-like": {
       "post": {
         "summary": "Like Comment",
@@ -5311,6 +5447,48 @@
                 "description": "Creator payout and referral emails. On by default."
               }
             }
+          }
+        }
+      },
+      "Session": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "1768911a-e0f1-4705-9603-22ec8218e297"
+          },
+          "browser": {
+            "type": "string",
+            "nullable": true,
+            "description": "Browser name, or `null` when it cannot be recognized.",
+            "example": "Chrome"
+          },
+          "os": {
+            "type": "string",
+            "nullable": true,
+            "description": "Operating system, or `null` when it cannot be recognized.",
+            "example": "macOS"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "desktop",
+              "mobile",
+              "tablet"
+            ],
+            "description": "Defaults to desktop when the device cannot be recognized.",
+            "example": "desktop"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the device signed in."
+          },
+          "lastActive": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the device was last active. Updated at most every 5 minutes."
           }
         }
       }
