@@ -11,6 +11,7 @@ Read and update which notifications and emails you receive. `GET` returns the cu
 - `notifications.likes` covers both post likes and comment likes.
 - Some notifications cannot be turned off and are not listed here: post removals, post restrictions, and account changes. The same applies to security and transactional emails such as login links, email changes, moderation notices and suspensions.
 - `emails.payouts` (creator payout and referral emails) is on by default.
+- `emails.signIns` (an email every time someone signs in to your account on the website) is on by default.
 
 ## Examples
 
@@ -39,7 +40,8 @@ Both methods return the full set of preferences after the call.
     "payouts": true
   },
   "emails": {
-    "payouts": true
+    "payouts": true,
+    "signIns": true
   }
 }
 ```

@@ -5445,6 +5445,10 @@
               "payouts": {
                 "type": "boolean",
                 "description": "Creator payout and referral emails. On by default."
+              },
+              "signIns": {
+                "type": "boolean",
+                "description": "An email every time someone signs in to your account on the website. On by default."
               }
             }
           }
