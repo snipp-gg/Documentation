@@ -4774,6 +4774,102 @@
         }
       }
     },
+    "/upload-prefs": {
+      "get": {
+        "summary": "Get Upload Preferences",
+        "description": "Read your account-wide upload preferences.",
+        "operationId": "getUploadPrefs",
+        "responses": {
+          "200": {
+            "description": "Current preferences",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadPrefs"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Update Upload Preferences",
+        "description": "Update upload preferences. Send only the keys you want to change; the rest keep their current value.",
+        "operationId": "updateUploadPrefs",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadPrefs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated preferences",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadPrefs"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid post privacy or a non-boolean preference value.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/comment-like": {
       "post": {
         "summary": "Like Comment",
@@ -5451,6 +5547,36 @@
                 "description": "An email every time someone signs in to your account on the website. On by default."
               }
             }
+          }
+        }
+      },
+      "UploadPrefs": {
+        "type": "object",
+        "properties": {
+          "defaultPrivacy": {
+            "type": "string",
+            "enum": [
+              "private",
+              "unlisted",
+              "public"
+            ],
+            "description": "The privacy pre-selected when uploading. Unlisted by default."
+          },
+          "adaptiveStreaming": {
+            "type": "boolean",
+            "description": "Stream uploaded videos in adaptive quality using priority minutes. On by default."
+          },
+          "autoCompress": {
+            "type": "boolean",
+            "description": "Compress images before upload to save weekly quota. Off by default."
+          },
+          "includeMetadata": {
+            "type": "boolean",
+            "description": "Keep camera, location and timestamp metadata in uploads. Off by default."
+          },
+          "autoCopyUrl": {
+            "type": "boolean",
+            "description": "Copy the post link to the clipboard when an upload finishes. Off by default."
           }
         }
       },

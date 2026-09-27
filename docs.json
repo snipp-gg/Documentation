@@ -183,6 +183,7 @@
               "relay-reference/endpoint/usage-history",
               "relay-reference/endpoint/analytics",
               "relay-reference/endpoint/sessions",
+              "relay-reference/endpoint/upload-prefs",
               "relay-reference/endpoint/report-user"
             ]
           },
