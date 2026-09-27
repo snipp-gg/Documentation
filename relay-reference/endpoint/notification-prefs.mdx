@@ -8,6 +8,7 @@ Read and update which notifications and emails you receive. `GET` returns the cu
 ## Behavior
 
 - Send only the keys you want to change. Anything you leave out keeps its current value.
+- [Preferences](/relay-reference/endpoint/preferences) returns these same settings plus your upload preferences in one call.
 - `notifications.likes` covers both post likes and comment likes.
 - Some notifications cannot be turned off and are not listed here: post removals, post restrictions, and account changes. The same applies to security and transactional emails such as login links, email changes, moderation notices and suspensions.
 - `emails.payouts` (creator payout and referral emails) is on by default.

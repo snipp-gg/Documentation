@@ -4774,18 +4774,18 @@
         }
       }
     },
-    "/upload-prefs": {
+    "/preferences": {
       "get": {
-        "summary": "Get Upload Preferences",
-        "description": "Read your account-wide upload preferences.",
-        "operationId": "getUploadPrefs",
+        "summary": "Get Preferences",
+        "description": "Read all of your preferences: notifications, emails and uploads.",
+        "operationId": "getPreferences",
         "responses": {
           "200": {
             "description": "Current preferences",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UploadPrefs"
+                  "$ref": "#/components/schemas/Preferences"
                 }
               }
             }
@@ -4813,15 +4813,15 @@
         }
       },
       "post": {
-        "summary": "Update Upload Preferences",
-        "description": "Update upload preferences. Send only the keys you want to change; the rest keep their current value.",
-        "operationId": "updateUploadPrefs",
+        "summary": "Update Preferences",
+        "description": "Update any mix of notification, email and upload preferences. Send only the keys you want to change; the rest keep their current value.",
+        "operationId": "updatePreferences",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UploadPrefs"
+                "$ref": "#/components/schemas/Preferences"
               }
             }
           }
@@ -4832,7 +4832,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UploadPrefs"
+                  "$ref": "#/components/schemas/Preferences"
                 }
               }
             }
@@ -5577,6 +5577,47 @@
           "autoCopyUrl": {
             "type": "boolean",
             "description": "Copy the post link to the clipboard when an upload finishes. Off by default."
+          }
+        }
+      },
+      "Preferences": {
+        "type": "object",
+        "properties": {
+          "notifications": {
+            "type": "object",
+            "description": "In-app notification toggles. Moderation and account notifications cannot be disabled and are not listed here.",
+            "properties": {
+              "follows": {
+                "type": "boolean"
+              },
+              "likes": {
+                "type": "boolean",
+                "description": "Covers both post likes and comment likes"
+              },
+              "comments": {
+                "type": "boolean"
+              },
+              "payouts": {
+                "type": "boolean"
+              }
+            }
+          },
+          "emails": {
+            "type": "object",
+            "description": "Email toggles. Security, moderation and transactional emails cannot be disabled and are not listed here.",
+            "properties": {
+              "payouts": {
+                "type": "boolean",
+                "description": "Creator payout and referral emails. On by default."
+              },
+              "signIns": {
+                "type": "boolean",
+                "description": "An email every time someone signs in to your account on the website. On by default."
+              }
+            }
+          },
+          "uploads": {
+            "$ref": "#/components/schemas/UploadPrefs"
           }
         }
       },
