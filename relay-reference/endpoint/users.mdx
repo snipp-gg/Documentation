@@ -7,17 +7,17 @@ Fetch either your own profile (`@me`) or another user's public profile.
 
 ## Behavior
 
-- `id=@me` returns your full account profile, including `apiKey`, `relayKey`, `limits`, `subscription`, `uploads`, and your settings.
+- `id=@me` returns your full account profile, including `api_key`, `relay_key`, `limits`, `subscription`, `uploads`, and your settings.
 - `theme` is your selected color theme. It is only returned on the `@me` profile, never on other users. It is `null` if you have not picked one. Set it with [`/theme`](/relay-reference/endpoint/theme).
 - `subscription` is only returned on `@me` and reflects your current plan and lifecycle. See the Subscription block below.
-- `id=<userId>` returns a public-safe profile for that user.
-- `badges` is always included and follows this order: `verified`, `staff`, `partner`, `bugHunterTier`, `translator`, `plus`.
-- `bugHunterTier` is an integer from `0` to `2`: `0` is no badge, `1` is Bug Hunter, `2` is Elite Bug Hunter.
-- `includePosts` controls `publicUploads`.
-- `includePosts` defaults to `false` for `@me` and `true` for non-self requests.
-- `postsLimit` limits `publicUploads` to `1` to `50` (default `50`).
-- Non-self profiles include a `blockedByYou` boolean indicating whether you have blocked that user.
-- `followerCount` and `followingCount` are always included on both `@me` and non-self profiles.
+- `id=<user_id>` returns a public-safe profile for that user.
+- `badges` is always included and follows this order: `verified`, `staff`, `partner`, `bug_hunter_tier`, `translator`, `plus`.
+- `bug_hunter_tier` is an integer from `0` to `2`: `0` is no badge, `1` is Bug Hunter, `2` is Elite Bug Hunter.
+- `include_posts` controls `public_uploads`.
+- `include_posts` defaults to `false` for `@me` and `true` for non-self requests.
+- `posts_limit` limits `public_uploads` to `1` to `50` (default `50`).
+- Non-self profiles include a `blocked_by_you` boolean indicating whether you have blocked that user.
+- `follower_count` and `following_count` are always included on both `@me` and non-self profiles.
 - Non-self profiles include a `following` boolean indicating whether you (the requesting user) follow that user.
 - If the target user has blocked **you**, the endpoint returns `403` with `"You have been blocked by this user."`.
 - If the target user is suspended, the endpoint returns `403` with `suspended: true` and their `username`.
@@ -34,13 +34,13 @@ curl -X GET "https://relay.snipp.gg/users/@me" \
 Fetch another profile with a smaller public uploads payload:
 
 ```bash
-curl -X GET "https://relay.snipp.gg/users/USER_ID?includePosts=true&postsLimit=10" \
+curl -X GET "https://relay.snipp.gg/users/USER_ID?include_posts=true&posts_limit=10" \
   -H "relay-key: YOUR_RELAY_KEY"
 ```
 
 ## Responses
 
-`@me` returns your full account profile, including `apiKey`, `relayKey`, and `limits`.
+`@me` returns your full account profile, including `api_key`, `relay_key`, and `limits`.
 
 ```json
 {
@@ -57,33 +57,33 @@ curl -X GET "https://relay.snipp.gg/users/USER_ID?includePosts=true&postsLimit=1
     "verified": false,
     "staff": false,
     "partner": false,
-    "bugHunterTier": 0,
+    "bug_hunter_tier": 0,
     "translator": false,
     "suspended": false,
     "created": "2026-01-04T09:30:00Z",
-    "customEmbed": null,
+    "custom_embed": null,
     "theme": "pastel_blue",
     "badges": {
       "verified": false,
       "staff": false,
       "partner": false,
-      "bugHunterTier": 0,
+      "bug_hunter_tier": 0,
       "translator": false,
       "plus": true
     },
     "uploads": 42,
-    "apiKey": "aB3xK9mP2qR7sT1vW4yZ6cD8fG0hJ5kL",
-    "relayKey": "Zy7wV4uT1sR8qP5nM2kJ9hG6fD3bC0aX",
+    "api_key": "aB3xK9mP2qR7sT1vW4yZ6cD8fG0hJ5kL",
+    "relay_key": "Zy7wV4uT1sR8qP5nM2kJ9hG6fD3bC0aX",
     "limits": {
       "plan": "plus",
-      "maxFileSize": 21474836480,
+      "max_file_size": 21474836480,
       "usage": {
         "used": 5242880,
         "limit": 21474836480,
-        "usedPercent": 0,
-        "windowStart": "2026-05-12T00:00:00Z",
-        "windowEnd": "2026-05-19T00:00:00Z",
-        "resetsInSeconds": 345600
+        "used_percent": 0,
+        "window_start": "2026-05-12T00:00:00Z",
+        "window_end": "2026-05-19T00:00:00Z",
+        "resets_in_seconds": 345600
       }
     },
     "subscription": {
@@ -94,8 +94,8 @@ curl -X GET "https://relay.snipp.gg/users/USER_ID?includePosts=true&postsLimit=1
       "cancel_at_period_end": false,
       "gifted": false
     },
-    "followerCount": 128,
-    "followingCount": 47
+    "follower_count": 128,
+    "following_count": 47
   }
 }
 ```
@@ -113,7 +113,7 @@ Returned only on `@me`. Describes the user's current plan and how they got it.
 | `cancel_at_period_end` | boolean | `true` when the user has canceled but still has access until `expires_at`. `false` for gifted plans with no subscription behind them. |
 | `gifted` | boolean | `true` when the current plan comes from a redeemed gift code or an admin-applied comp, not a Stripe subscription. |
 
-A non-self request returns a public-safe profile with `blockedByYou`, `following`, `followerCount`, `followingCount`, and (by default) `publicUploads`.
+A non-self request returns a public-safe profile with `blocked_by_you`, `following`, `follower_count`, `following_count`, and (by default) `public_uploads`.
 
 ```json
 {
@@ -130,15 +130,15 @@ A non-self request returns a public-safe profile with `blockedByYou`, `following
     "verified": false,
     "staff": false,
     "partner": false,
-    "bugHunterTier": 1,
+    "bug_hunter_tier": 1,
     "translator": false,
     "created": "2026-02-18T14:00:00Z",
-    "customEmbed": null,
-    "blockedByYou": false,
+    "custom_embed": null,
+    "blocked_by_you": false,
     "following": true,
-    "followerCount": 12,
-    "followingCount": 30,
-    "publicUploads": [
+    "follower_count": 12,
+    "following_count": 30,
+    "public_uploads": [
       {
         "url": "https://i.snipp.gg/987654321098765432/a1b2c3d4e5f6789012345678abcdef01.png",
         "code": "AbCd1234",
@@ -146,7 +146,7 @@ A non-self request returns a public-safe profile with `blockedByYou`, `following
         "description": null,
         "created": "2026-04-22T18:30:00Z",
         "public": true,
-        "isAlbum": false
+        "is_album": false
       }
     ]
   }

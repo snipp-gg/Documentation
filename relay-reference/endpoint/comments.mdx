@@ -3,7 +3,7 @@ title: "List Comments"
 openapi: "GET /comments"
 ---
 
-List comments on a post. Pass `shareCode` as a query parameter or `code` as a header.
+List comments on a post. Pass the post's share code as the `code` query parameter.
 
 ## Behavior
 
@@ -15,7 +15,7 @@ List comments on a post. Pass `shareCode` as a query parameter or `code` as a he
 ## Examples
 
 ```bash
-curl -X GET "https://relay.snipp.gg/comments?shareCode=AbCd1234" \
+curl -X GET "https://relay.snipp.gg/comments?code=AbCd1234" \
   -H "relay-key: YOUR_RELAY_KEY"
 ```
 
@@ -27,12 +27,12 @@ curl -X GET "https://relay.snipp.gg/comments?shareCode=AbCd1234" \
     {
       "id": "00000000-0000-4000-8000-000000000000",
       "body": "Nice shot!",
-      "userId": "123456789012345678",
-      "createdAt": "2026-05-03T12:00:00Z",
+      "user_id": "123456789012345678",
+      "created_at": "2026-05-03T12:00:00Z",
       "username": "playerone",
       "nickname": "Player One",
       "avatar": "https://i.snipp.gg/avatars/123456789012345678/avatar.png",
-      "isVerified": false,
+      "is_verified": false,
       "plus": true,
       "likes": 3,
       "liked": false

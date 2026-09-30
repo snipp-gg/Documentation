@@ -11,11 +11,17 @@ Upload between 1 and 50 files in a single request. Every upload automatically cr
 |--------|----------|-------------|
 | `relay-key` | Yes | Your Relay key |
 | `post-privacy` | No | `public`, `unlisted`, or `private` (default) |
-| `post-title` | No | Post title, max 30 characters |
-| `post-description` | No | Post description, max 200 characters |
 | `post-type` | No | `album` (default) or `individual`. Only applies to two or more files. |
 | `include-metadata` | No | `true` to keep file metadata. Omitted or `false` strips it (default). |
 | `priority` | No | `false` to opt video uploads out of priority (adaptive) streaming. Omitted or `true` keeps it on (default), subject to your remaining priority minutes. |
+
+## Form Fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `file` | Yes | The file to upload. Repeat the field for 2 to 50 files. |
+| `title` | No | Post title, max 30 characters |
+| `description` | No | Post description, max 200 characters |
 
 ## Behavior
 
@@ -36,7 +42,7 @@ Upload a single file:
 curl -X POST "https://relay.snipp.gg/upload" \
   -H "relay-key: YOUR_RELAY_KEY" \
   -H "post-privacy: unlisted" \
-  -H "post-title: my gaming POV" \
+  -F "title=my gaming POV" \
   -F "file=@screenshot.png"
 ```
 
@@ -46,7 +52,7 @@ Upload an album (two or more files default to album):
 curl -X POST "https://relay.snipp.gg/upload" \
   -H "relay-key: YOUR_RELAY_KEY" \
   -H "post-privacy: public" \
-  -H "post-title: Game Moderation Evidence" \
+  -F "title=Game Moderation Evidence" \
   -F "file=@photo1.png" \
   -F "file=@photo2.png" \
   -F "file=@photo3.png"
@@ -80,7 +86,7 @@ Single file:
   "post": {
     "code": "AbCd1234",
     "url": "https://snipp.gg/p/AbCd1234",
-    "postPrivacy": "unlisted",
+    "post_privacy": "unlisted",
     "priority": false
   }
 }
@@ -117,9 +123,9 @@ Album (two or more files, default): one `post` containing every file.
   "post": {
     "code": "AbCd1234",
     "url": "https://snipp.gg/p/AbCd1234",
-    "postPrivacy": "public",
-    "isAlbum": true,
-    "fileCount": 2,
+    "post_privacy": "public",
+    "is_album": true,
+    "file_count": 2,
     "priority": false
   }
 }
@@ -153,7 +159,7 @@ Individual (`post-type: individual`): one entry in `post.posts` per file. If a f
       {
         "code": "AbCd1234",
         "url": "https://snipp.gg/p/AbCd1234",
-        "postPrivacy": "public",
+        "post_privacy": "public",
         "priority": false
       }
     ]

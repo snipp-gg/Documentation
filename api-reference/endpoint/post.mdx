@@ -7,14 +7,14 @@ Fetch a post by its share code.
 
 ## Behavior
 
-- Albums (posts with more than one file) include `urls` and `isAlbum: true`.
-- Video posts include `thumbnailUrl`, a generated still frame. For private posts it is a signed URL with the same 24-hour expiry as the file URL. Videos added with [`/appendUpload`](/api-reference/endpoint/append) do not get a thumbnail.
-- Use `fileName` from the `files` array when calling [`/deleteUpload`](/api-reference/endpoint/delete) to address a specific file. On albums, `/deleteUpload` removes just that file; on single-file posts it deletes the post.
+- Albums (posts with more than one file) include `urls` and `is_album: true`.
+- Video posts include `thumbnail_url`, a generated still frame. For private posts it is a signed URL with the same 24-hour expiry as the file URL. Videos added with [`/appendUpload`](/api-reference/endpoint/append) do not get a thumbnail.
+- Use `file_name` from the `files` array when calling [`/deleteUpload`](/api-reference/endpoint/delete) to address a specific file. On albums, `/deleteUpload` removes just that file; on single-file posts it deletes the post.
 - Liking and commenting are Relay-only actions; see the [Relay Reference](/relay-reference/introduction) to perform them.
 - Private posts are only visible to the owner. Requests for another user's private post return `404`.
 - Draft posts are only visible to their owner; anyone else gets `404`.
 - Posts whose owner is suspended return `404` to everyone except the owner.
-- Team posts are only visible to members of that team; everyone else gets a `404`. They omit `likeCount`, since team posts cannot be liked. `commentCount` is still returned.
+- Team posts are only visible to members of that team; everyone else gets a `404`. They omit `like_count`, since team posts cannot be liked. `comment_count` is still returned.
 - URLs for private posts are returned as signed URLs with a 24-hour expiry. After that, request the endpoint again for a fresh signed URL.
 - Moderated posts are only fully returned to their owner, with `moderated: true` on the post. Anyone else who could otherwise see the post gets `403` with `moderated: true`.
 - If the post's author has blocked you, the endpoint returns `403` with `You have been blocked by the author of this post.`
@@ -42,7 +42,7 @@ Single-file post:
     "files": [
       {
         "index": 0,
-        "fileName": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "file_name": "a1b2c3d4e5f6789012345678abcdef01.png",
         "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
         "width": 1920,
         "height": 1080,
@@ -53,11 +53,11 @@ Single-file post:
     ],
     "title": "Nice shot",
     "description": null,
-    "postPrivacy": "public",
+    "post_privacy": "public",
     "created": "2026-05-03T12:00:00Z",
     "views": 128,
-    "likeCount": 42,
-    "commentCount": 3,
+    "like_count": 42,
+    "comment_count": 3,
     "priority": false,
     "file": {
       "size": 2487312,
@@ -69,7 +69,7 @@ Single-file post:
 }
 ```
 
-Album post (includes `urls` and `isAlbum`):
+Album post (includes `urls` and `is_album`):
 
 ```json
 {
@@ -80,11 +80,11 @@ Album post (includes `urls` and `isAlbum`):
       "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
       "https://i.snipp.gg/123456789012345678/b2c3d4e5f6789012345678abcdef0102.png"
     ],
-    "isAlbum": true,
+    "is_album": true,
     "files": [
       {
         "index": 0,
-        "fileName": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "file_name": "a1b2c3d4e5f6789012345678abcdef01.png",
         "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
         "width": 1920,
         "height": 1080,
@@ -94,7 +94,7 @@ Album post (includes `urls` and `isAlbum`):
       },
       {
         "index": 1,
-        "fileName": "b2c3d4e5f6789012345678abcdef0102.png",
+        "file_name": "b2c3d4e5f6789012345678abcdef0102.png",
         "url": "https://i.snipp.gg/123456789012345678/b2c3d4e5f6789012345678abcdef0102.png",
         "width": 1280,
         "height": 720,
@@ -105,11 +105,11 @@ Album post (includes `urls` and `isAlbum`):
     ],
     "title": "Match highlights",
     "description": null,
-    "postPrivacy": "public",
+    "post_privacy": "public",
     "created": "2026-05-03T12:00:00Z",
     "views": 128,
-    "likeCount": 42,
-    "commentCount": 3,
+    "like_count": 42,
+    "comment_count": 3,
     "priority": false,
     "file": {
       "size": 2487312,

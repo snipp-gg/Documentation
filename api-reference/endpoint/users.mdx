@@ -7,14 +7,14 @@ Fetch either your own profile (`@me`) or another user's public profile.
 
 ## Behavior
 
-- `id=@me` returns your full account profile, including `apiKey`, `keyHasUploadsAccess`, `limits`, and `uploads`.
-- `id=<userId>` returns a public-safe profile for that user.
-- `badges` is always included and follows this order: `verified`, `staff`, `partner`, `bugHunterTier`, `translator`, `plus`.
-- `bugHunterTier` is an integer from `0` to `2`: `0` is no badge, `1` is Bug Hunter, `2` is Elite Bug Hunter.
-- `includePosts` controls `publicUploads`.
-- `includePosts` defaults to `false` for `@me` and `true` for non-self requests.
-- `postsLimit` limits `publicUploads` to `1` to `50` (default `50`).
-- Non-self profiles include a `blockedByYou` boolean indicating whether you have blocked that user.
+- `id=@me` returns your full account profile, including `api_key`, `key_has_uploads_access`, `limits`, and `uploads`.
+- `id=<user_id>` returns a public-safe profile for that user.
+- `badges` is always included and follows this order: `verified`, `staff`, `partner`, `bug_hunter_tier`, `translator`, `plus`.
+- `bug_hunter_tier` is an integer from `0` to `2`: `0` is no badge, `1` is Bug Hunter, `2` is Elite Bug Hunter.
+- `include_posts` controls `public_uploads`.
+- `include_posts` defaults to `false` for `@me` and `true` for non-self requests.
+- `posts_limit` limits `public_uploads` to `1` to `50` (default `50`).
+- Non-self profiles include a `blocked_by_you` boolean indicating whether you have blocked that user.
 - If the target user has blocked **you**, the endpoint returns `403` with `"You have been blocked by this user."`.
 - If the target user is suspended, the endpoint returns `403` with `suspended: true` and their `username`, and no profile fields. This is checked before the block check.
 
@@ -30,13 +30,13 @@ curl -X GET "https://api.snipp.gg/users/@me" \
 Fetch another profile with a smaller public uploads payload:
 
 ```bash
-curl -X GET "https://api.snipp.gg/users/USER_ID?includePosts=true&postsLimit=10" \
+curl -X GET "https://api.snipp.gg/users/USER_ID?include_posts=true&posts_limit=10" \
   -H "api-key: YOUR_API_KEY"
 ```
 
 ## Responses
 
-`@me` returns your full account profile, including `apiKey`, `keyHasUploadsAccess`, and `limits`.
+`@me` returns your full account profile, including `api_key`, `key_has_uploads_access`, and `limits`.
 
 ```json
 {
@@ -53,39 +53,39 @@ curl -X GET "https://api.snipp.gg/users/USER_ID?includePosts=true&postsLimit=10"
     "verified": false,
     "staff": false,
     "partner": false,
-    "bugHunterTier": 0,
+    "bug_hunter_tier": 0,
     "translator": false,
     "suspended": false,
     "created": "2026-01-04T09:30:00Z",
-    "customEmbed": null,
-    "apiKey": "aB3xK9mP2qR7sT1vW4yZ6cD8fG0hJ5kL",
-    "keyHasUploadsAccess": true,
+    "custom_embed": null,
+    "api_key": "aB3xK9mP2qR7sT1vW4yZ6cD8fG0hJ5kL",
+    "key_has_uploads_access": true,
     "uploads": 42,
     "badges": {
       "verified": false,
       "staff": false,
       "partner": false,
-      "bugHunterTier": 0,
+      "bug_hunter_tier": 0,
       "translator": false,
       "plus": true
     },
     "limits": {
       "plan": "plus",
-      "maxFileSize": 21474836480,
+      "max_file_size": 21474836480,
       "usage": {
         "used": 5242880,
         "limit": 21474836480,
-        "usedPercent": 0,
-        "windowStart": "2026-05-12T00:00:00Z",
-        "windowEnd": "2026-05-19T00:00:00Z",
-        "resetsInSeconds": 345600
+        "used_percent": 0,
+        "window_start": "2026-05-12T00:00:00Z",
+        "window_end": "2026-05-19T00:00:00Z",
+        "resets_in_seconds": 345600
       }
     }
   }
 }
 ```
 
-A non-self request returns a public-safe profile with `blockedByYou` and (by default) `publicUploads`.
+A non-self request returns a public-safe profile with `blocked_by_you` and (by default) `public_uploads`.
 
 ```json
 {
@@ -102,21 +102,21 @@ A non-self request returns a public-safe profile with `blockedByYou` and (by def
     "verified": false,
     "staff": false,
     "partner": false,
-    "bugHunterTier": 1,
+    "bug_hunter_tier": 1,
     "translator": false,
     "created": "2026-02-18T14:00:00Z",
     "suspended": false,
-    "customEmbed": null,
+    "custom_embed": null,
     "badges": {
       "verified": false,
       "staff": false,
       "partner": false,
-      "bugHunterTier": 1,
+      "bug_hunter_tier": 1,
       "translator": false,
       "plus": false
     },
-    "blockedByYou": false,
-    "publicUploads": [
+    "blocked_by_you": false,
+    "public_uploads": [
       {
         "url": "https://i.snipp.gg/987654321098765432/a1b2c3d4e5f6789012345678abcdef01.png",
         "code": "AbCd1234",
@@ -124,7 +124,7 @@ A non-self request returns a public-safe profile with `blockedByYou` and (by def
         "description": null,
         "created": "2026-02-19T10:00:00Z",
         "public": true,
-        "isAlbum": false
+        "is_album": false
       }
     ]
   }

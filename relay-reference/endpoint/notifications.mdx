@@ -7,21 +7,21 @@ List your notifications, newest first.
 
 ## Behavior
 
-- Likes, comment likes and follows are **aggregated**. One entry can stand for several events, so read `actorCount` and `postCount` rather than assuming one entry means one person.
-  - Likes on the same post group together: `actorCount` is how many people liked it.
-  - A single person liking several of your posts groups together: `postCount` is how many posts.
+- Likes, comment likes and follows are **aggregated**. One entry can stand for several events, so read `actor_count` and `post_count` rather than assuming one entry means one person.
+  - Likes on the same post group together: `actor_count` is how many people liked it.
+  - A single person liking several of your posts groups together: `post_count` is how many posts.
   - Comment likes group by comment. Comments never group, since each carries its own text.
-- `actors` is capped at 10 even when `actorCount` is higher. It is enough to render an avatar row.
+- `actors` is capped at 10 even when `actor_count` is higher. It is enough to render an avatar row.
 - Grouping is applied per page, so an aggregated entry only covers events within the same page of results.
 - `mention` notifications fire when someone @-mentions you in a post description or a comment. They are always delivered and cannot be turned off. `body` holds the text the mention appeared in.
 - `body` carries the comment excerpt for comment, comment-like, and mention notifications, and the payout amount for payout notifications. Do not render it as an excerpt without checking `type` first.
-- `postText` is the related post's text (its title, falling back to its description). Use it as the excerpt for post likes, the way `body` is used for comments.
-- `postThumb` is null for videos with no thumbnail. `postThumb` and `postText` are both null for posts that have been moderated.
-- If the related post is no longer visible to you (it was made private, is a draft, or belongs to a team you are not in), `postThumb`, `postText` and `body` are all null. `body` is also null when every actor on the entry has been suspended.
+- `post_text` is the related post's text (its title, falling back to its description). Use it as the excerpt for post likes, the way `body` is used for comments.
+- `post_thumb` is null for videos with no thumbnail. `post_thumb` and `post_text` are both null for posts that have been moderated.
+- If the related post is no longer visible to you (it was made private, is a draft, or belongs to a team you are not in), `post_thumb`, `post_text` and `body` are all null. `body` is also null when every actor on the entry has been suspended.
 
 ## Pagination
 
-Pass the `createdAt` of the last entry you received as `before` to fetch the next page. Keep going while `hasMore` is true.
+Pass the `created_at` of the last entry you received as `before` to fetch the next page. Keep going while `has_more` is true.
 
 ## Examples
 
@@ -43,10 +43,10 @@ curl -X GET "https://relay.snipp.gg/notifications?before=2026-07-13T10:00:00Z" \
     {
       "id": "00000000-0000-4000-8000-000000000000",
       "type": "like",
-      "postCode": "AbCd1234",
+      "post_code": "AbCd1234",
       "body": null,
       "read": false,
-      "createdAt": "2026-07-13T10:00:00Z",
+      "created_at": "2026-07-13T10:00:00Z",
       "actors": [
         {
           "username": "playerone",
@@ -55,13 +55,13 @@ curl -X GET "https://relay.snipp.gg/notifications?before=2026-07-13T10:00:00Z" \
           "verified": false
         }
       ],
-      "actorCount": 3,
-      "postCount": 1,
-      "postThumb": "https://i.snipp.gg/123456789012345678/thumb/clip.jpg",
-      "postText": "clutch 1v3 on dust2"
+      "actor_count": 3,
+      "post_count": 1,
+      "post_thumb": "https://i.snipp.gg/123456789012345678/thumb/clip.jpg",
+      "post_text": "clutch 1v3 on dust2"
     }
   ],
-  "hasMore": false
+  "has_more": false
 }
 ```
 

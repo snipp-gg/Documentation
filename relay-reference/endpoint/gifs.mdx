@@ -12,9 +12,9 @@ Browse public GIFs across Snipp, newest first, like a public GIF feed. Defaults 
 - Returns public posts only. Unlisted, private, draft, moderated, and team posts are excluded, as are posts from suspended accounts.
 - `?search` matches word prefixes (case-insensitive) in the title or description. `kitt` matches "kitty" and "kitten" but not "skittle", since it must match the start of a word.
 - Multiple words are combined with AND, order independent. `kit cat` matches a post whose title or description has a word starting with "kit" and a word starting with "cat", anywhere. Up to 6 words are used.
-- `thumbnailUrl` is only present when the post has a thumbnail.
+- `thumbnail_url` is only present when the post has a thumbnail.
 - `title` and `description` are `null` when none is set.
-- `hasMore` is `true` when another page is likely available. Page with `offset`.
+- `has_more` is `true` when another page is likely available. Page with `offset`.
 
 ## Examples
 
@@ -34,14 +34,14 @@ curl -X GET "https://relay.snipp.gg/gifs?search=kitty"
     {
       "code": "AbCd1234",
       "url": "https://i.snipp.gg/364836696149458944/16483ec5681c5fc2b5cc08dd49b7dbae.gif",
-      "thumbnailUrl": "https://i.snipp.gg/364836696149458944/thumb/16483ec5681c5fc2b5cc08dd49b7dbae.jpg",
+      "thumbnail_url": "https://i.snipp.gg/364836696149458944/thumb/16483ec5681c5fc2b5cc08dd49b7dbae.jpg",
       "title": "Nice loop",
       "description": null,
       "created": "2026-03-27T11:42:18.000Z",
       "views": 128
     }
   ],
-  "hasMore": true,
+  "has_more": true,
   "offset": 0,
   "limit": 50
 }

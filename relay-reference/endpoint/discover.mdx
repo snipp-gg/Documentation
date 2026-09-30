@@ -12,8 +12,8 @@ Browse public uploads from the community. Returns up to 50 recent items in rando
 - Blocked users are filtered both ways: posts from users you have blocked, and posts from users who have blocked you, are excluded.
 - Hits to this endpoint count a view toward each returned post. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour.
 - Files that no longer exist on the CDN are skipped silently.
-- `likeCount` is the total like count on the post, and `liked` is whether you have liked it. Use [Like Post](/relay-reference/endpoint/like) to toggle.
-- `thumbnailUrl` is only present when the post has a thumbnail.
+- `like_count` is the total like count on the post, and `liked` is whether you have liked it. Use [Like Post](/relay-reference/endpoint/like) to toggle.
+- `thumbnail_url` is only present when the post has a thumbnail.
 - `priority` is `true` when the post's video is served over priority delivery, and `false` for standard delivery.
 
 ## Examples
@@ -30,22 +30,22 @@ curl -X GET "https://relay.snipp.gg/discover" \
   "uploads": [
     {
       "url": "https://i.snipp.gg/123456789012345678/abc123.png",
-      "thumbnailUrl": "https://i.snipp.gg/123456789012345678/thumb/16483ec5681c5fc2b5cc08dd49b7dbae.jpg",
+      "thumbnail_url": "https://i.snipp.gg/123456789012345678/thumb/16483ec5681c5fc2b5cc08dd49b7dbae.jpg",
       "code": "AbCd1234",
       "title": "Nice shot",
       "description": null,
       "created": "2026-05-03T12:00:00Z",
       "views": 128,
-      "likeCount": 42,
+      "like_count": 42,
       "liked": false,
-      "commentCount": 3,
+      "comment_count": 3,
       "priority": false,
       "author": "Player One",
-      "authorId": "123456789012345678",
-      "authorUsername": "playerone",
-      "authorAvatar": "https://cdn.snipp.gg/avatars/123456789012345678/avatar.png",
-      "authorPlus": true,
-      "isVerified": false
+      "author_id": "123456789012345678",
+      "author_username": "playerone",
+      "author_avatar": "https://cdn.snipp.gg/avatars/123456789012345678/avatar.png",
+      "author_plus": true,
+      "is_verified": false
     }
   ]
 }

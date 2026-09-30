@@ -55,7 +55,7 @@ user = client.get_user("@me", include_posts=True, posts_limit=10)
 
 ### `get_post(code)`
 
-Fetch a post by its share code. Team posts are only readable by members of that team, and omit `likeCount`.
+Fetch a post by its share code. Team posts are only readable by members of that team, and omit `like_count`.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -121,7 +121,7 @@ Add one or more files to an existing album post. The post's share code, privacy,
 
 ```python
 result = client.append_upload("AbCd1234", ["photo-a.png", "photo-b.png"])
-print(result["post"]["fileCount"])
+print(result["post"]["file_count"])
 ```
 
 ### `delete_upload(filename)`

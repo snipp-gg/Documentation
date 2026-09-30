@@ -10,8 +10,8 @@ Fetch your daily upload activity for the last 365 days, along with aggregate sta
 - Authenticated with your `relay-key`. Returns activity for the key's owner only.
 - `history` is ascending by date. Days with no uploads are omitted, so the array is sparse.
 - `bytes` and `count` reflect successful uploads. A reservation that fails mid-upload is rolled back and does not appear.
-- `stats.currentStreak` counts consecutive days with uploads ending on the current UTC day. It is `0` if you have not uploaded today.
-- `stats.biggestDay` is `null` when there is no activity in the window.
+- `stats.current_streak` counts consecutive days with uploads ending on the current UTC day. It is `0` if you have not uploaded today.
+- `stats.biggest_day` is `null` when there is no activity in the window.
 - All dates are UTC.
 
 ## Examples
@@ -40,12 +40,12 @@ curl -X GET "https://relay.snipp.gg/usage-history" \
     }
   ],
   "stats": {
-    "totalBytes": 6291456,
-    "totalUploads": 4,
-    "activeDays": 2,
-    "currentStreak": 1,
-    "biggestDay": { "day": "2026-05-12", "bytes": 5242880 },
-    "windowDays": 365
+    "total_bytes": 6291456,
+    "total_uploads": 4,
+    "active_days": 2,
+    "current_streak": 1,
+    "biggest_day": { "day": "2026-05-12", "bytes": 5242880 },
+    "window_days": 365
   }
 }
 ```

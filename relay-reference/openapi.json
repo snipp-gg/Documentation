@@ -32,7 +32,7 @@
     "/users/{id}": {
       "get": {
         "summary": "Get User",
-        "description": "Retrieve user profile data. Includes badge flags and a `badges` object (ordered as `verified`, `staff`, `partner`, `bugHunterTier`, `translator`, `plus`). For non-self requests, public profile uploads are included by default as `publicUploads`.",
+        "description": "Retrieve user profile data. Includes badge flags and a `badges` object (ordered as `verified`, `staff`, `partner`, `bug_hunter_tier`, `translator`, `plus`). For non-self requests, public profile uploads are included by default as `public_uploads`.",
         "operationId": "getUser",
         "parameters": [
           {
@@ -45,19 +45,19 @@
             }
           },
           {
-            "name": "includePosts",
+            "name": "include_posts",
             "in": "query",
             "required": false,
-            "description": "Include `publicUploads` in the response. Defaults to `true` for non-self requests and `false` for `@me`.",
+            "description": "Include `public_uploads` in the response. Defaults to `true` for non-self requests and `false` for `@me`.",
             "schema": {
               "type": "boolean"
             }
           },
           {
-            "name": "postsLimit",
+            "name": "posts_limit",
             "in": "query",
             "required": false,
-            "description": "Maximum number of `publicUploads` to return (1-50, default 50).",
+            "description": "Maximum number of `public_uploads` to return (1-50, default 50).",
             "schema": {
               "type": "integer",
               "minimum": 1,
@@ -85,38 +85,38 @@
                         "nickname": "Snipp",
                         "bio": null,
                         "socials": null,
-                        "apiKey": "aB3xK9mP2qR7sT1vW4yZ6cD8fG0hJ5kL",
-                        "relayKey": "Zy7wV4uT1sR8qP5nM2kJ9hG6fD3bC0aX",
+                        "api_key": "aB3xK9mP2qR7sT1vW4yZ6cD8fG0hJ5kL",
+                        "relay_key": "Zy7wV4uT1sR8qP5nM2kJ9hG6fD3bC0aX",
                         "plus": true,
                         "ultra": false,
                         "verified": true,
                         "staff": false,
                         "partner": false,
                         "translator": false,
-                        "bugHunterTier": 0,
+                        "bug_hunter_tier": 0,
                         "suspended": false,
                         "created": "2025-01-01T00:00:00.000Z",
-                        "customEmbed": null,
+                        "custom_embed": null,
                         "theme": "pastel_blue",
                         "badges": {
                           "verified": true,
                           "staff": false,
                           "partner": false,
-                          "bugHunterTier": 0,
+                          "bug_hunter_tier": 0,
                           "translator": false,
                           "plus": true
                         },
                         "uploads": 42,
                         "limits": {
                           "plan": "plus",
-                          "maxFileSize": 21474836480,
+                          "max_file_size": 21474836480,
                           "usage": {
                             "used": 1073741824,
                             "limit": 21474836480,
-                            "usedPercent": 5,
-                            "windowStart": "2026-05-01T00:00:00.000Z",
-                            "windowEnd": "2026-05-08T00:00:00.000Z",
-                            "resetsInSeconds": 172800
+                            "used_percent": 5,
+                            "window_start": "2026-05-01T00:00:00.000Z",
+                            "window_end": "2026-05-08T00:00:00.000Z",
+                            "resets_in_seconds": 172800
                           }
                         },
                         "subscription": {
@@ -127,8 +127,8 @@
                           "cancel_at_period_end": false,
                           "gifted": false
                         },
-                        "followerCount": 128,
-                        "followingCount": 47
+                        "follower_count": 128,
+                        "following_count": 47
                       }
                     }
                   },
@@ -151,23 +151,23 @@
                         "staff": false,
                         "partner": false,
                         "translator": false,
-                        "bugHunterTier": 1,
+                        "bug_hunter_tier": 1,
                         "suspended": false,
                         "created": "2025-01-01T00:00:00.000Z",
-                        "customEmbed": null,
+                        "custom_embed": null,
                         "badges": {
                           "verified": true,
                           "staff": false,
                           "partner": false,
-                          "bugHunterTier": 1,
+                          "bug_hunter_tier": 1,
                           "translator": false,
                           "plus": true
                         },
-                        "blockedByYou": false,
-                        "followerCount": 312,
-                        "followingCount": 58,
+                        "blocked_by_you": false,
+                        "follower_count": 312,
+                        "following_count": 58,
                         "following": true,
-                        "publicUploads": [
+                        "public_uploads": [
                           {
                             "url": "https://i.snipp.gg/987654321098765432/example",
                             "code": "AbCd1234",
@@ -259,20 +259,20 @@
                             "type": "string"
                           }
                         },
-                        "isAlbum": {
+                        "is_album": {
                           "type": "boolean",
                           "description": "True when the post contains more than one file."
                         },
                         "files": {
                           "type": "array",
-                          "description": "Per-file metadata. Use `fileName` to address a file in /deleteUpload.",
+                          "description": "Per-file metadata. Use `file_name` to address a file in /deleteUpload.",
                           "items": {
                             "type": "object",
                             "properties": {
                               "index": {
                                 "type": "integer"
                               },
-                              "fileName": {
+                              "file_name": {
                                 "type": "string"
                               },
                               "url": {
@@ -301,7 +301,7 @@
                             }
                           }
                         },
-                        "thumbnailUrl": {
+                        "thumbnail_url": {
                           "type": "string",
                           "description": "URL to a generated thumbnail still frame. Present for video posts; signed (24-hour expiry) for private posts."
                         },
@@ -313,7 +313,7 @@
                           "type": "string",
                           "nullable": true
                         },
-                        "postPrivacy": {
+                        "post_privacy": {
                           "type": "string",
                           "enum": [
                             "public",
@@ -330,7 +330,7 @@
                           "type": "integer",
                           "description": "Total view count for the post (auto-incremented on this request when applicable)."
                         },
-                        "likeCount": {
+                        "like_count": {
                           "type": "integer",
                           "description": "Total likes on the post. Omitted on team posts, which cannot be liked."
                         },
@@ -338,7 +338,7 @@
                           "type": "boolean",
                           "description": "Whether the requesting user has liked this post. Omitted on team posts, which cannot be liked."
                         },
-                        "commentCount": {
+                        "comment_count": {
                           "type": "integer",
                           "description": "Total comments on the post."
                         },
@@ -376,6 +376,14 @@
                         "priority": {
                           "type": "boolean",
                           "description": "True when the post's video is served over priority delivery, false for standard delivery."
+                        },
+                        "moderated": {
+                          "type": "boolean",
+                          "description": "Present and true only in owner-only responses for a moderated post."
+                        },
+                        "restricted": {
+                          "type": "boolean",
+                          "description": "Present and true only in owner-only responses for a restricted post, which is forced to unlisted."
                         },
                         "file": {
                           "type": "object",
@@ -420,12 +428,12 @@
                         "url": "https://i.snipp.gg/123456789012345678/example.png",
                         "title": "My screenshot",
                         "description": "A cool screenshot",
-                        "postPrivacy": "public",
+                        "post_privacy": "public",
                         "created": "2025-01-02T00:00:00.000Z",
                         "views": 42,
-                        "likeCount": 7,
+                        "like_count": 7,
                         "liked": false,
-                        "commentCount": 3,
+                        "comment_count": 3,
                         "author": {
                           "id": "123456789012345678",
                           "username": "playerone",
@@ -563,7 +571,7 @@
                             "type": "string",
                             "description": "Direct URL to the GIF"
                           },
-                          "thumbnailUrl": {
+                          "thumbnail_url": {
                             "type": "string",
                             "description": "Thumbnail URL. Only present when the post has a thumbnail."
                           },
@@ -590,7 +598,7 @@
                         }
                       }
                     },
-                    "hasMore": {
+                    "has_more": {
                       "type": "boolean",
                       "description": "Whether another page is likely available."
                     },
@@ -652,26 +660,6 @@
             }
           },
           {
-            "name": "post-title",
-            "in": "header",
-            "required": false,
-            "description": "Post title (max 30 characters)",
-            "schema": {
-              "type": "string",
-              "maxLength": 30
-            }
-          },
-          {
-            "name": "post-description",
-            "in": "header",
-            "required": false,
-            "description": "Post description (max 200 characters)",
-            "schema": {
-              "type": "string",
-              "maxLength": 200
-            }
-          },
-          {
             "name": "post-type",
             "in": "header",
             "required": false,
@@ -717,6 +705,16 @@
                     "type": "string",
                     "format": "binary",
                     "description": "1-50 image or video files. Use multiple `file` fields for multi-file uploads."
+                  },
+                  "title": {
+                    "type": "string",
+                    "maxLength": 30,
+                    "description": "Post title (max 30 characters)"
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "description": "Post description (max 200 characters)"
                   }
                 }
               }
@@ -782,7 +780,7 @@
                               "type": "string",
                               "description": "Share page URL"
                             },
-                            "postPrivacy": {
+                            "post_privacy": {
                               "type": "string",
                               "enum": [
                                 "public",
@@ -872,7 +870,7 @@
                                 "type": "integer",
                                 "description": "Bytes already used in the current window. Present only when the file was rejected by the weekly usage limit."
                               },
-                              "resetsAt": {
+                              "resets_at": {
                                 "type": "string",
                                 "format": "date-time",
                                 "nullable": true,
@@ -886,7 +884,7 @@
                         },
                         "post": {
                           "type": "object",
-                          "description": "Album mode returns `code`/`url`/`isAlbum`/`fileCount`. Individual mode returns `posts` array.",
+                          "description": "Album mode returns `code`/`url`/`is_album`/`file_count`. Individual mode returns `posts` array.",
                           "properties": {
                             "code": {
                               "type": "string"
@@ -894,13 +892,13 @@
                             "url": {
                               "type": "string"
                             },
-                            "postPrivacy": {
+                            "post_privacy": {
                               "type": "string"
                             },
-                            "isAlbum": {
+                            "is_album": {
                               "type": "boolean"
                             },
-                            "fileCount": {
+                            "file_count": {
                               "type": "integer"
                             },
                             "priority": {
@@ -918,7 +916,7 @@
                                   "url": {
                                     "type": "string"
                                   },
-                                  "postPrivacy": {
+                                  "post_privacy": {
                                     "type": "string"
                                   },
                                   "priority": {
@@ -1175,14 +1173,14 @@
                             "nullable": true,
                             "description": "Associated share code when a post exists"
                           },
-                          "isAlbum": {
+                          "is_album": {
                             "type": "boolean",
                             "description": "Whether the upload belongs to an album post"
                           },
                           "url": {
                             "type": "string"
                           },
-                          "thumbnailUrl": {
+                          "thumbnail_url": {
                             "type": "string",
                             "description": "Thumbnail URL for video posts. Omitted when the post has no thumbnail."
                           },
@@ -1426,7 +1424,7 @@
                           "type": "string",
                           "nullable": true
                         },
-                        "postPrivacy": {
+                        "post_privacy": {
                           "type": "string",
                           "enum": [
                             "public",
@@ -1572,7 +1570,7 @@
                           "type": "string",
                           "description": "Share page URL"
                         },
-                        "postPrivacy": {
+                        "post_privacy": {
                           "type": "string",
                           "enum": [
                             "public",
@@ -1580,7 +1578,7 @@
                             "private"
                           ]
                         },
-                        "fileCount": {
+                        "file_count": {
                           "type": "integer",
                           "description": "Total files in the album after append"
                         },
@@ -1599,7 +1597,7 @@
                           "index": {
                             "type": "integer"
                           },
-                          "fileName": {
+                          "file_name": {
                             "type": "string"
                           },
                           "url": {
@@ -1662,7 +1660,7 @@
                             "type": "integer",
                             "description": "Bytes already used in the current window. Present only when the file was rejected by the weekly usage limit."
                           },
-                          "resetsAt": {
+                          "resets_at": {
                             "type": "string",
                             "format": "date-time",
                             "nullable": true,
@@ -1770,7 +1768,7 @@
                           "url": {
                             "type": "string"
                           },
-                          "thumbnailUrl": {
+                          "thumbnail_url": {
                             "type": "string",
                             "description": "Thumbnail URL. Only present when the post has a thumbnail."
                           },
@@ -1793,7 +1791,7 @@
                             "type": "integer",
                             "description": "Total view count for the post (auto-incremented on this request when applicable)."
                           },
-                          "likeCount": {
+                          "like_count": {
                             "type": "integer",
                             "description": "Total likes on the post."
                           },
@@ -1801,7 +1799,7 @@
                             "type": "boolean",
                             "description": "Whether the requesting user has liked this post."
                           },
-                          "commentCount": {
+                          "comment_count": {
                             "type": "integer",
                             "description": "Total comments on the post."
                           },
@@ -1812,22 +1810,22 @@
                           "author": {
                             "type": "string"
                           },
-                          "authorId": {
+                          "author_id": {
                             "type": "string",
                             "nullable": true
                           },
-                          "authorUsername": {
+                          "author_username": {
                             "type": "string",
                             "nullable": true
                           },
-                          "authorAvatar": {
+                          "author_avatar": {
                             "type": "string",
                             "nullable": true
                           },
-                          "authorPlus": {
+                          "author_plus": {
                             "type": "boolean"
                           },
-                          "isVerified": {
+                          "is_verified": {
                             "type": "boolean"
                           }
                         }
@@ -1879,7 +1877,7 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "userId": {
+                          "user_id": {
                             "type": "string"
                           },
                           "created": {
@@ -1929,13 +1927,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "targetId": {
+                  "target_id": {
                     "type": "string",
                     "description": "The user ID to block"
                   }
                 },
                 "required": [
-                  "targetId"
+                  "target_id"
                 ]
               }
             }
@@ -2026,13 +2024,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "targetId": {
+                  "target_id": {
                     "type": "string",
                     "description": "The user ID to unblock"
                   }
                 },
                 "required": [
-                  "targetId"
+                  "target_id"
                 ]
               }
             }
@@ -2123,13 +2121,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "targetId": {
+                  "target_id": {
                     "type": "string",
                     "description": "The user ID to follow"
                   }
                 },
                 "required": [
-                  "targetId"
+                  "target_id"
                 ]
               }
             }
@@ -2207,7 +2205,7 @@
     "/unfollow": {
       "post": {
         "summary": "Unfollow User",
-        "description": "Unfollow a user by ID, or remove one of your own followers. Exactly one of `targetId` or `removeFollower` must be provided. If both are present, `removeFollower` takes precedence.",
+        "description": "Unfollow a user by ID, or remove one of your own followers. Exactly one of `target_id` or `remove_follower` must be provided. If both are present, `remove_follower` takes precedence.",
         "operationId": "unfollowUser",
         "requestBody": {
           "required": true,
@@ -2216,11 +2214,11 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "targetId": {
+                  "target_id": {
                     "type": "string",
                     "description": "The user ID to unfollow"
                   },
-                  "removeFollower": {
+                  "remove_follower": {
                     "type": "string",
                     "description": "The follower user ID to remove from your followers"
                   }
@@ -2251,7 +2249,7 @@
             }
           },
           "400": {
-            "description": "Missing or non-numeric targetId and removeFollower",
+            "description": "Missing or non-numeric target_id and remove_follower",
             "content": {
               "application/json": {
                 "schema": {
@@ -2421,13 +2419,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "shareCode": {
+                  "code": {
                     "type": "string",
                     "description": "The share code of the post"
                   }
                 },
                 "required": [
-                  "shareCode"
+                  "code"
                 ]
               }
             }
@@ -2444,7 +2442,7 @@
                     "liked": {
                       "type": "boolean"
                     },
-                    "likeCount": {
+                    "like_count": {
                       "type": "integer"
                     }
                   }
@@ -2508,11 +2506,11 @@
     "/comments": {
       "get": {
         "summary": "List Comments",
-        "description": "List comments on a post. Pass `shareCode` as a query parameter or `code` as a header.",
+        "description": "List comments on a post. Pass the post's share code as the `code` query parameter.",
         "operationId": "listComments",
         "parameters": [
           {
-            "name": "shareCode",
+            "name": "code",
             "in": "query",
             "required": false,
             "description": "The share code of the post",
@@ -2540,10 +2538,10 @@
                           "body": {
                             "type": "string"
                           },
-                          "userId": {
+                          "user_id": {
                             "type": "string"
                           },
-                          "createdAt": {
+                          "created_at": {
                             "type": "string",
                             "format": "date-time"
                           },
@@ -2559,7 +2557,7 @@
                             "type": "string",
                             "nullable": true
                           },
-                          "isVerified": {
+                          "is_verified": {
                             "type": "boolean"
                           },
                           "plus": {
@@ -2626,7 +2624,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "shareCode": {
+                  "code": {
                     "type": "string"
                   },
                   "text": {
@@ -2635,7 +2633,7 @@
                   }
                 },
                 "required": [
-                  "shareCode",
+                  "code",
                   "text"
                 ]
               }
@@ -2727,17 +2725,17 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "shareCode": {
+                  "code": {
                     "type": "string"
                   },
-                  "commentId": {
+                  "comment_id": {
                     "type": "string",
                     "description": "The UUID of the comment to delete"
                   }
                 },
                 "required": [
-                  "shareCode",
-                  "commentId"
+                  "code",
+                  "comment_id"
                 ]
               }
             }
@@ -2818,7 +2816,7 @@
     "/profile": {
       "patch": {
         "summary": "Update Profile",
-        "description": "Update profile fields. Send only the fields you want to change. Avatar and banner URLs must point to your own avatars/{userId}/ or banners/{userId}/ prefix on the Snipp CDN. Use /profile/avatar or /profile/banner to upload first.",
+        "description": "Update profile fields. Send only the fields you want to change. Avatar and banner URLs must point to your own avatars/{user_id}/ or banners/{user_id}/ prefix on the Snipp CDN. Use /profile/avatar or /profile/banner to upload first.",
         "operationId": "updateProfile",
         "requestBody": {
           "required": true,
@@ -2855,7 +2853,7 @@
                     "type": "string",
                     "nullable": true
                   },
-                  "customEmbed": {
+                  "custom_embed": {
                     "type": "object",
                     "nullable": true,
                     "description": "PLUS-only. Custom embed configuration for share pages.",
@@ -2868,11 +2866,11 @@
                         "type": "string",
                         "maxLength": 200
                       },
-                      "themeColor": {
+                      "theme_color": {
                         "type": "string",
                         "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
                       },
-                      "smallText": {
+                      "small_text": {
                         "type": "string",
                         "maxLength": 50
                       }
@@ -2941,7 +2939,7 @@
     "/profile/avatar": {
       "post": {
         "summary": "Upload Avatar",
-        "description": "Upload a new avatar. Multipart form upload. Image is square-cropped to the shorter side and stored under avatars/{userId}/. Accepts .png, .jpg, .webp, .gif up to 30 MB. Sets the field on your profile automatically.",
+        "description": "Upload a new avatar. Multipart form upload. Image is square-cropped to the shorter side and stored under avatars/{user_id}/. Accepts .png, .jpg, .webp, .gif up to 30 MB. Sets the field on your profile automatically.",
         "operationId": "uploadAvatar",
         "requestBody": {
           "required": true,
@@ -3030,7 +3028,7 @@
     "/profile/banner": {
       "post": {
         "summary": "Upload Banner",
-        "description": "Upload a new banner. Multipart form upload. Banner keeps its original aspect ratio and is stored under banners/{userId}/. Accepts .png, .jpg, .webp, .gif up to 30 MB. Sets the field on your profile automatically.",
+        "description": "Upload a new banner. Multipart form upload. Banner keeps its original aspect ratio and is stored under banners/{user_id}/. Accepts .png, .jpg, .webp, .gif up to 30 MB. Sets the field on your profile automatically.",
         "operationId": "uploadBanner",
         "requestBody": {
           "required": true,
@@ -3344,7 +3342,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "targetUserId": {
+                  "target_user_id": {
                     "type": "string",
                     "description": "The ID of the user to report"
                   },
@@ -3355,7 +3353,7 @@
                   }
                 },
                 "required": [
-                  "targetUserId"
+                  "target_user_id"
                 ]
               }
             }
@@ -3442,7 +3440,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "commentId": {
+                  "comment_id": {
                     "type": "string",
                     "description": "The ID of the comment to report"
                   },
@@ -3453,7 +3451,7 @@
                   }
                 },
                 "required": [
-                  "commentId"
+                  "comment_id"
                 ]
               }
             }
@@ -3610,23 +3608,23 @@
                     "stats": {
                       "type": "object",
                       "properties": {
-                        "totalBytes": {
+                        "total_bytes": {
                           "type": "integer",
                           "description": "Total bytes uploaded across the window."
                         },
-                        "totalUploads": {
+                        "total_uploads": {
                           "type": "integer",
                           "description": "Total files uploaded across the window."
                         },
-                        "activeDays": {
+                        "active_days": {
                           "type": "integer",
                           "description": "Number of days with at least one upload."
                         },
-                        "currentStreak": {
+                        "current_streak": {
                           "type": "integer",
                           "description": "Consecutive days with uploads ending today (UTC)."
                         },
-                        "biggestDay": {
+                        "biggest_day": {
                           "type": "object",
                           "nullable": true,
                           "description": "The single day with the most bytes uploaded. `null` if there is no activity.",
@@ -3640,7 +3638,7 @@
                             }
                           }
                         },
-                        "windowDays": {
+                        "window_days": {
                           "type": "integer",
                           "description": "Size of the history window in days (always 365)."
                         }
@@ -3662,15 +3660,15 @@
                     }
                   ],
                   "stats": {
-                    "totalBytes": 280274,
-                    "totalUploads": 3,
-                    "activeDays": 2,
-                    "currentStreak": 1,
-                    "biggestDay": {
+                    "total_bytes": 280274,
+                    "total_uploads": 3,
+                    "active_days": 2,
+                    "current_streak": 1,
+                    "biggest_day": {
                       "day": "2026-05-10",
                       "bytes": 200000
                     },
-                    "windowDays": 365
+                    "window_days": 365
                   }
                 }
               }
@@ -4416,7 +4414,7 @@
               "type": "string",
               "format": "date-time"
             },
-            "description": "Cursor. Pass the `createdAt` of the last entry you received to fetch the next page."
+            "description": "Cursor. Pass the `created_at` of the last entry you received to fetch the next page."
           }
         ],
         "responses": {
@@ -4433,7 +4431,7 @@
                         "$ref": "#/components/schemas/Notification"
                       }
                     },
-                    "hasMore": {
+                    "has_more": {
                       "type": "boolean"
                     }
                   }
@@ -4882,13 +4880,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "commentId": {
+                  "comment_id": {
                     "type": "string",
                     "description": "The ID of the comment"
                   }
                 },
                 "required": [
-                  "commentId"
+                  "comment_id"
                 ]
               }
             }
@@ -4982,7 +4980,7 @@
           "partner": {
             "type": "boolean"
           },
-          "bugHunterTier": {
+          "bug_hunter_tier": {
             "type": "integer",
             "minimum": 0,
             "maximum": 2,
@@ -4999,7 +4997,7 @@
           "verified",
           "staff",
           "partner",
-          "bugHunterTier",
+          "bug_hunter_tier",
           "translator",
           "plus"
         ]
@@ -5029,7 +5027,7 @@
           "public": {
             "type": "boolean"
           },
-          "isAlbum": {
+          "is_album": {
             "type": "boolean"
           }
         },
@@ -5088,7 +5086,7 @@
           "translator": {
             "type": "boolean"
           },
-          "bugHunterTier": {
+          "bug_hunter_tier": {
             "type": "integer",
             "minimum": 0,
             "maximum": 2,
@@ -5102,7 +5100,7 @@
             "format": "date-time",
             "nullable": true
           },
-          "customEmbed": {
+          "custom_embed": {
             "type": "object",
             "nullable": true,
             "description": "PLUS-only custom embed settings for share pages.",
@@ -5115,11 +5113,11 @@
                 "type": "string",
                 "maxLength": 200
               },
-              "themeColor": {
+              "theme_color": {
                 "type": "string",
                 "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
               },
-              "smallText": {
+              "small_text": {
                 "type": "string",
                 "maxLength": 50
               }
@@ -5129,12 +5127,12 @@
           "badges": {
             "$ref": "#/components/schemas/Badges"
           },
-          "followerCount": {
+          "follower_count": {
             "type": "integer",
             "minimum": 0,
             "description": "Number of users following this account."
           },
-          "followingCount": {
+          "following_count": {
             "type": "integer",
             "minimum": 0,
             "description": "Number of accounts this user follows."
@@ -5148,11 +5146,11 @@
           "staff",
           "partner",
           "translator",
-          "bugHunterTier",
+          "bug_hunter_tier",
           "suspended",
           "badges",
-          "followerCount",
-          "followingCount"
+          "follower_count",
+          "following_count"
         ]
       },
       "UserProfileSelf": {
@@ -5163,11 +5161,11 @@
           {
             "type": "object",
             "properties": {
-              "apiKey": {
+              "api_key": {
                 "type": "string",
                 "description": "Your API key. Self-only field."
               },
-              "relayKey": {
+              "relay_key": {
                 "type": "string",
                 "description": "Your relay key. Self-only field."
               },
@@ -5186,7 +5184,7 @@
               "subscription": {
                 "$ref": "#/components/schemas/UserSubscription"
               },
-              "publicUploads": {
+              "public_uploads": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/PublicUpload"
@@ -5194,8 +5192,8 @@
               }
             },
             "required": [
-              "apiKey",
-              "relayKey",
+              "api_key",
+              "relay_key",
               "uploads",
               "limits",
               "subscription"
@@ -5280,7 +5278,7 @@
             ],
             "description": "Active plan."
           },
-          "maxFileSize": {
+          "max_file_size": {
             "type": "integer",
             "description": "Maximum size per file in bytes. 50 MB on free. On Snipp+ and Ultra it equals your weekly quota (20 GB on Snipp+, 50 GB on Ultra). Videos are capped at 30 GB on every plan."
           },
@@ -5296,11 +5294,11 @@
                 "type": "integer",
                 "description": "Total bytes allowed per window. 2 GB free, 20 GB plus, 50 GB ultra."
               },
-              "usedPercent": {
+              "used_percent": {
                 "type": "number",
                 "description": "Percentage of the window quota used, rounded to the nearest integer (0-100+; can exceed 100 when over quota)."
               },
-              "windowStart": {
+              "window_start": {
                 "type": [
                   "string",
                   "null"
@@ -5308,7 +5306,7 @@
                 "format": "date-time",
                 "description": "ISO timestamp when the current window started, derived from the account's fixed reset schedule. Present even when nothing has been uploaded yet."
               },
-              "windowEnd": {
+              "window_end": {
                 "type": [
                   "string",
                   "null"
@@ -5316,7 +5314,7 @@
                 "format": "date-time",
                 "description": "ISO timestamp when the current window ends and usage resets. This is the account's fixed reset moment, the same day and time every week."
               },
-              "resetsInSeconds": {
+              "resets_in_seconds": {
                 "type": [
                   "integer",
                   "null"
@@ -5327,16 +5325,16 @@
             "required": [
               "used",
               "limit",
-              "usedPercent",
-              "windowStart",
-              "windowEnd",
-              "resetsInSeconds"
+              "used_percent",
+              "window_start",
+              "window_end",
+              "resets_in_seconds"
             ]
           }
         },
         "required": [
           "plan",
-          "maxFileSize",
+          "max_file_size",
           "usage"
         ]
       },
@@ -5348,13 +5346,13 @@
           {
             "type": "object",
             "properties": {
-              "publicUploads": {
+              "public_uploads": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/PublicUpload"
                 }
               },
-              "blockedByYou": {
+              "blocked_by_you": {
                 "type": "boolean",
                 "description": "Whether you have blocked this user. Only present on non-self profiles."
               },
@@ -5414,10 +5412,10 @@
           "verified": {
             "type": "boolean"
           },
-          "youFollow": {
+          "you_follow": {
             "type": "boolean"
           },
-          "isYou": {
+          "is_you": {
             "type": "boolean"
           }
         }
@@ -5467,7 +5465,7 @@
               "report_received"
             ]
           },
-          "postCode": {
+          "post_code": {
             "type": "string",
             "nullable": true,
             "description": "Share code of the related post"
@@ -5480,32 +5478,32 @@
           "read": {
             "type": "boolean"
           },
-          "createdAt": {
+          "created_at": {
             "type": "string",
             "format": "date-time",
             "description": "Timestamp of the most recent event in the group"
           },
           "actors": {
             "type": "array",
-            "description": "Users behind the notification, newest first. Capped at 10 even when actorCount is higher.",
+            "description": "Users behind the notification, newest first. Capped at 10 even when actor_count is higher.",
             "items": {
               "$ref": "#/components/schemas/NotificationActor"
             }
           },
-          "actorCount": {
+          "actor_count": {
             "type": "integer",
             "description": "Total number of distinct users in the group"
           },
-          "postCount": {
+          "post_count": {
             "type": "integer",
             "description": "Number of posts covered by the group (a single user liking several of your posts collapses into one entry)"
           },
-          "postThumb": {
+          "post_thumb": {
             "type": "string",
             "nullable": true,
             "description": "Thumbnail of the related post. Null for videos without a thumbnail, for moderated posts, and for posts no longer visible to you."
           },
-          "postText": {
+          "post_text": {
             "type": "string",
             "nullable": true,
             "description": "Text of the related post (title, falling back to description). Null for moderated posts, posts no longer visible to you, and posts with no text."
@@ -5542,7 +5540,7 @@
                 "type": "boolean",
                 "description": "Creator payout and referral emails. On by default."
               },
-              "signIns": {
+              "sign_ins": {
                 "type": "boolean",
                 "description": "An email every time someone signs in to your account on the website. On by default."
               }
@@ -5553,7 +5551,7 @@
       "UploadPrefs": {
         "type": "object",
         "properties": {
-          "defaultPrivacy": {
+          "default_privacy": {
             "type": "string",
             "enum": [
               "private",
@@ -5562,19 +5560,19 @@
             ],
             "description": "The privacy pre-selected when uploading. Unlisted by default."
           },
-          "adaptiveStreaming": {
+          "adaptive_streaming": {
             "type": "boolean",
             "description": "Stream uploaded videos in adaptive quality using priority minutes. On by default."
           },
-          "autoCompress": {
+          "auto_compress": {
             "type": "boolean",
             "description": "Compress images before upload to save weekly quota. Off by default."
           },
-          "includeMetadata": {
+          "include_metadata": {
             "type": "boolean",
             "description": "Keep camera, location and timestamp metadata in uploads. Off by default."
           },
-          "autoCopyUrl": {
+          "auto_copy_url": {
             "type": "boolean",
             "description": "Copy the post link to the clipboard when an upload finishes. Off by default."
           }
@@ -5610,7 +5608,7 @@
                 "type": "boolean",
                 "description": "Creator payout and referral emails. On by default."
               },
-              "signIns": {
+              "sign_ins": {
                 "type": "boolean",
                 "description": "An email every time someone signs in to your account on the website. On by default."
               }
@@ -5656,7 +5654,7 @@
             "format": "date-time",
             "description": "When the device signed in."
           },
-          "lastActive": {
+          "last_active": {
             "type": "string",
             "format": "date-time",
             "description": "When the device was last active. Updated at most every 5 minutes."

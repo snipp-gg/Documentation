@@ -7,8 +7,8 @@ Return the list of users you have blocked.
 
 ## Behavior
 
-- Returns each block as a `userId` (the blocked user's snowflake ID) and a `created` timestamp.
-- Use [`GET /users/{id}`](/relay-reference/endpoint/users) on each `userId` to fetch usernames and avatars.
+- Returns each block as a `user_id` (the blocked user's snowflake ID) and a `created` timestamp.
+- Use [`GET /users/{id}`](/relay-reference/endpoint/users) on each `user_id` to fetch usernames and avatars.
 - Users who have blocked you do not appear here. This endpoint only lists blocks you initiated.
 
 ## Examples
@@ -24,7 +24,7 @@ curl -X GET "https://relay.snipp.gg/blocks" \
 {
   "blocks": [
     {
-      "userId": "123456789012345678",
+      "user_id": "123456789012345678",
       "created": "2026-05-03T12:00:00Z"
     }
   ]

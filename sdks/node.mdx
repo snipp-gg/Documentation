@@ -57,7 +57,7 @@ const user = await client.getUser("@me", { includePosts: true, postsLimit: 10 })
 
 ### `getPost(code)`
 
-Fetch a post by its share code. Team posts are only readable by members of that team, and omit `likeCount`.
+Fetch a post by its share code. Team posts are only readable by members of that team, and omit `like_count`.
 
 ```javascript
 const post = await client.getPost("AbCd1234");
@@ -129,7 +129,7 @@ const b = readFileSync("./photo-b.png");
 const result = await client.appendUpload("AbCd1234", [a, b], {
   filenames: ["photo-a.png", "photo-b.png"],
 });
-console.log(result.post.fileCount);
+console.log(result.post.file_count);
 ```
 
 ### `deleteUpload(filename)`

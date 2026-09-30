@@ -19,14 +19,14 @@ Submit a report for a comment using its ID. An optional reason can be provided t
 
 ```json
 {
-  "commentId": "00000000-0000-4000-8000-000000000000",
+  "comment_id": "00000000-0000-4000-8000-000000000000",
   "reason": "This comment is harassment"
 }
 ```
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `commentId` | string | Yes | The ID of the comment to report |
+| `comment_id` | string | Yes | The ID of the comment to report |
 | `reason` | string | No | Reason for the report (max 200 characters) |
 
 **Response:**
@@ -47,7 +47,7 @@ Submit a report for a comment using its ID. An optional reason can be provided t
 
 | Code | Error | When |
 |------|-------|------|
-| `400` | Invalid comment. | `commentId` is empty, missing, or not a valid ID |
+| `400` | Invalid comment. | `comment_id` is empty, missing, or not a valid ID |
 | `400` | Reason cannot exceed 200 characters. | `reason` exceeds 200 characters |
 | `403` | Your account has been suspended. Reports are restricted. | Your account is suspended |
 | `403` | You cannot report your own comment. | The comment is yours |
@@ -65,7 +65,7 @@ Report a comment:
 curl -X POST "https://relay.snipp.gg/report-comment" \
   -H "relay-key: YOUR_RELAY_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"commentId": "00000000-0000-4000-8000-000000000000", "reason": "Harassment"}'
+  -d '{"comment_id": "00000000-0000-4000-8000-000000000000", "reason": "Harassment"}'
 ```
 
 Report a comment without a reason:
@@ -74,7 +74,7 @@ Report a comment without a reason:
 curl -X POST "https://relay.snipp.gg/report-comment" \
   -H "relay-key: YOUR_RELAY_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"commentId": "00000000-0000-4000-8000-000000000000"}'
+  -d '{"comment_id": "00000000-0000-4000-8000-000000000000"}'
 ```
 
 ## Responses

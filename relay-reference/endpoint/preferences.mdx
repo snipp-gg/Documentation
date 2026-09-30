@@ -9,9 +9,9 @@ Read and update all of your account preferences in one place: notifications, ema
 
 - Send only the sections and keys you want to change. Anything you leave out keeps its current value.
 - `notifications` and `emails` work exactly as in [Notification Preferences](/relay-reference/endpoint/notification-prefs), which returns the same two sections without `uploads`.
-- `uploads.defaultPrivacy` is what the upload screen pre-selects. It does not change uploads that send their own privacy, and uploads that send none still default to private.
-- `uploads.adaptiveStreaming` is on by default. The other upload toggles are off by default.
-- An invalid `uploads.defaultPrivacy` or a non-boolean upload toggle returns `400` and nothing is saved.
+- `uploads.default_privacy` is what the upload screen pre-selects. It does not change uploads that send their own privacy, and uploads that send none still default to private.
+- `uploads.adaptive_streaming` is on by default. The other upload toggles are off by default.
+- An invalid `uploads.default_privacy` or a non-boolean upload toggle returns `400` and nothing is saved.
 
 ## Examples
 
@@ -24,7 +24,7 @@ curl -X GET "https://relay.snipp.gg/preferences" \
 curl -X POST "https://relay.snipp.gg/preferences" \
   -H "relay-key: YOUR_RELAY_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"uploads": {"defaultPrivacy": "private"}, "notifications": {"likes": false}}'
+  -d '{"uploads": {"default_privacy": "private"}, "notifications": {"likes": false}}'
 ```
 
 ## Responses
@@ -41,14 +41,14 @@ Both methods return the full set of preferences after the call.
   },
   "emails": {
     "payouts": true,
-    "signIns": true
+    "sign_ins": true
   },
   "uploads": {
-    "defaultPrivacy": "private",
-    "adaptiveStreaming": true,
-    "autoCompress": false,
-    "includeMetadata": false,
-    "autoCopyUrl": false
+    "default_privacy": "private",
+    "adaptive_streaming": true,
+    "auto_compress": false,
+    "include_metadata": false,
+    "auto_copy_url": false
   }
 }
 ```

@@ -7,9 +7,9 @@ Unfollow a user, or remove one of your own followers.
 
 ## Behavior
 
-- Pass `targetId` to stop following that user.
-- Pass `removeFollower` to remove that user from your own followers list. They will need to follow you again to see your posts in their feed.
-- Exactly one of `targetId` or `removeFollower` must be provided. If both are present, `removeFollower` takes precedence.
+- Pass `target_id` to stop following that user.
+- Pass `remove_follower` to remove that user from your own followers list. They will need to follow you again to see your posts in their feed.
+- Exactly one of `target_id` or `remove_follower` must be provided. If both are present, `remove_follower` takes precedence.
 - The ID must be numeric. A missing or non-numeric ID returns `400`.
 - Unfollowing a user who is not followed succeeds without error.
 
@@ -21,7 +21,7 @@ Unfollow a user you currently follow:
 curl -X POST "https://relay.snipp.gg/unfollow" \
   -H "relay-key: YOUR_RELAY_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"targetId": "123456789012345678"}'
+  -d '{"target_id": "123456789012345678"}'
 ```
 
 Remove a follower:
@@ -30,7 +30,7 @@ Remove a follower:
 curl -X POST "https://relay.snipp.gg/unfollow" \
   -H "relay-key: YOUR_RELAY_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"removeFollower": "123456789012345678"}'
+  -d '{"remove_follower": "123456789012345678"}'
 ```
 
 ## Responses

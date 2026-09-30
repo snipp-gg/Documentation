@@ -9,7 +9,7 @@ Update an existing upload's title, description, privacy level, or priority strea
 
 - You must own the upload to edit it, or belong to the owning team with a role other than viewer.
 - At least one of `title`, `description`, `post-privacy`, or `priority` must be provided.
-- Send `title` or `description` as multipart form fields. This is required for non-ASCII values such as emoji or accented characters, which cannot be carried in HTTP headers. The `title` and `description` headers still work for plain ASCII values but are discouraged.
+- `title` and `description` are multipart form fields only.
 - Send an empty string for `title` or `description` to clear the field.
 - `title` is truncated to 30 characters, `description` to 200 characters.
 - A newly added `@username` in the description sends that user a mention notification. Mentions already present before the edit are not re-notified.
@@ -48,7 +48,7 @@ curl -X PATCH "https://relay.snipp.gg/editUpload" \
     "code": "AbCd1234",
     "title": "New title",
     "description": null,
-    "postPrivacy": "public",
+    "post_privacy": "public",
     "priority": false
   }
 }

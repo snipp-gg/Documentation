@@ -9,7 +9,7 @@ List the devices signed in to your account on the website, and log them out. `GE
 
 - Only website sign-ins are listed. Your relay key is a separate credential, so it never appears here and logging out sessions never affects it.
 - `browser` and `os` are `null` for devices that cannot be recognized, including sign-ins from before device details were recorded. `type` falls back to `desktop`.
-- `lastActive` is updated at most every 5 minutes.
+- `last_active` is updated at most every 5 minutes.
 - A logged-out device may keep working on the website for up to 30 seconds.
 - Send `id` to log out one device, or `all: true` to log out every website session.
 
@@ -47,7 +47,7 @@ curl -X POST "https://relay.snipp.gg/sessions" \
       "os": "macOS",
       "type": "desktop",
       "created": "2026-09-20T20:46:25.974Z",
-      "lastActive": "2026-09-26T18:01:54.072Z"
+      "last_active": "2026-09-26T18:01:54.072Z"
     }
   ]
 }

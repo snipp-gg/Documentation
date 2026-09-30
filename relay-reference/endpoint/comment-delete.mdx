@@ -16,7 +16,7 @@ Delete a comment by ID.
 curl -X DELETE "https://relay.snipp.gg/comment" \
   -H "relay-key: YOUR_RELAY_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"shareCode": "AbCd1234", "commentId": "00000000-0000-4000-8000-000000000000"}'
+  -d '{"code": "AbCd1234", "comment_id": "00000000-0000-4000-8000-000000000000"}'
 ```
 
 ## Responses
@@ -29,12 +29,12 @@ Returns the post's updated comment list with the deleted comment removed.
     {
       "id": "11111111-1111-4111-8111-111111111111",
       "body": "Still here",
-      "userId": "987654321098765432",
-      "createdAt": "2026-05-03T12:05:00Z",
+      "user_id": "987654321098765432",
+      "created_at": "2026-05-03T12:05:00Z",
       "username": "playertwo",
       "nickname": "Player Two",
       "avatar": "https://i.snipp.gg/avatars/987654321098765432/avatar.png",
-      "isVerified": false,
+      "is_verified": false,
       "plus": false,
       "likes": 2,
       "liked": false

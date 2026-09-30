@@ -118,7 +118,7 @@ The response includes a direct URL to your file and a post object with share met
   "post": {
     "code": "AbCd1234",
     "url": "https://snipp.gg/p/AbCd1234",
-    "postPrivacy": "unlisted"
+    "post_privacy": "unlisted"
   }
 }
 ```
@@ -130,7 +130,7 @@ Upload multiple files in one request to create an album. Add additional `-F "fil
 ```bash
 curl -X POST "https://api.snipp.gg/upload" \
   -H "api-key: YOUR_API_KEY" \
-  -H "post-title: My album" \
+  -F "title=My album" \
   -F "file=@photo1.png" \
   -F "file=@photo2.png"
 ```
