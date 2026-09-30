@@ -24,8 +24,6 @@ Rate limits protect Snipp from abuse and keep performance consistent for everyon
 | `GET /gifs` | 60 requests per IP | Per minute |
 | `POST /convert` | 10 requests | Per minute |
 
-`POST /upload` also has an abuse safeguard. Sending more than 10 uploads within one second suspends your account. Suspended accounts lose upload access and must contact support to appeal. Team API keys are throttled with a `429` instead of being suspended.
-
 ## Relay Limits
 
 The Relay API matches the limits above for shared endpoints, with these additional Relay-only endpoints:
