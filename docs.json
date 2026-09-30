@@ -68,8 +68,7 @@
               "sdks/introduction",
               "sdks/node",
               "sdks/python",
-              "sdks/rust",
-              "sdks/shadowplay"
+              "sdks/rust"
             ]
           }
         ]
@@ -236,5 +235,12 @@
       "github": "https://snipp.gg/github",
       "x": "https://snipp.gg/x"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/sdks/shadowplay",
+      "destination": "https://snipp.gg/download",
+      "permanent": true
+    }
+  ]
 }
