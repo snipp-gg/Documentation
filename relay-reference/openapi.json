@@ -388,7 +388,7 @@
                         "access": {
                           "type": "array",
                           "description": "Owner-only, and absent for team posts. Users who can open this post while it is private, in the order they were added. Empty when nobody has been given access.",
-                          "items": {"type": "object", "properties": {"id": {"type": "string"}, "username": {"type": "string"}, "nickname": {"type": "string", "nullable": true}, "avatar": {"type": "string", "nullable": true}}}
+                          "items": {"type": "object", "properties": {"id": {"type": "string"}, "username": {"type": "string"}, "nickname": {"type": "string", "nullable": true}, "avatar": {"type": "string", "nullable": true}, "verified": {"type": "boolean"}}}
                         },
                         "file": {
                           "type": "object",
@@ -1448,7 +1448,7 @@
                         "access": {
                           "type": "array",
                           "description": "Present when `access` was sent. The resulting list of users who can open the post.",
-                          "items": {"type": "object", "properties": {"id": {"type": "string"}, "username": {"type": "string"}, "nickname": {"type": "string", "nullable": true}, "avatar": {"type": "string", "nullable": true}}}
+                          "items": {"type": "object", "properties": {"id": {"type": "string"}, "username": {"type": "string"}, "nickname": {"type": "string", "nullable": true}, "avatar": {"type": "string", "nullable": true}, "verified": {"type": "boolean"}}}
                         }
                       }
                     }
