@@ -1486,7 +1486,7 @@
             }
           },
           "403": {
-            "description": "Not your upload, the post is moderated, a restricted post cannot be made public, no priority minutes remain, or `access` names a user you have blocked or who has blocked you.",
+            "description": "Not your upload, the post is moderated, a restricted post cannot be made public, no priority minutes remain, or `access` names a user you have blocked, who has blocked you, or whose Private Post Sharing setting does not allow you.",
             "content": {
               "application/json": {
                 "schema": {
