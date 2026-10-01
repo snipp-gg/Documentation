@@ -12,7 +12,7 @@ Fetch a post by its share code.
 - The `author` object describes the post's uploader. `author` is `null` if the user has been deleted.
 - Use `file_name` from the `files` array when calling [`/deleteUpload`](/relay-reference/endpoint/delete) to address a specific file. On albums, `/deleteUpload` removes just that file; on single-file posts it deletes the post.
 - Hits to this endpoint count a view toward the post. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour. Views are only counted on public, non-moderated posts.
-- Private posts and drafts are only visible to the owner. Requests for another user's private post or draft return `404`.
+- Private posts are only visible to the owner and to users the owner has given access to. Drafts are only visible to the owner. Any other request for a private post or draft returns `404`.
 - Posts by a suspended user return `404` to everyone but that user.
 - Team posts are only visible to members of that team; everyone else gets a `404`. They omit `like_count` and `liked`, since team posts cannot be liked. `comment_count` is still returned.
 - URLs for private posts are returned as signed URLs with a 24-hour expiry. After that, request the endpoint again for a fresh signed URL.

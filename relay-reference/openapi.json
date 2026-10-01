@@ -220,7 +220,7 @@
     "/posts/{code}": {
       "get": {
         "summary": "Get Post",
-        "description": "Fetch a post by its share code. Returns the post's metadata including its direct file URL, title, description, privacy level, and creation date. Private posts and drafts are only visible to the owner, and posts by a suspended user return `404` to everyone else.",
+        "description": "Fetch a post by its share code. Returns the post's metadata including its direct file URL, title, description, privacy level, and creation date. Private posts are only visible to the owner and to users the owner has given access to, drafts only to the owner, and posts by a suspended user return `404` to everyone else.",
         "operationId": "getPost",
         "parameters": [
           {
@@ -3235,7 +3235,7 @@
     "/report-post": {
       "post": {
         "summary": "Report Post",
-        "description": "Report a post for violating community guidelines. The post must not be private, a draft, or a team post, and not your own. Reports are reviewed by the moderation team.",
+        "description": "Report a post for violating community guidelines. The post must not be a draft, a team post, or your own, and if it is private you must have access to it. Reports are reviewed by the moderation team.",
         "operationId": "reportPost",
         "requestBody": {
           "required": true,
@@ -3308,7 +3308,7 @@
             }
           },
           "404": {
-            "description": "Post not found, private, a draft, or a team post",
+            "description": "Post not found, a draft, a team post, or private without access",
             "content": {
               "application/json": {
                 "schema": {
@@ -4404,7 +4404,7 @@
                 "system"
               ]
             },
-            "description": "Filter by category. `social` is follows, likes, comment likes and comments; `system` is everything else."
+            "description": "Filter by category. `social` is follows, likes, comment likes, comments, mentions and shared posts; `system` is everything else."
           },
           {
             "name": "before",
@@ -5456,6 +5456,7 @@
               "comment",
               "comment_like",
               "mention",
+              "post_shared",
               "post_moderated",
               "post_restricted",
               "monetized",

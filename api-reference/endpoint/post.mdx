@@ -11,7 +11,7 @@ Fetch a post by its share code.
 - Video posts include `thumbnail_url`, a generated still frame. For private posts it is a signed URL with the same 24-hour expiry as the file URL. Videos added with [`/appendUpload`](/api-reference/endpoint/append) do not get a thumbnail.
 - Use `file_name` from the `files` array when calling [`/deleteUpload`](/api-reference/endpoint/delete) to address a specific file. On albums, `/deleteUpload` removes just that file; on single-file posts it deletes the post.
 - Liking and commenting are Relay-only actions; see the [Relay Reference](/relay-reference/introduction) to perform them.
-- Private posts are only visible to the owner. Requests for another user's private post return `404`.
+- Private posts are only visible to the owner and to users the owner has given access to. Requests for any other user's private post return `404`.
 - Draft posts are only visible to their owner; anyone else gets `404`.
 - Posts whose owner is suspended return `404` to everyone except the owner.
 - Team posts are only visible to members of that team; everyone else gets a `404`. They omit `like_count`, since team posts cannot be liked. `comment_count` is still returned.

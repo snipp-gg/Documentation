@@ -221,7 +221,7 @@
     "/posts/{code}": {
       "get": {
         "summary": "Get Post",
-        "description": "Fetch a post by its share code. Returns the post's metadata including its direct file URL, title, description, privacy level, and creation date. Private posts are only visible to the owner.",
+        "description": "Fetch a post by its share code. Returns the post's metadata including its direct file URL, title, description, privacy level, and creation date. Private posts are only visible to the owner and to users the owner has given access to.",
         "operationId": "getPost",
         "parameters": [
           {
@@ -1690,7 +1690,7 @@
     "/report-post": {
       "post": {
         "summary": "Report Post",
-        "description": "Report a post for violating community guidelines. The post must not be private or a draft, and not your own. Reports are reviewed by the moderation team.",
+        "description": "Report a post for violating community guidelines. The post must not be a draft or your own, and if it is private you must have access to it. Reports are reviewed by the moderation team.",
         "operationId": "reportPost",
         "requestBody": {
           "required": true,
@@ -1763,7 +1763,7 @@
             }
           },
           "404": {
-            "description": "Post not found or private",
+            "description": "Post not found, a draft, or private without access",
             "content": {
               "application/json": {
                 "schema": {

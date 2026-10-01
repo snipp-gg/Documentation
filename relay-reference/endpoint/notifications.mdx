@@ -14,10 +14,11 @@ List your notifications, newest first.
 - `actors` is capped at 10 even when `actor_count` is higher. It is enough to render an avatar row.
 - Grouping is applied per page, so an aggregated entry only covers events within the same page of results.
 - `mention` notifications fire when someone @-mentions you in a post description or a comment. They are always delivered and cannot be turned off. `body` holds the text the mention appeared in.
+- `post_shared` notifications fire when someone gives you access to one of their private posts. They are always delivered and cannot be turned off. `post_code` links to the post, and `post_text` holds its excerpt.
 - `body` carries the comment excerpt for comment, comment-like, and mention notifications, and the payout amount for payout notifications. Do not render it as an excerpt without checking `type` first.
 - `post_text` is the related post's text (its title, falling back to its description). Use it as the excerpt for post likes, the way `body` is used for comments.
 - `post_thumb` is null for videos with no thumbnail. `post_thumb` and `post_text` are both null for posts that have been moderated.
-- If the related post is no longer visible to you (it was made private, is a draft, or belongs to a team you are not in), `post_thumb`, `post_text` and `body` are all null. `body` is also null when every actor on the entry has been suspended.
+- If the related post is no longer visible to you (it was made private without giving you access, is a draft, or belongs to a team you are not in), `post_thumb`, `post_text` and `body` are all null. `body` is also null when every actor on the entry has been suspended.
 
 ## Pagination
 
