@@ -10,6 +10,7 @@ Fetch either your own profile (`@me`) or another user's public profile.
 - `id=@me` returns your full account profile, including `api_key`, `relay_key`, `limits`, `subscription`, `uploads`, and your settings.
 - `theme` is your selected color theme. It is only returned on the `@me` profile, never on other users. It is `null` if you have not picked one. Set it with [`/theme`](/relay-reference/endpoint/theme).
 - `subscription` is only returned on `@me` and reflects your current plan and lifecycle. See the Subscription block below.
+- `limits.usage` is your weekly storage window in bytes. `limits.priority_minutes` is your 30-day [priority minutes](/concepts/plans#priority-minutes) budget in minutes, with the same fields.
 - `id=<user_id>` returns a public-safe profile for that user.
 - `badges` is always included and follows this order: `verified`, `staff`, `partner`, `bug_hunter_tier`, `translator`, `plus`.
 - `bug_hunter_tier` is an integer from `0` to `2`: `0` is no badge, `1` is Bug Hunter, `2` is Elite Bug Hunter.
@@ -84,6 +85,14 @@ curl -X GET "https://relay.snipp.gg/users/USER_ID?include_posts=true&posts_limit
         "window_start": "2026-05-12T00:00:00Z",
         "window_end": "2026-05-19T00:00:00Z",
         "resets_in_seconds": 345600
+      },
+      "priority_minutes": {
+        "used": 12,
+        "limit": 100,
+        "used_percent": 12,
+        "window_start": "2026-05-01T00:00:00Z",
+        "window_end": "2026-05-31T00:00:00Z",
+        "resets_in_seconds": 1382400
       }
     },
     "subscription": {

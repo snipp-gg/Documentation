@@ -51,6 +51,8 @@ The priority-minutes budget uses a 30-day window on a fixed schedule: your accou
 
 When your monthly budget runs out, videos still upload and play normally. They simply fall back to standard quality instead of priority streaming, with no block or error.
 
+Check your remaining minutes anytime via `GET /users/@me` (`limits.priority_minutes`).
+
 ## Checking Your Plan
 
 You can view your current plan and weekly usage in three places:
@@ -61,7 +63,7 @@ You can view your current plan and weekly usage in three places:
 
 ## Checking Your Plan via the API
 
-Call `GET /users/@me` to see your current plan status and weekly storage usage. The response includes:
+Call `GET /users/@me` to see your current plan status, weekly storage usage, and priority minutes. The response includes:
 
 ```json
 {
@@ -79,6 +81,14 @@ Call `GET /users/@me` to see your current plan status and weekly storage usage. 
         "window_start": "2026-05-01T00:00:00.000Z",
         "window_end": "2026-05-08T00:00:00.000Z",
         "resets_in_seconds": 172800
+      },
+      "priority_minutes": {
+        "used": 12,
+        "limit": 100,
+        "used_percent": 12,
+        "window_start": "2026-04-20T00:00:00.000Z",
+        "window_end": "2026-05-20T00:00:00.000Z",
+        "resets_in_seconds": 1209600
       }
     }
   }
@@ -98,6 +108,12 @@ Call `GET /users/@me` to see your current plan status and weekly storage usage. 
 | `limits.usage.window_start` | When the current window started, derived from the account's fixed reset schedule |
 | `limits.usage.window_end` | When the current window resets: the account's fixed reset moment, the same day and time every week |
 | `limits.usage.resets_in_seconds` | Seconds until the current window resets |
+| `limits.priority_minutes.used` | Priority minutes used in the current 30-day window, rounded to the nearest minute |
+| `limits.priority_minutes.limit` | Priority minutes allowed per window (10 on Free, 100 on PLUS, 300 on Ultra) |
+| `limits.priority_minutes.used_percent` | Percentage of the budget consumed, rounded to the nearest integer (0–100) |
+| `limits.priority_minutes.window_start` | When the current 30-day window started, derived from the account's fixed reset schedule |
+| `limits.priority_minutes.window_end` | When the full budget returns |
+| `limits.priority_minutes.resets_in_seconds` | Seconds until the budget resets |
 
 ## Teams
 

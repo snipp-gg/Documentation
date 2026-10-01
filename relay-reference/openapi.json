@@ -117,6 +117,14 @@
                             "window_start": "2026-05-01T00:00:00.000Z",
                             "window_end": "2026-05-08T00:00:00.000Z",
                             "resets_in_seconds": 172800
+                          },
+                          "priority_minutes": {
+                            "used": 12,
+                            "limit": 100,
+                            "used_percent": 12,
+                            "window_start": "2026-04-20T00:00:00.000Z",
+                            "window_end": "2026-05-20T00:00:00.000Z",
+                            "resets_in_seconds": 1209600
                           }
                         },
                         "subscription": {
@@ -5281,7 +5289,7 @@
       },
       "UserLimits": {
         "type": "object",
-        "description": "Plan limits and current weekly storage usage. Self-only field.",
+        "description": "Plan limits, current weekly storage usage, and priority minutes. Self-only field.",
         "properties": {
           "plan": {
             "type": "string",
@@ -5344,12 +5352,64 @@
               "window_end",
               "resets_in_seconds"
             ]
+          },
+          "priority_minutes": {
+            "type": "object",
+            "description": "Priority streaming budget state. The window is a fixed 30-day period on a per-account schedule assigned at signup, and the full budget returns at that same moment every 30 days. Only video duration counts against it.",
+            "properties": {
+              "used": {
+                "type": "integer",
+                "description": "Priority minutes used in the current window, rounded to the nearest minute."
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Priority minutes allowed per window. 10 free, 100 plus, 300 ultra."
+              },
+              "used_percent": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Percentage of the window budget used, rounded to the nearest integer (0-100)."
+              },
+              "window_start": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time",
+                "description": "ISO timestamp when the current window started, derived from the account's fixed reset schedule."
+              },
+              "window_end": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time",
+                "description": "ISO timestamp when the current window ends and the full budget returns."
+              },
+              "resets_in_seconds": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "Seconds until the current window resets."
+              }
+            },
+            "required": [
+              "used",
+              "limit",
+              "used_percent",
+              "window_start",
+              "window_end",
+              "resets_in_seconds"
+            ]
           }
         },
         "required": [
           "plan",
           "max_file_size",
-          "usage"
+          "usage",
+          "priority_minutes"
         ]
       },
       "UserProfilePublic": {
