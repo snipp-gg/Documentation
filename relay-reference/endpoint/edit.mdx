@@ -3,12 +3,12 @@ title: "Edit Upload"
 openapi: "PATCH /editUpload"
 ---
 
-Update an existing upload's title, description, privacy level, or priority streaming.
+Update an existing upload's title, description, privacy level, priority streaming, or who can open it while private.
 
 ## Behavior
 
 - You must own the upload to edit it, or belong to the owning team with a role other than viewer.
-- At least one of `title`, `description`, `post-privacy`, or `priority` must be provided.
+- At least one of `title`, `description`, `post-privacy`, `priority`, or `access` must be provided.
 - `title` and `description` are multipart form fields only.
 - Send an empty string for `title` or `description` to clear the field.
 - `title` is truncated to 30 characters, `description` to 200 characters.
@@ -17,6 +17,9 @@ Update an existing upload's title, description, privacy level, or priority strea
 - A restricted post cannot be made public. Setting `post-privacy` to `public` on a restricted post returns `403`. You can still switch it between `private` and `unlisted`.
 - `priority` is `true` or `false` and moves the post's videos on or off priority (adaptive) streaming. Turning it on with no priority minutes left returns `403`. Any other value returns `400`.
 - The response always carries `priority`, reflecting where the post's videos ended up.
+- `access` is a multipart form field holding comma-separated usernames, up to 10, who can open the post while it is private. It replaces the whole list; an empty string clears it. It is only accepted when the post is private or this request makes it private, and never on team posts (`400`). An unknown or suspended username returns `404`, your own username `400`, and a user who has blocked you or whom you have blocked `403`.
+- Each newly added user gets one `post_shared` notification. Removing someone and adding them back does not notify them again.
+- The list is kept when the post stops being private and applies again if it is set back to private. When `access` is sent, the response carries the resulting list.
 
 ## Examples
 
@@ -28,6 +31,16 @@ curl -X PATCH "https://relay.snipp.gg/editUpload" \
   -H "code: AbCd1234" \
   -H "post-privacy: public" \
   -F "title=New title 🎉"
+```
+
+Give two people access to a private post:
+
+```bash
+curl -X PATCH "https://relay.snipp.gg/editUpload" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "code: AbCd1234" \
+  -H "post-privacy: private" \
+  -F "access=alice,bob"
 ```
 
 Clear a post's description:

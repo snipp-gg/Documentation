@@ -385,6 +385,11 @@
                           "type": "boolean",
                           "description": "Present and true only in owner-only responses for a restricted post, which is forced to unlisted."
                         },
+                        "access": {
+                          "type": "array",
+                          "description": "Owner-only, and absent for team posts. Users who can open this post while it is private, in the order they were added. Empty when nobody has been given access.",
+                          "items": {"type": "object", "properties": {"id": {"type": "string"}, "username": {"type": "string"}, "nickname": {"type": "string", "nullable": true}, "avatar": {"type": "string", "nullable": true}}}
+                        },
                         "file": {
                           "type": "object",
                           "description": "File metadata. May be absent for older uploads.",
@@ -1336,7 +1341,7 @@
     "/editUpload": {
       "patch": {
         "summary": "Edit Upload",
-        "description": "Edit an existing upload's title, description, privacy level, or priority streaming. You must own the upload, or be a member of the owning team with a role other than viewer.",
+        "description": "Edit an existing upload's title, description, privacy level, priority streaming, or who can open it while private. You must own the upload, or be a member of the owning team with a role other than viewer.",
         "operationId": "editUpload",
         "parameters": [
           {
@@ -1392,6 +1397,10 @@
                     "type": "string",
                     "maxLength": 200,
                     "description": "New description (max 200 characters). Send empty string to clear. Use a form field rather than a header so emoji and accented characters are preserved."
+                  },
+                  "access": {
+                    "type": "string",
+                    "description": "Comma-separated usernames (up to 10) who can open the post while it is private. Replaces the whole list; send an empty string to clear it. Only accepted when the post is or becomes private, and never on team posts."
                   }
                 }
               }
@@ -1435,6 +1444,11 @@
                         "priority": {
                           "type": "boolean",
                           "description": "Whether the post's videos are on priority (adaptive) streaming after the edit."
+                        },
+                        "access": {
+                          "type": "array",
+                          "description": "Present when `access` was sent. The resulting list of users who can open the post.",
+                          "items": {"type": "object", "properties": {"id": {"type": "string"}, "username": {"type": "string"}, "nickname": {"type": "string", "nullable": true}, "avatar": {"type": "string", "nullable": true}}}
                         }
                       }
                     }
@@ -1464,7 +1478,7 @@
             }
           },
           "403": {
-            "description": "Not your upload, the post is moderated, a restricted post cannot be made public, or no priority minutes remain.",
+            "description": "Not your upload, the post is moderated, a restricted post cannot be made public, no priority minutes remain, or `access` names a user you have blocked or who has blocked you.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1474,7 +1488,7 @@
             }
           },
           "404": {
-            "description": "Upload not found",
+            "description": "Upload not found, or a username in `access` does not exist",
             "content": {
               "application/json": {
                 "schema": {
