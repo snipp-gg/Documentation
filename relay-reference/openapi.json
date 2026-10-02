@@ -2129,7 +2129,8 @@
                             "nickname": "Player Two",
                             "avatar": "https://cdn.snipp.gg/avatar.png",
                             "verified": false,
-                            "plan": "free"
+                            "plan": "free",
+                            "suspended": false
                           }
                         ]
                       }
@@ -2366,7 +2367,8 @@
                         "nickname": "Player Two",
                         "avatar": "https://cdn.snipp.gg/avatar.png",
                         "verified": false,
-                        "plan": "free"
+                        "plan": "free",
+                        "suspended": false
                       },
                       {
                         "id": "555555555555555555",
@@ -2374,7 +2376,8 @@
                         "nickname": "Alice",
                         "avatar": "https://i.snipp.gg/avatars/555555555555555555/0a1b2c3d4e5f60718293a4b5c6d7e8f9.webp",
                         "verified": true,
-                        "plan": "ultra"
+                        "plan": "ultra",
+                        "suspended": false
                       }
                     ]
                   }
@@ -5208,7 +5211,23 @@
           "access": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserRef"
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/UserRef"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "suspended": {
+                      "type": "boolean",
+                      "description": "True while that account is suspended. Show the entry dimmed; nothing about the access changes and it returns to normal on unsuspension."
+                    }
+                  },
+                  "required": [
+                    "suspended"
+                  ]
+                }
+              ]
             },
             "description": "Owner of a personal post only, on `GET` and `PATCH /posts/{code}`: users who can open it while private."
           }

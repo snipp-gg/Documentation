@@ -13,7 +13,7 @@ Fetch a post by its share code.
 - `files[].thumbnail_url` is a still frame for videos uploaded with [`POST /upload`](/relay-reference/endpoint/upload), and `null` otherwise. `width`, `height`, `size` and `mime_type` are `null` when unknown.
 - `liked` is whether you have liked the post.
 - `moderated` and `restricted` are only present when you own the post. A restricted post keeps its privacy, is hidden from Discover and profiles, and cannot be made public.
-- When you own a personal post, it also carries `access`: the users who can open it while it is private. Change it with [Update Post](/relay-reference/endpoint/posts/update).
+- When you own a personal post, it also carries `access`: the users who can open it while it is private. Change it with [Update Post](/relay-reference/endpoint/posts/update). Each entry has `suspended`, true while that account is suspended; show it dimmed rather than hiding it, since nothing about the access changes.
 - Each request counts a view on public posts that are not moderated. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour. The returned `view_count` includes the view just counted.
 - **Who can see what:**
   - Drafts are visible only to their owner.
@@ -80,7 +80,8 @@ Your own post:
         "nickname": "Player Two",
         "avatar": "https://cdn.snipp.gg/avatar.png",
         "verified": false,
-        "plan": "free"
+        "plan": "free",
+        "suspended": false
       }
     ]
   }
