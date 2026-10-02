@@ -3777,7 +3777,7 @@
     "/preferences": {
       "get": {
         "summary": "Get Preferences",
-        "description": "Read your notification, email and upload preferences.",
+        "description": "Read your notification, email, upload and sharing preferences.",
         "operationId": "getPreferences",
         "responses": {
           "200": {
@@ -3809,6 +3809,9 @@
                     "auto_compress": false,
                     "include_metadata": false,
                     "auto_copy_url": false
+                  },
+                  "sharing": {
+                    "share_policy": "everyone"
                   }
                 }
               }
@@ -3894,6 +3897,19 @@
                         "type": "boolean"
                       }
                     }
+                  },
+                  "sharing": {
+                    "type": "object",
+                    "properties": {
+                      "share_policy": {
+                        "type": "string",
+                        "enum": [
+                          "everyone",
+                          "following",
+                          "nobody"
+                        ]
+                      }
+                    }
                   }
                 }
               },
@@ -3938,6 +3954,9 @@
                     "auto_compress": false,
                     "include_metadata": false,
                     "auto_copy_url": false
+                  },
+                  "sharing": {
+                    "share_policy": "everyone"
                   }
                 }
               }
@@ -6039,12 +6058,30 @@
               "include_metadata",
               "auto_copy_url"
             ]
+          },
+          "sharing": {
+            "type": "object",
+            "properties": {
+              "share_policy": {
+                "type": "string",
+                "enum": [
+                  "everyone",
+                  "following",
+                  "nobody"
+                ],
+                "description": "Who can give you access to their private posts. `following` means only accounts you follow. Changing it does not remove access you already have."
+              }
+            },
+            "required": [
+              "share_policy"
+            ]
           }
         },
         "required": [
           "notifications",
           "emails",
-          "uploads"
+          "uploads",
+          "sharing"
         ]
       },
       "Session": {

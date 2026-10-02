@@ -140,9 +140,9 @@ curl -X PATCH "https://relay.snipp.gg/posts/ViDe0042" \
 |--------|------|------|
 | `400` | `invalid_request` | No fields, a field of the wrong type, text over the limit, or an invalid `privacy`, `priority` or `access` |
 | `401` | `unauthorized` | Missing or invalid key |
-| `403` | `forbidden` | Not your post, no gallery access, a restricted post made public, or a team post made non-private |
+| `403` | `forbidden` | Not your post, no gallery access, a restricted post made public, a team post made non-private, or an `access` user you block, who blocks you, or whose sharing settings refuse you |
 | `403` | `moderated` | The post is moderated |
 | `403` | `suspended` | Your account is suspended |
 | `400` | `quota_exceeded` | `priority: true` with no priority minutes left |
-| `404` | `not_found` | No such post, or an `access` username that does not exist |
+| `404` | `not_found` | No such post, or an `access` username that does not exist or is suspended |
 | `429` | `rate_limited` | More than 20 edits in 30 seconds |

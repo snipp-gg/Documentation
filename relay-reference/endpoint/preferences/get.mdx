@@ -3,7 +3,7 @@ title: "Get Preferences"
 openapi: "relay-reference/openapi.json GET /preferences"
 ---
 
-Read your notification, email and upload preferences. They follow your account to every device and match the settings on the website.
+Read your notification, email, upload and sharing preferences. They follow your account to every device and match the settings on the website.
 
 ## Behavior
 
@@ -12,6 +12,7 @@ Read your notification, email and upload preferences. They follow your account t
 - `emails.payouts` covers creator payout and referral emails. `emails.sign_ins` sends an email every time someone signs in to your account on the website. Both are on by default.
 - `uploads.default_privacy` is what upload screens pre-select. The API never applies it: an upload without a `post-privacy` header is always private.
 - `uploads.adaptive_streaming` is on by default. The other upload toggles are off by default.
+- `sharing.share_policy` decides who can give you access to their private posts: `everyone` (default), `following` (only accounts you follow) or `nobody`. Changing it does not remove access you already have.
 - Shares a rate limit bucket with [Update Preferences](/relay-reference/endpoint/preferences/update): 20 requests per minute.
 
 ## Examples
@@ -41,6 +42,9 @@ curl "https://relay.snipp.gg/preferences" \
     "auto_compress": false,
     "include_metadata": false,
     "auto_copy_url": false
+  },
+  "sharing": {
+    "share_policy": "everyone"
   }
 }
 ```

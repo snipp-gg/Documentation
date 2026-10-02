@@ -76,6 +76,7 @@ All of the API changes above apply to Relay too. Relay also replaced these:
 | `POST /unblock` with `target_id` | [`DELETE /users/{id}/block`](/relay-reference/endpoint/users/unblock) |
 | `GET /blocks` | [`GET /users/@me/blocks`](/relay-reference/endpoint/users/blocks) |
 | `POST /like` with `code` (toggle) | [`POST /posts/{code}/like`](/relay-reference/endpoint/posts/like) and [`DELETE /posts/{code}/like`](/relay-reference/endpoint/posts/unlike) |
+| `PATCH /editUpload` with `access` as comma-separated usernames | [`PATCH /posts/{code}`](/relay-reference/endpoint/posts/update) with `access` as a JSON array of usernames |
 | `GET /comments?code=` | [`GET /posts/{code}/comments`](/relay-reference/endpoint/posts/comments) |
 | `POST /comment` with `code` and `text` | [`POST /posts/{code}/comments`](/relay-reference/endpoint/posts/create-comment) with `body` |
 | `DELETE /comment` with `code` and `comment_id` | [`DELETE /comments/{id}`](/relay-reference/endpoint/comments/delete) |
