@@ -24,7 +24,7 @@ Update your own profile. `id` must be `@me` or your own ID. Send only the fields
   - `title` (up to 60 characters) and `description` (up to 200): templates that accept `%{post_title}%`, `%{post_description}%`, `%{username}%` and `%{nickname}%`.
   - `theme_color`: a hex color such as `#F0B100`.
   - `small_text` (up to 50): the small site name line.
-- `theme` must be one of `red`, `orange`, `amber`, `yellow`, `pastel_yellow`, `pastel_orange`, `lime`, `light_green`, `slime`, `green`, `emerald`, `teal`, `ice`, `cyan`, `sky`, `pastel_blue`, `blue`, `midnight_blue`, `indigo`, `light_violet`, `violet`, `purple`, `magneta`, `fuchsia`, `pastel_purple`, `light_pink`, `pink`, `rose`, `dark_rose` or `dynamic`. It is only visible to you.
+- `theme` must be one of `red`, `orange`, `amber`, `yellow`, `pastel_yellow`, `pastel_orange`, `lime`, `light_green`, `slime`, `green`, `emerald`, `teal`, `ice`, `cyan`, `sky`, `pastel_blue`, `blue`, `midnight_blue`, `indigo`, `light_violet`, `violet`, `purple`, `magenta`, `fuchsia`, `pastel_purple`, `light_pink`, `pink`, `rose`, `dark_rose` or `dynamic`. It is only visible to you.
 - On Free, sending `theme`, or `custom_embed` as anything but `null`, returns `403` with type `plan_required`. Free accounts can still clear an embed with `null`.
 - `avatar` and `banner` are not accepted here; use [Upload Avatar](/relay-reference/endpoint/users/upload-avatar) and [Upload Banner](/relay-reference/endpoint/users/upload-banner). `email` can only be changed on the website. Both return `400`.
 - A suspended account cannot change its username, nickname or bio.
