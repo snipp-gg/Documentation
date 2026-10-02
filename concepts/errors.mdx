@@ -1,0 +1,151 @@
+---
+title: "Errors"
+description: "Error body shape, every error type and its status, request IDs, and partial upload failures."
+---
+
+## Error shape
+
+Every error response from the API and Relay has the same JSON body: an `error` object with a `type` and a `message`.
+
+```json
+{
+  "error": {
+    "type": "not_found",
+    "message": "Post not found."
+  }
+}
+```
+
+- `type` is a stable, machine-readable category from the table below. Branch on it.
+- `message` is a human-readable sentence. It can change at any time, so show it to people but never match on it.
+- Some types add context fields next to `type` and `message`. They are listed below.
+
+Successful responses never carry `error`, `message` or `success` keys. Any `2xx` status means the request worked.
+
+## Error types
+
+| Type | Status | Meaning |
+|------|--------|---------|
+| `invalid_request` | `400` | The request is malformed or a value is invalid: a bad path parameter, header, query value or body field, text over its limit, or a missing file. |
+| `unauthorized` | `401` | The `api-key` or `relay-key` header is missing or not recognized, or the key cannot be used on this endpoint. |
+| `forbidden` | `403` | You are not allowed to do this: you do not own the resource, the key has no gallery access, a team's subscription has lapsed, or a rule forbids the change. |
+| `suspended` | `403` | Your account is suspended. On user endpoints it can also mean the user you asked for is suspended. |
+| `blocked` | `403` | A block between you and the other user prevents this. |
+| `moderated` | `403` | The post has been moderated. |
+| `plan_required` | `403` | The feature needs Snipp+ or Ultra. |
+| `quota_exceeded` | `400` | The upload would exceed your [weekly usage limit](/concepts/plans#weekly-usage-limit). On Relay, turning on priority streaming with no priority minutes left returns this type with `403`. |
+| `unsupported_type` | `400` | The file type is not supported, or cannot be converted to the requested format. |
+| `upload_failed` | `400` | Every file in a multi-file upload failed. See [Partial upload failures](#partial-upload-failures). |
+| `not_found` | `404` | The resource does not exist, or you cannot see it. Unknown paths return this too. |
+| `method_not_allowed` | `405` | The path exists but not with this method. The `Allow` header lists the methods it accepts. |
+| `file_too_large` | `413` | A file, or the whole request, is larger than your plan allows. |
+| `rate_limited` | `429` | Too many requests. Wait for the number of seconds in `Retry-After`. See [Rate Limits](/concepts/rate-limits). |
+| `internal` | `500` | Something went wrong on our side. Retry, and contact support with the `request-id` if it persists. |
+| `unavailable` | `503` | The server is not accepting this request right now. Retry later. |
+
+A request body that cannot be parsed at all returns `invalid_request` with the status the parser reported, which is usually `400`.
+
+<Note>
+  Private posts, drafts and team posts you cannot see return `404`, not `403`, so the response never confirms that something you have no access to exists.
+</Note>
+
+## Context fields
+
+| Type | Field | Description |
+|------|-------|-------------|
+| `suspended` | `username` | On [`GET /users/{id}`](/api-reference/endpoint/users/get) only: the suspended user's username. |
+| `quota_exceeded` | `quota` | Your weekly quota in bytes. |
+| `quota_exceeded` | `used` | Bytes used in the current window. |
+| `quota_exceeded` | `resets_at` | When the window resets, as an ISO 8601 timestamp. |
+| `upload_failed` | `failed` | One entry per file, each with `index` and its own `error` object. |
+
+```json
+{
+  "error": {
+    "type": "quota_exceeded",
+    "message": "Weekly usage limit exceeded.",
+    "quota": 21474836480,
+    "used": 21470000000,
+    "resets_at": "2026-10-04T16:20:00.000Z"
+  }
+}
+```
+
+## Request IDs
+
+Every response, success or error, carries a `request-id` header with a unique ID for that request.
+
+```
+request-id: 0f8e2c6a-3b1d-4e7f-9a2c-5d6e8f0a1b3c
+```
+
+Log it alongside failures. When you contact [support](https://snipp.gg/support) about a specific request, include the `request-id` so it can be traced.
+
+## Partial upload failures
+
+[`POST /upload`](/api-reference/endpoint/upload) and [`POST /posts/{code}/files`](/api-reference/endpoint/posts/add-files) accept several files at once, and each file succeeds or fails on its own.
+
+When at least one file is stored, the response is `200`. Files that failed are listed in `failed`, each with its zero-based position in the request and an `error` object shaped exactly like a top-level error:
+
+```json
+{
+  "posts": [ ... ],
+  "failed": [
+    {
+      "index": 2,
+      "error": {
+        "type": "quota_exceeded",
+        "message": "Weekly usage limit exceeded.",
+        "quota": 21474836480,
+        "used": 21470000000,
+        "resets_at": "2026-10-04T16:20:00.000Z"
+      }
+    }
+  ]
+}
+```
+
+When every file fails:
+
+- A request with **one file** returns that file's error as the top-level error. The status is `413` for `file_too_large`, `500` for `internal`, and `400` for everything else.
+- A request with **several files** returns `400` with type `upload_failed` and the full `failed` array.
+
+```json
+{
+  "error": {
+    "type": "upload_failed",
+    "message": "All files failed to upload.",
+    "failed": [
+      { "index": 0, "error": { "type": "unsupported_type", "message": "Unsupported file type." } },
+      { "index": 1, "error": { "type": "file_too_large", "message": "File size exceeds the 50 MB limit." } }
+    ]
+  }
+}
+```
+
+Per-file error types are `file_too_large`, `unsupported_type`, `quota_exceeded`, `invalid_request` (a corrupt or unplayable video) and `internal`.
+
+## Handling errors
+
+<Steps>
+  <Step title="Check the status">
+    Any `2xx` is success. Anything else has an `error` object.
+  </Step>
+  <Step title="Branch on the type">
+    Use `error.type` to decide what to do, and show `error.message` to people.
+  </Step>
+  <Step title="Retry only what can succeed">
+    Retry `rate_limited` after `Retry-After`, and `internal` or `unavailable` with backoff. Retrying any other type sends the same request into the same error.
+  </Step>
+</Steps>
+
+```javascript
+const res = await fetch("https://api.snipp.gg/posts/AbCd1234", {
+  headers: { "api-key": process.env.SNIPP_API_KEY },
+});
+const data = await res.json();
+if (!res.ok) {
+  if (data.error.type === "not_found") return null;
+  throw new Error(`${data.error.type}: ${data.error.message} (${res.headers.get("request-id")})`);
+}
+```

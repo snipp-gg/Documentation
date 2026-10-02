@@ -1,0 +1,41 @@
+---
+title: "Delete Post"
+openapi: "relay-reference/openapi.json DELETE /posts/{code}"
+---
+
+Delete a post and every file in it.
+
+## Behavior
+
+- You must own the post. A team post can only be deleted with that team's access key.
+- Deleting cannot be undone. The share page and every file URL stop working.
+- Deleting does not restore [weekly quota](/concepts/plans#weekly-usage-limit).
+- To remove one file from an album instead, use [Delete File](/relay-reference/endpoint/posts/delete-file).
+- Shares a rate limit bucket with Delete File: 20 requests per 30 seconds.
+
+## Examples
+
+```bash
+curl -X DELETE "https://relay.snipp.gg/posts/AbCd1234" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "code": "AbCd1234",
+  "deleted": true
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | `code` is not a valid share code |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `forbidden` | Not your post, or the key has no gallery access |
+| `403` | `suspended` | Your account is suspended |
+| `404` | `not_found` | No such post |
+| `429` | `rate_limited` | Too many deletes |

@@ -52,46 +52,50 @@ api-key: YOUR_API_KEY
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `GET` | `/users/{id}` | Fetch a user profile. Use `@me` for your own account. |
-| `GET` | `/posts/{code}` | Fetch a single post by share code. |
-| `POST` | `/upload` | Upload an image or video file. |
-| `GET` | `/uploads` | List your 30 most recent uploads. |
-| `PATCH` | `/editUpload` | Update title, description, or privacy of a post. |
-| `POST` | `/appendUpload` | Add files to an existing album. |
-| `DELETE` | `/deleteUpload` | Delete a file or post. |
-| `POST` | `/convert` | Convert an image or video to another format. Returns the file and stores nothing. |
-| `POST` | `/report-post` | Report a post. |
-| `POST` | `/report-user` | Report a user. |
-| `GET` | `/gifs` | Browse public GIFs across Snipp, newest first. No auth required. |
-| `GET` | `/usage-history` | Fetch your daily upload activity for the last 365 days. |
-| `GET` | `/analytics` | Fetch your analytics over time plus lifetime totals. PLUS only. |
-| `GET` | `/region` | Return the region serving the request. No auth required. |
+| `POST` | [`/upload`](/api-reference/endpoint/upload) | Upload 1 to 50 images or videos. Creates a post. |
+| `GET` | [`/posts`](/api-reference/endpoint/posts/list) | List your posts. |
+| `GET` | [`/posts/{code}`](/api-reference/endpoint/posts/get) | Fetch a post. |
+| `PATCH` | [`/posts/{code}`](/api-reference/endpoint/posts/update) | Change a post's title, description or privacy. |
+| `DELETE` | [`/posts/{code}`](/api-reference/endpoint/posts/delete) | Delete a post. |
+| `POST` | [`/posts/{code}/files`](/api-reference/endpoint/posts/add-files) | Add files to a post. |
+| `DELETE` | [`/posts/{code}/files/{name}`](/api-reference/endpoint/posts/delete-file) | Remove one file from a post. |
+| `POST` | [`/posts/{code}/report`](/api-reference/endpoint/posts/report) | Report a post. |
+| `GET` | [`/users/{id}`](/api-reference/endpoint/users/get) | Fetch a user. Use `@me` for your own account. |
+| `GET` | [`/users/{id}/posts`](/api-reference/endpoint/users/posts) | List a user's public posts. |
+| `POST` | [`/users/{id}/report`](/api-reference/endpoint/users/report) | Report a user. |
+| `GET` | [`/gifs`](/api-reference/endpoint/gifs) | Browse public GIFs. No key required. |
+| `POST` | [`/convert`](/api-reference/endpoint/convert) | Convert an image or video. Returns the file and stores nothing. |
+| `GET` | [`/usage-history`](/api-reference/endpoint/usage-history) | Your daily upload activity for the last 365 days. |
+| `GET` | [`/analytics`](/api-reference/endpoint/analytics) | Your analytics over time. Snipp+ only. |
+| `GET` | [`/region`](/api-reference/endpoint/region) | The region serving the request. No key required. |
 
 Looking for the discover feed, likes, comments, blocking, profile editing, avatar uploads, or anything that powers the full Snipp experience? See the [Relay API](/relay-reference/introduction).
 
-## Rate Limits
+## Conventions
 
-Rate limits apply per endpoint, not per account. See [Rate Limits](/concepts/rate-limits) for the full table and details on handling `429` responses.
+- Request and response bodies are JSON with `snake_case` keys, except file uploads (`multipart/form-data`) and the converted file from `/convert`.
+- Resources are addressed in the path: `/posts/{code}`, `/users/{id}`. HTTP methods are the verbs.
+- A single resource comes back under its singular name (`{"post": ...}`), a list under its plural name with [pagination](/concepts/pagination) fields.
+- Timestamps are ISO 8601 in UTC and end in `_at`. Counts end in `_count`.
+- Every response carries a `request-id` header.
 
-## Error Format
+## Errors
 
-All errors return a JSON object with an `error` field:
+Errors return a non-`2xx` status and an `error` object with a stable `type` and a readable `message`:
 
 ```json
 {
-  "error": "Unauthorized. No api-key header found."
+  "error": {
+    "type": "unauthorized",
+    "message": "Missing api-key header."
+  }
 }
 ```
 
-## HTTP Status Codes
+See [Errors](/concepts/errors) for every type and status.
 
-| Code | Meaning |
-|------|---------|
-| `200` | Success |
-| `400` | Bad request. Invalid input, unsupported file type, or file too large. |
-| `401` | Unauthorized. Missing or invalid API key. |
-| `403` | Forbidden. Account suspended or insufficient permissions. |
-| `404` | Not found |
-| `413` | Payload too large. File exceeds your plan's size limit. |
-| `429` | Rate limit exceeded |
-| `500` | Internal server error |
+## Rate Limits
+
+Rate limits apply per endpoint, not per account. See [Rate Limits](/concepts/rate-limits) for the full table and how to handle `429` responses.
+
+Upgrading from the old endpoints such as `/uploads` or `/editUpload`? See the [migration guide](/migration).

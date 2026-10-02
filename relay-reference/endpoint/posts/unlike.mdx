@@ -1,0 +1,40 @@
+---
+title: "Unlike Post"
+openapi: "relay-reference/openapi.json DELETE /posts/{code}/like"
+---
+
+Remove your like from a post.
+
+## Behavior
+
+- Unliking a post you have not liked succeeds and changes nothing. `liked` and `like_count` are the state after the call.
+- The same visibility rules as [Like Post](/relay-reference/endpoint/posts/like) apply.
+- Shares a rate limit bucket with Like Post and comment likes: 30 requests per minute.
+
+## Examples
+
+```bash
+curl -X DELETE "https://relay.snipp.gg/posts/AbCd1234/like" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "liked": false,
+  "like_count": 42
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | `code` is not a valid share code |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `forbidden` | A team post |
+| `403` | `moderated` | The post is moderated |
+| `403` | `blocked` | The author has blocked you |
+| `404` | `not_found` | No such post, or you cannot see it |
+| `429` | `rate_limited` | More than 30 likes per minute |

@@ -1,26 +1,24 @@
 ---
 title: "Get Analytics"
-openapi: "GET /analytics"
+openapi: "api-reference/openapi.json GET /analytics"
 ---
 
-Fetch your own analytics: posts, uploads, data uploaded, comments received, likes received and followers gained over time, plus totals. This is the same data that powers the Analytics page in the Snipp Console, exposed so you can rebuild it in your own tools.
+Fetch your analytics: posts, uploads, data uploaded, views, comments and likes received, and followers gained, over time and in total. This is the data behind the Analytics page in the Snipp Console.
 
 ## Behavior
 
-- Authenticated with your `api-key`. Returns analytics for the key's owner only.
-- Requires an active PLUS subscription. Without it the endpoint returns `403`.
-- `range` selects the window for `series` and `deltas`. Valid values are 7, 30, 90 and 365. It defaults to 30 if omitted or invalid. `buckets` are always today, last 7 days and last 30 days regardless of `range`.
-- `series` arrays have one entry per day across the window, oldest first, including days with no activity (value `0`).
-- `totals.posts` and `totals.views` are lifetime; `totals.views` is the sum of views across all your posts. `totals.comments`, `totals.likes` and `totals.bytes` cover the fetch window only, which is twice the selected `range` with a floor of 30 days.
-- `deltas.change` is the fractional change against the preceding window of equal length. It is `null` when the preceding window was zero and the current one is not, and `0` when both are zero.
-- All dates are UTC.
+- Requires Snipp+ or Ultra. Free accounts get `403` with type `plan_required`.
+- `range` sets the window for `series` and `deltas`: `7`, `30`, `90` or `365` days. Omitted means `30`; any other value returns `400`.
+- `buckets` are always today, the last 7 days and the last 30 days, whatever `range` is.
+- `series` has one entry per day across the window, oldest first, including days with a value of `0`.
+- `totals.posts` and `totals.views` are lifetime. `totals.comments`, `totals.likes` and `totals.bytes` cover the fetch window, which is twice `range` with a floor of 30 days.
+- `deltas.change` is the fractional change against the previous window of the same length. It is `null` when the previous window was `0` and the current one is not, and `0` when both are `0`.
+- All days are UTC.
 
 ## Examples
 
-Fetch your analytics for the last 90 days:
-
 ```bash
-curl -X GET "https://api.snipp.gg/analytics?range=90" \
+curl "https://api.snipp.gg/analytics?range=90" \
   -H "api-key: YOUR_API_KEY"
 ```
 
@@ -31,32 +29,163 @@ curl -X GET "https://api.snipp.gg/analytics?range=90" \
   "analytics": {
     "range": 30,
     "buckets": {
-      "posts": { "today": 2, "week": 11, "month": 47 },
-      "uploads": { "today": 3, "week": 14, "month": 63 },
-      "bytes": { "today": 1048576, "week": 8388608, "month": 27918336 },
-      "comments": { "today": 0, "week": 4, "month": 18 },
-      "likes": { "today": 1, "week": 9, "month": 38 },
-      "followers": { "today": 1, "week": 6, "month": 21 }
+      "posts": {
+        "today": 2,
+        "week": 11,
+        "month": 47
+      },
+      "uploads": {
+        "today": 3,
+        "week": 14,
+        "month": 63
+      },
+      "bytes": {
+        "today": 1048576,
+        "week": 8388608,
+        "month": 27918336
+      },
+      "comments": {
+        "today": 0,
+        "week": 4,
+        "month": 18
+      },
+      "likes": {
+        "today": 1,
+        "week": 9,
+        "month": 38
+      },
+      "followers": {
+        "today": 1,
+        "week": 6,
+        "month": 21
+      }
     },
-    "totals": { "posts": 666, "views": 1695, "comments": 18, "likes": 412, "bytes": 27918336 },
+    "totals": {
+      "posts": 666,
+      "views": 1695,
+      "comments": 18,
+      "likes": 412,
+      "bytes": 27918336
+    },
     "series": {
-      "posts": [{ "day": "2026-05-06", "value": 1 }, { "day": "2026-05-07", "value": 0 }],
-      "uploads": [{ "day": "2026-05-06", "value": 2 }, { "day": "2026-05-07", "value": 0 }],
-      "views": [{ "day": "2026-05-06", "value": 84 }, { "day": "2026-05-07", "value": 31 }],
-      "bytes": [{ "day": "2026-05-06", "value": 524288 }, { "day": "2026-05-07", "value": 0 }],
-      "comments": [{ "day": "2026-05-06", "value": 1 }, { "day": "2026-05-07", "value": 0 }],
-      "likes": [{ "day": "2026-05-06", "value": 3 }, { "day": "2026-05-07", "value": 1 }],
-      "followers": [{ "day": "2026-05-06", "value": 2 }, { "day": "2026-05-07", "value": 0 }]
+      "posts": [
+        {
+          "day": "2026-09-01",
+          "value": 1
+        },
+        {
+          "day": "2026-09-02",
+          "value": 0
+        }
+      ],
+      "uploads": [
+        {
+          "day": "2026-09-01",
+          "value": 2
+        },
+        {
+          "day": "2026-09-02",
+          "value": 0
+        }
+      ],
+      "bytes": [
+        {
+          "day": "2026-09-01",
+          "value": 524288
+        },
+        {
+          "day": "2026-09-02",
+          "value": 0
+        }
+      ],
+      "comments": [
+        {
+          "day": "2026-09-01",
+          "value": 1
+        },
+        {
+          "day": "2026-09-02",
+          "value": 0
+        }
+      ],
+      "likes": [
+        {
+          "day": "2026-09-01",
+          "value": 3
+        },
+        {
+          "day": "2026-09-02",
+          "value": 1
+        }
+      ],
+      "views": [
+        {
+          "day": "2026-09-01",
+          "value": 84
+        },
+        {
+          "day": "2026-09-02",
+          "value": 31
+        }
+      ],
+      "followers": [
+        {
+          "day": "2026-09-01",
+          "value": 2
+        },
+        {
+          "day": "2026-09-02",
+          "value": 0
+        }
+      ]
     },
     "deltas": {
-      "posts": { "current": 47, "previous": 41, "change": 0.1463 },
-      "uploads": { "current": 63, "previous": 55, "change": 0.1454 },
-      "views": { "current": 1240, "previous": 1080, "change": 0.1481 },
-      "bytes": { "current": 27918336, "previous": 25000000, "change": 0.1167 },
-      "comments": { "current": 18, "previous": 22, "change": -0.1818 },
-      "likes": { "current": 38, "previous": 31, "change": 0.2258 },
-      "followers": { "current": 21, "previous": 17, "change": 0.2353 }
+      "posts": {
+        "current": 47,
+        "previous": 41,
+        "change": 0.14634146341463414
+      },
+      "uploads": {
+        "current": 63,
+        "previous": 55,
+        "change": 0.14545454545454545
+      },
+      "bytes": {
+        "current": 27918336,
+        "previous": 25000000,
+        "change": 0.11673344
+      },
+      "comments": {
+        "current": 18,
+        "previous": 22,
+        "change": -0.18181818181818182
+      },
+      "likes": {
+        "current": 38,
+        "previous": 31,
+        "change": 0.22580645161290322
+      },
+      "views": {
+        "current": 1240,
+        "previous": 0,
+        "change": null
+      },
+      "followers": {
+        "current": 21,
+        "previous": 17,
+        "change": 0.23529411764705882
+      }
     }
   }
 }
 ```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | `range` is not 7, 30, 90 or 365 |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `plan_required` | Your plan does not include analytics |
+| `403` | `suspended` | Your account is suspended |
+| `429` | `rate_limited` | More than 30 requests per minute |

@@ -1,0 +1,46 @@
+---
+title: "List Sessions"
+openapi: "relay-reference/openapi.json GET /sessions"
+---
+
+List the devices signed in to your account on the website, most recently active first.
+
+## Behavior
+
+- Only website sign-ins are listed. Your relay key is a separate credential: it never appears here and logging sessions out never affects it.
+- `browser` and `os` are `null` when the device cannot be recognized. `type` is `desktop`, `mobile` or `tablet`, and falls back to `desktop`.
+- `last_active_at` is updated at most every 5 minutes.
+- Expired sessions are not listed.
+- Shares a rate limit bucket with the other session endpoints: 30 requests per minute.
+
+## Examples
+
+```bash
+curl "https://relay.snipp.gg/sessions" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "sessions": [
+    {
+      "id": "1768911a-e0f1-4705-9603-22ec8218e297",
+      "browser": "Chrome",
+      "os": "macOS",
+      "type": "desktop",
+      "created_at": "2026-09-20T20:46:25.974Z",
+      "last_active_at": "2026-09-30T18:01:54.072Z"
+    }
+  ]
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `suspended` | Your account is suspended |
+| `429` | `rate_limited` | More than 30 requests per minute |

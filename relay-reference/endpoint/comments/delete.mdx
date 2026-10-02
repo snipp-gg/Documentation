@@ -1,0 +1,39 @@
+---
+title: "Delete Comment"
+openapi: "relay-reference/openapi.json DELETE /comments/{id}"
+---
+
+Delete a comment.
+
+## Behavior
+
+- The comment's author and the post's owner can delete it. Anyone else gets `403` with type `forbidden`.
+- `id` is the comment's UUID from [List Comments](/relay-reference/endpoint/posts/comments).
+- Shares a rate limit bucket with [Create Comment](/relay-reference/endpoint/posts/create-comment): 5 requests per minute.
+
+## Examples
+
+```bash
+curl -X DELETE "https://relay.snipp.gg/comments/0b7c4e2a-9f13-4d6b-8a21-5c3e7f9d1a04" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "id": "0b7c4e2a-9f13-4d6b-8a21-5c3e7f9d1a04",
+  "deleted": true
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | `id` is not a valid comment ID |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `forbidden` | You are neither the author nor the post's owner |
+| `403` | `suspended` | Your account is suspended |
+| `404` | `not_found` | No such comment, or you cannot see its post |
+| `429` | `rate_limited` | More than 5 requests per minute |

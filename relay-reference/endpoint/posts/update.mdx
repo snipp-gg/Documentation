@@ -1,0 +1,148 @@
+---
+title: "Update Post"
+openapi: "relay-reference/openapi.json PATCH /posts/{code}"
+---
+
+Change a post's title, description or privacy, turn priority streaming on or off, or set who a private post is shared with. Send only the fields you want to change.
+
+## Body
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | string or null | Up to 30 characters. `""` or `null` clears it. |
+| `description` | string or null | Up to 200 characters. `""` or `null` clears it. |
+| `privacy` | string | `public`, `unlisted` or `private`. |
+| `priority` | boolean | `true` puts the post's videos on priority (adaptive) streaming; `false` takes them off. |
+| `access` | array of strings | Usernames who can open the post while it is private, up to 10. Replaces the current list; `[]` clears it. |
+
+## Behavior
+
+- Send a JSON body. At least one field is required.
+- Text over the limit returns `400`; it is never truncated. Surrounding whitespace is trimmed.
+- You must own the post. For a team post, use that team's access key, or your own relay key as a team member who can edit.
+- Moderated posts cannot be changed and return `403` with type `moderated`.
+- A restricted post cannot be made public and returns `403` with type `forbidden`. It can still switch between `private` and `unlisted`.
+- Team posts are always private. Sending `privacy: private` on a team post is accepted and changes nothing; any other value returns `403`.
+- Making a post public runs the same automatic scan as a new upload.
+- **`priority: true`** starts adaptive streaming for every video in the post that is not on it yet, spending your [priority minutes](/concepts/plans#priority-minutes). With no minutes left the response is `400` with type `quota_exceeded`, carrying `quota` and `used` in minutes and `resets_at`. On a lapsed team it is `403` with type `forbidden`.
+- **`priority: false`** removes adaptive streaming from the post's videos. Minutes already spent are not refunded.
+- **`access`** only applies to personal posts that are private, or that this same request makes private. Otherwise it returns `400`. Usernames are matched case-insensitively and a leading `@` is ignored.
+  - An unknown or suspended username returns `404` naming it.
+  - Sharing with yourself returns `400`.
+  - Sharing with someone you block, who blocks you, or whose sharing settings refuse you returns `403` with type `forbidden`.
+  - Each newly added user gets a `post_shared` notification.
+- Newly @-mentioned users in a changed `description` get a `mention` notification.
+- The response includes `access` for personal posts.
+- The response is the full updated post.
+
+## Examples
+
+Change the title and make the post public:
+
+```bash
+curl -X PATCH "https://relay.snipp.gg/posts/AbCd1234" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"title": "New title", "privacy": "public"}'
+```
+
+Clear the description:
+
+```bash
+curl -X PATCH "https://relay.snipp.gg/posts/AbCd1234" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"description": null}'
+```
+
+Share a private post with two people:
+
+```bash
+curl -X PATCH "https://relay.snipp.gg/posts/AbCd1234" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"title": "New title", "access": ["playertwo", "alice"]}'
+```
+
+Turn on priority streaming:
+
+```bash
+curl -X PATCH "https://relay.snipp.gg/posts/ViDe0042" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"priority": true}'
+```
+
+## Responses
+
+```json
+{
+  "post": {
+    "code": "AbCd1234",
+    "url": "https://snipp.gg/p/AbCd1234",
+    "title": "New title",
+    "description": null,
+    "privacy": "private",
+    "created_at": "2026-09-30T18:42:11.512Z",
+    "view_count": 0,
+    "like_count": 0,
+    "comment_count": 0,
+    "priority": false,
+    "file_count": 1,
+    "files": [
+      {
+        "name": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png?e=1790035200&s=9f2c4b7d1e8a3f6c0b5d2e9a7c4f1b8e3d6a0c9f2b5e8d1a4c7f0b3e6d9a2c5f",
+        "size": 2487312,
+        "mime_type": "image/png",
+        "width": 1920,
+        "height": 1080,
+        "thumbnail_url": null
+      }
+    ],
+    "team_id": null,
+    "author": {
+      "id": "123456789012345678",
+      "username": "playerone",
+      "nickname": "Player One",
+      "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+      "verified": false,
+      "plan": "plus"
+    },
+    "liked": false,
+    "moderated": false,
+    "restricted": false,
+    "access": [
+      {
+        "id": "987654321098765432",
+        "username": "playertwo",
+        "nickname": "Player Two",
+        "avatar": "https://cdn.snipp.gg/avatar.png",
+        "verified": false,
+        "plan": "free"
+      },
+      {
+        "id": "555555555555555555",
+        "username": "alice",
+        "nickname": "Alice",
+        "avatar": "https://i.snipp.gg/avatars/555555555555555555/0a1b2c3d4e5f60718293a4b5c6d7e8f9.webp",
+        "verified": true,
+        "plan": "ultra"
+      }
+    ]
+  }
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | No fields, a field of the wrong type, text over the limit, or an invalid `privacy`, `priority` or `access` |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `forbidden` | Not your post, no gallery access, a restricted post made public, or a team post made non-private |
+| `403` | `moderated` | The post is moderated |
+| `403` | `suspended` | Your account is suspended |
+| `400` | `quota_exceeded` | `priority: true` with no priority minutes left |
+| `404` | `not_found` | No such post, or an `access` username that does not exist |
+| `429` | `rate_limited` | More than 20 edits in 30 seconds |

@@ -46,17 +46,17 @@ print(res.json()["user"]["username"])
 ```
 </CodeGroup>
 
-A successful response returns your user object:
+A successful response returns your account. It is trimmed here; see [Get User](/api-reference/endpoint/users/get) for every field.
 
 ```json
 {
   "user": {
     "id": "123456789012345678",
     "username": "yourname",
-    "plus": false,
+    "plan": "free",
     "verified": false,
-    "badges": { ... },
-    "uploads": 0
+    "upload_count": 0,
+    "limits": { ... }
   }
 }
 ```
@@ -109,19 +109,22 @@ print(res.json()["url"])
   These examples use `api.snipp.gg`, which is the right host for production uploads too. It connects straight to the nearest upload server with no per-request size cap. Pin a regional endpoint such as `eu-west-1.api.snipp.gg` only when you want to control which region stores your files. See [Regional endpoints](/api-reference/introduction#regional-endpoints).
 </Note>
 
-The response includes a direct URL to your file and a post object with share metadata:
+The response includes the direct URL of your file and the post it created. `url` is the file itself; `post.url` is the share page. The post is trimmed here; see [Upload Files](/api-reference/endpoint/upload) for the full shape.
 
 ```json
 {
-  "message": "Upload successful!",
-  "url": "https://i.snipp.gg/123456789012345678/abc123.png",
+  "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
   "post": {
     "code": "AbCd1234",
     "url": "https://snipp.gg/p/AbCd1234",
-    "post_privacy": "unlisted"
+    "privacy": "unlisted",
+    "file_count": 1,
+    "files": [ ... ]
   }
 }
 ```
+
+If something goes wrong, the response has an `error` object with a `type` and a `message`. See [Errors](/concepts/errors).
 
 ### Albums
 
@@ -143,7 +146,7 @@ Control who can see your uploads by setting the `post-privacy` header:
 
 | Value | Visibility |
 |-------|-----------|
-| `private` | Only you, and anyone you give access to on snipp.gg, can view it (default). Response URLs are signed and expire after 24 hours. Re-fetch from `GET /posts/{code}` or `GET /uploads` for a fresh link. |
+| `private` | Only you, and anyone you give access to on snipp.gg, can view it (default). Response URLs are signed and expire after 24 hours. Re-fetch from `GET /posts/{code}` or `GET /posts` for a fresh link. |
 | `unlisted` | Anyone with the share link can view it. |
 | `public` | Visible to everyone and eligible for the Discover feed. |
 

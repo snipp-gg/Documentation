@@ -1,0 +1,70 @@
+---
+title: "List Comments"
+openapi: "relay-reference/openapi.json GET /posts/{code}/comments"
+---
+
+List a post's comments, oldest first.
+
+## Behavior
+
+- Returns every comment on the post in one response. A post holds at most 500 comments, so there is no pagination.
+- Each comment carries its author as `user`, `like_count`, and `liked` (whether you liked it).
+- Comments by suspended users are hidden. Comments by users you block, or who block you, are hidden too.
+- You can list comments on any post you can see, including private posts shared with you. Drafts, private posts not shared with you, team posts you are not a member of, and posts by suspended users return `404`.
+- Comments on a moderated post are only listed for its owner. Anyone else gets `404`.
+- Not rate limited.
+
+## Examples
+
+```bash
+curl "https://relay.snipp.gg/posts/AbCd1234/comments" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "comments": [
+    {
+      "id": "0b7c4e2a-9f13-4d6b-8a21-5c3e7f9d1a04",
+      "body": "Nice shot!",
+      "created_at": "2026-09-30T19:02:45.881Z",
+      "user": {
+        "id": "987654321098765432",
+        "username": "playertwo",
+        "nickname": "Player Two",
+        "avatar": "https://cdn.snipp.gg/avatar.png",
+        "verified": false,
+        "plan": "free"
+      },
+      "like_count": 3,
+      "liked": false
+    },
+    {
+      "id": "2c9d8e7f-6a5b-4c3d-9e2f-1a0b9c8d7e6f",
+      "body": "@playerone that flick though",
+      "created_at": "2026-09-30T19:40:12.004Z",
+      "user": {
+        "id": "555555555555555555",
+        "username": "alice",
+        "nickname": "Alice",
+        "avatar": "https://i.snipp.gg/avatars/555555555555555555/0a1b2c3d4e5f60718293a4b5c6d7e8f9.webp",
+        "verified": true,
+        "plan": "ultra"
+      },
+      "like_count": 0,
+      "liked": false
+    }
+  ]
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | `code` is not a valid share code |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `suspended` | Your account is suspended |
+| `404` | `not_found` | No such post, or you cannot see it |

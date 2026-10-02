@@ -1,0 +1,48 @@
+---
+title: "Report User"
+openapi: "api-reference/openapi.json POST /users/{id}/report"
+---
+
+Report a user to the moderation team.
+
+## Behavior
+
+- `id` must be the user's numeric ID. `@me` is not accepted.
+- `reason` is optional. When sent it must be a string of at most 200 characters after trimming. Longer reasons are rejected, not truncated.
+- You cannot report yourself, a suspended user, or a user who has blocked you.
+- Reports share one rate limit bucket with [post reports](/api-reference/endpoint/posts/report): 3 per minute.
+
+## Examples
+
+```bash
+curl -X POST "https://api.snipp.gg/users/987654321098765432/report" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"reason": "Impersonation"}'
+```
+
+Without a reason:
+
+```bash
+curl -X POST "https://api.snipp.gg/users/987654321098765432/report" \
+  -H "api-key: YOUR_API_KEY"
+```
+
+## Responses
+
+```json
+{
+  "reported": true
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | Invalid `id`, `reason` over 200 characters or not a string, or reporting yourself |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `suspended` | Your account is suspended, or the user already is |
+| `403` | `blocked` | The user has blocked you |
+| `404` | `not_found` | No user with that ID |
+| `429` | `rate_limited` | Too many reports |

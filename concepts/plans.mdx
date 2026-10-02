@@ -63,32 +63,26 @@ You can view your current plan and weekly usage in three places:
 
 ## Checking Your Plan via the API
 
-Call `GET /users/@me` to see your current plan status, weekly storage usage, and priority minutes. The response includes:
+Call `GET /users/@me` to see your plan, weekly usage and priority minutes. The relevant fields:
 
 ```json
 {
   "user": {
-    "plus": true,
-    "ultra": false,
-    "uploads": 42,
+    "plan": "plus",
+    "upload_count": 42,
     "limits": {
-      "plan": "plus",
       "max_file_size": 21474836480,
       "usage": {
         "used": 1073741824,
         "limit": 21474836480,
         "used_percent": 5,
-        "window_start": "2026-05-01T00:00:00.000Z",
-        "window_end": "2026-05-08T00:00:00.000Z",
-        "resets_in_seconds": 172800
+        "resets_at": "2026-10-04T16:20:00.000Z"
       },
       "priority_minutes": {
         "used": 12,
         "limit": 100,
         "used_percent": 12,
-        "window_start": "2026-04-20T00:00:00.000Z",
-        "window_end": "2026-05-20T00:00:00.000Z",
-        "resets_in_seconds": 1209600
+        "resets_at": "2026-10-19T16:20:00.000Z"
       }
     }
   }
@@ -97,23 +91,17 @@ Call `GET /users/@me` to see your current plan status, weekly storage usage, and
 
 | Field | Description |
 |-------|-------------|
-| `plus` | `true` if you have an active PLUS subscription |
-| `ultra` | `true` if you have an Ultra plan |
-| `uploads` | Total number of files you have uploaded |
-| `limits.plan` | Active plan (`free`, `plus`, or `ultra`) |
-| `limits.max_file_size` | Maximum size per file in bytes. 50 MB on free; on PLUS and Ultra it equals the weekly quota (`limits.usage.limit`) |
-| `limits.usage.used` | Bytes uploaded in the current window |
-| `limits.usage.limit` | Total bytes allowed per window |
-| `limits.usage.used_percent` | Percentage of the weekly cap consumed, rounded to the nearest integer (0–100+) |
-| `limits.usage.window_start` | When the current window started, derived from the account's fixed reset schedule |
-| `limits.usage.window_end` | When the current window resets: the account's fixed reset moment, the same day and time every week |
-| `limits.usage.resets_in_seconds` | Seconds until the current window resets |
+| `plan` | Your plan: `free`, `plus` or `ultra` |
+| `upload_count` | Number of files stored in your personal gallery |
+| `limits.max_file_size` | Largest single file in bytes. 50 MB on Free; on PLUS and Ultra it equals the weekly quota (`limits.usage.limit`) |
+| `limits.usage.used` | Bytes uploaded in the current weekly window |
+| `limits.usage.limit` | Bytes allowed per weekly window |
+| `limits.usage.used_percent` | Share of the weekly quota used, rounded to the nearest integer. Can pass 100. |
+| `limits.usage.resets_at` | When the weekly window resets: your fixed reset moment, the same day and time every week. `null` if no window has been assigned yet. |
 | `limits.priority_minutes.used` | Priority minutes used in the current 30-day window, rounded to the nearest minute |
-| `limits.priority_minutes.limit` | Priority minutes allowed per window (10 on Free, 100 on PLUS, 300 on Ultra) |
-| `limits.priority_minutes.used_percent` | Percentage of the budget consumed, rounded to the nearest integer (0–100) |
-| `limits.priority_minutes.window_start` | When the current 30-day window started, derived from the account's fixed reset schedule |
-| `limits.priority_minutes.window_end` | When the full budget returns |
-| `limits.priority_minutes.resets_in_seconds` | Seconds until the budget resets |
+| `limits.priority_minutes.limit` | Priority minutes per window (10 on Free, 100 on PLUS, 300 on Ultra) |
+| `limits.priority_minutes.used_percent` | Share of the budget used, rounded, from 0 to 100 |
+| `limits.priority_minutes.resets_at` | When the full budget returns. `null` if no window has been assigned yet. |
 
 ## Teams
 

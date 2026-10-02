@@ -1,0 +1,41 @@
+---
+title: "Follow User"
+openapi: "relay-reference/openapi.json POST /users/{id}/follow"
+---
+
+Follow a user.
+
+## Behavior
+
+- Following someone you already follow succeeds and changes nothing.
+- You cannot follow yourself (`400`), a suspended or missing user (`404`), or anyone you block or who blocks you (`403` with type `blocked`).
+- The user gets a `follow` notification the first time you follow them.
+- `follower_count` is the user's follower count after the call.
+- Rate limited to 30 follows per minute.
+
+## Examples
+
+```bash
+curl -X POST "https://relay.snipp.gg/users/987654321098765432/follow" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "following": true,
+  "follower_count": 13
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | Invalid `id`, or yourself |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `blocked` | A block exists between you |
+| `403` | `suspended` | Your account is suspended |
+| `404` | `not_found` | No such user, or the user is suspended |
+| `429` | `rate_limited` | More than 30 follows per minute |

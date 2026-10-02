@@ -1,0 +1,52 @@
+---
+title: "List Blocks"
+openapi: "relay-reference/openapi.json GET /users/{id}/blocks"
+---
+
+List the users you block, most recent first. `id` must be `@me` or your own ID.
+
+## Behavior
+
+- Only blocks you made are listed. Users who block you never appear.
+- Each entry has the blocked `user` and `created_at`, when you blocked them.
+- Results are [paginated](/concepts/pagination): pass `limit` (1 to 100, default 30) and the previous page's `next_cursor` as `cursor`.
+- Shares a rate limit bucket with the follower and following lists: 30 requests per minute.
+
+## Examples
+
+```bash
+curl "https://relay.snipp.gg/users/@me/blocks" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "blocks": [
+    {
+      "user": {
+        "id": "987654321098765432",
+        "username": "playertwo",
+        "nickname": "Player Two",
+        "avatar": "https://cdn.snipp.gg/avatar.png",
+        "verified": false,
+        "plan": "free"
+      },
+      "created_at": "2026-09-14T11:20:05.000Z"
+    }
+  ],
+  "has_more": false,
+  "next_cursor": null
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | Invalid `limit` or `cursor` |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `forbidden` | `id` is not you |
+| `403` | `suspended` | Your account is suspended |
+| `429` | `rate_limited` | More than 30 requests per minute |

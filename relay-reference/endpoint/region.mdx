@@ -1,37 +1,33 @@
 ---
 title: "Get Region"
-openapi: "GET /region"
+openapi: "relay-reference/openapi.json GET /region"
 ---
 
-Returns which region served the request. Useful for confirming you're hitting the regional endpoint you intended, or for debugging routing through `relay.snipp.gg`.
+Returns the region that served the request. Use it to confirm a regional endpoint, or to see where `relay.snipp.gg` routed you.
 
 ## Behavior
 
-- No authentication required.
-- `region` is the short region code (for example, `eu-west-1` or `us-west-1`). Returns `unknown` if the server has no region configured.
-- `country` is the country name mapped from the region prefix (for example, `United States`). `null` if no country mapping is available.
-- `label` is a human-readable form (for example, `United States (us-west-1)`). Falls back to the raw region code if no country mapping is available.
+- No key required and not rate limited.
+- `region` is the region code, for example `eu-west-1` or `us-west-1`, or `unknown` when the server has none configured.
+- `country` is the country for that region, or `null` when there is no mapping.
+- `label` is a readable form such as `United Kingdom (eu-west-1)`, falling back to the bare region code.
 
 ## Examples
 
-Confirm US West is responding:
-
 ```bash
-curl -X GET "https://us-west-1.relay.snipp.gg/region"
+curl "https://relay.snipp.gg/region"
 ```
 
-Check which region `relay.snipp.gg` routed you to:
-
 ```bash
-curl -X GET "https://relay.snipp.gg/region"
+curl "https://eu-west-1.relay.snipp.gg/region"
 ```
 
 ## Responses
 
 ```json
 {
-  "region": "us-west-1",
-  "country": "United States",
-  "label": "United States (us-west-1)"
+  "region": "eu-west-1",
+  "country": "United Kingdom",
+  "label": "United Kingdom (eu-west-1)"
 }
 ```

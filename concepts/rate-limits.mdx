@@ -12,49 +12,45 @@ Rate limits protect Snipp from abuse and keep performance consistent for everyon
 | Endpoint | Limit | Window |
 |----------|-------|--------|
 | `GET /users/{id}` | No limit | |
-| `GET /posts/{code}` | 20 requests | Per 30 seconds |
+| `GET /users/{id}/posts` | 20 requests | Per 30 seconds, shared with `GET /posts/{code}` |
+| `GET /posts/{code}` | 20 requests | Per 30 seconds, shared with `GET /users/{id}/posts` |
 | `POST /upload` | 20 requests | Per 30 seconds |
-| `GET /uploads` | 20 requests | Per 30 seconds |
-| `PATCH /editUpload` | 20 requests | Per 30 seconds |
-| `POST /appendUpload` | 10 requests | Per minute |
-| `DELETE /deleteUpload` | 20 requests | Per 30 seconds |
-| `POST /report-post` and `POST /report-user` | 3 requests combined | Per minute |
+| `GET /posts` | 20 requests | Per 30 seconds |
+| `PATCH /posts/{code}` | 20 requests | Per 30 seconds |
+| `DELETE /posts/{code}` | 20 requests | Per 30 seconds, shared with `DELETE /posts/{code}/files/{name}` |
+| `DELETE /posts/{code}/files/{name}` | 20 requests | Per 30 seconds, shared with `DELETE /posts/{code}` |
+| `POST /posts/{code}/files` | 10 requests | Per minute |
+| `POST /posts/{code}/report` and `POST /users/{id}/report` | 3 requests combined | Per minute |
 | `GET /usage-history` | 30 requests | Per minute |
 | `GET /analytics` | 30 requests | Per minute |
 | `GET /gifs` | 60 requests per IP | Per minute |
 | `POST /convert` | 10 requests | Per minute |
+| `GET /region` | No limit | |
 
 ## Relay Limits
 
-The Relay API matches the limits above for shared endpoints, with these additional Relay-only endpoints:
+Relay has the same limits for the endpoints above, plus these Relay-only endpoints:
 
 | Endpoint | Limit | Window |
 |----------|-------|--------|
 | `GET /discover` | No limit | |
-| `GET /blocks` | No limit | |
-| `POST /block` | 10 requests | Per minute |
-| `POST /unblock` | 10 requests | Per minute |
-| `POST /follow` | 30 requests | Per minute |
-| `POST /unfollow` | 30 requests | Per minute |
-| `GET /followers` | 30 requests | Per minute, shared with `GET /following` |
-| `GET /following` | 30 requests | Per minute, shared with `GET /followers` |
-| `PATCH /profile` | 10 requests | Per minute |
-| `POST /profile/avatar` | 10 requests | Per minute |
-| `POST /profile/banner` | 10 requests | Per minute |
-| `PATCH /theme` | 20 requests | Per minute |
-| `POST /like` | 30 requests | Per minute, shared with `POST /comment-like` |
-| `GET /comments` | No limit | |
-| `POST /comment` | 5 requests | Per minute, shared with `DELETE /comment` |
-| `DELETE /comment` | 5 requests | Per minute, shared with `POST /comment` |
-| `POST /comment-like` | 30 requests | Per minute, shared with `POST /like` |
-| `POST /report-comment` | 3 requests | Per minute, shared with `POST /report-post` and `POST /report-user` |
-| `GET /notifications` | 60 requests | Per minute, shared with `GET /notifications/unread` and `POST /notifications/read` |
-| `GET /notifications/unread` | 60 requests | Per minute, shared with `GET /notifications` and `POST /notifications/read` |
-| `POST /notifications/read` | 60 requests | Per minute, shared with `GET /notifications` and `GET /notifications/unread` |
-| `GET /notification-prefs` | 20 requests | Per minute, shared with `POST /notification-prefs` |
-| `POST /notification-prefs` | 20 requests | Per minute, shared with `GET /notification-prefs` |
+| `PATCH /users/@me` | 10 requests | Per minute |
+| `POST` and `DELETE /users/@me/avatar` | 10 requests combined | Per minute |
+| `POST` and `DELETE /users/@me/banner` | 10 requests combined | Per minute |
+| `POST /users/{id}/follow` | 30 requests | Per minute |
+| `DELETE /users/{id}/follow` and `DELETE /users/@me/followers/{id}` | 30 requests combined | Per minute |
+| `GET /users/{id}/followers`, `GET /users/{id}/following` and `GET /users/@me/blocks` | 30 requests combined | Per minute |
+| `POST /users/{id}/block` | 10 requests | Per minute |
+| `DELETE /users/{id}/block` | 10 requests | Per minute |
+| `POST` and `DELETE` on `/posts/{code}/like` and `/comments/{id}/like` | 30 requests combined | Per minute |
+| `GET /posts/{code}/comments` | No limit | |
+| `POST /posts/{code}/comments` and `DELETE /comments/{id}` | 5 requests combined | Per minute |
+| `POST /comments/{id}/report` | 3 requests | Per minute, shared with post and user reports |
+| `GET /notifications`, `GET /notifications/unread-count` and `POST /notifications/read` | 60 requests combined | Per minute |
+| `GET` and `PATCH /preferences` | 20 requests combined | Per minute |
+| `GET /sessions`, `DELETE /sessions` and `DELETE /sessions/{id}` | 30 requests combined | Per minute |
 
-`GET /posts/{code}` and `GET /discover` on Relay automatically count views per post. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour.
+`GET /posts/{code}` and `GET /discover` on Relay count views. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour.
 
 See the [Relay Reference](/relay-reference/introduction) for what Relay covers and how to authenticate.
 
@@ -73,11 +69,14 @@ Endpoints with no limit do not include these headers.
 
 ## Rate Limit Responses
 
-When you exceed the limit, the API returns HTTP status `429`:
+When you exceed the limit, the API returns HTTP status `429` with type `rate_limited` and a `Retry-After` header:
 
 ```json
 {
-  "error": "Rate limit exceeded. Please try again later."
+  "error": {
+    "type": "rate_limited",
+    "message": "Rate limit exceeded. Please try again later."
+  }
 }
 ```
 
@@ -85,14 +84,24 @@ The rate limit headers are still included on `429` responses so you know when to
 
 ## Weekly Usage Limit Responses
 
-Separate from per-endpoint rate limits, every account has a [weekly usage limit](/concepts/plans#weekly-usage-limit). Files that would push you over the limit are rejected before they are stored. The exact response shape depends on the endpoint:
+Separate from per-endpoint rate limits, every account has a [weekly usage limit](/concepts/plans#weekly-usage-limit). A file that would push you over it is rejected before it is stored, with type `quota_exceeded` and three context fields:
 
-- `POST /upload` and `POST /appendUpload` return `200` with the rejected file moved to the `failed` array when at least one other file was stored. Each entry includes `error: "Weekly usage limit exceeded."`, plus `quota`, `used`, and `resets_at`.
-- When every file in the request is rejected, the status is `400`. A multi-file request returns `error: "All files failed to upload."` alongside the same `failed` array. A single-file request returns the reason at the top level, with `quota`, `used` and `resets_at` beside it whenever the quota was reserved per file: `POST /appendUpload`, and `POST /upload` on a team key.
-- A single-file `POST /upload` on a personal key is the exception. Its quota is reserved during the insert, so it returns `400` with `error: "Weekly usage limit exceeded."` and no quota fields.
-- The Website internal chunked-upload route returns `413` with the same fields at the top level.
-- A personal-key `POST /upload` or `POST /appendUpload` whose declared `Content-Length` already exceeds your weekly quota is refused with `413` before any file is read. The message is the per-file one (`File size exceeds the 50 MB limit.` on Free, `20 GB` on PLUS, `50 GB` on Ultra). Team keys skip this check.
-- The Website internal `/api/v1/album` route moves the rejected file to the `failed` array like `/upload`: `200` when at least one file was stored, `400` when every file failed. The fields sit at the top level only when a single file was sent.
+```json
+{
+  "error": {
+    "type": "quota_exceeded",
+    "message": "Weekly usage limit exceeded.",
+    "quota": 21474836480,
+    "used": 21470000000,
+    "resets_at": "2026-10-04T16:20:00.000Z"
+  }
+}
+```
+
+- On `POST /upload` and `POST /posts/{code}/files`, when at least one other file was stored, the response is `200` and the rejected file is listed in `failed` with this `error` object.
+- When the only file in the request is rejected, the response is `400` with the error above at the top level.
+- When every file of a multi-file request fails, the response is `400` with type `upload_failed`, and each file's `quota_exceeded` error sits in `failed`. See [Partial upload failures](/concepts/errors#partial-upload-failures).
+- A personal-key request whose declared `Content-Length` already exceeds your weekly quota is refused with `413` and type `file_too_large` before any file is read. Team keys are only checked against the per-file limit.
 
 Check your remaining usage anytime via `GET /users/@me` (`limits.usage`).
 

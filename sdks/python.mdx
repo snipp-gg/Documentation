@@ -39,36 +39,67 @@ client = SnippClient(api_key="YOUR_API_KEY", region="eu-west-1")  # or "us-west-
 
 ## Methods
 
-### `get_user(user_id="@me", include_posts=None, posts_limit=None)`
+Every method returns the parsed JSON response as a `dict`. Posts, files, and users follow the shapes in the [API reference](/api-reference/introduction), and the package exports matching `TypedDict` classes (`Post`, `PostFile`, `User`, `PostList`, and the rest) for editor completion.
 
-Fetch a user by ID. Pass `"@me"` or omit it for the authenticated user.
+### `get_user(user_id="@me")`
+
+Fetch a user by ID. Pass `"@me"` or omit it for the authenticated user. `api_key`, `key_has_uploads_access`, `upload_count`, and `limits` are only present on yourself.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `user_id` | `str` | User ID or `"@me"`. Defaults to `"@me"`. |
-| `include_posts` | `bool \| None` | Include the user's public uploads. |
-| `posts_limit` | `int \| None` | Number of posts to return (1 to 50). |
 
 ```python
-user = client.get_user("@me", include_posts=True, posts_limit=10)
+user = client.get_user("@me")["user"]
+print(user["plan"], user["limits"]["usage"]["used_percent"])
+```
+
+### `get_user_posts(user_id, limit=None, cursor=None)`
+
+List a user's public posts, newest first. Team, private, unlisted, moderated, and restricted posts are never included. Pass `"@me"` for your own public posts.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `user_id` | `str` | User ID or `"@me"`. |
+| `limit` | `int \| None` | Posts per page (1 to 100, default 30). |
+| `cursor` | `str \| None` | `next_cursor` from the previous page. |
+
+```python
+page = client.get_user_posts("987654321098765432", limit=10)
+print(page["has_more"], page["next_cursor"])
+```
+
+### `list_posts(limit=None, cursor=None)`
+
+List your own posts of every privacy, newest first. Team posts are not included. Takes the same `limit` and `cursor` as `get_user_posts`. Follow `next_cursor` until it is `None` to walk every page.
+
+```python
+cursor = None
+while True:
+    page = client.list_posts(limit=100, cursor=cursor)
+    for post in page["posts"]:
+        print(post["code"], post["privacy"])
+    cursor = page["next_cursor"]
+    if cursor is None:
+        break
 ```
 
 ### `get_post(code)`
 
-Fetch a post by its share code. Team posts are only readable by members of that team, and omit `like_count`.
+Fetch a post by its share code. Team posts are only readable by members of that team, and have `like_count` and `liked` set to `None`.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `code` | `str` | The share code of the post. |
 
 ```python
-post = client.get_post("AbCd1234")
-print(post["post"]["url"])
+post = client.get_post("AbCd1234")["post"]
+print(post["url"], post["files"][0]["url"])
 ```
 
-### `upload(file, privacy=None, title=None, description=None, post_type=None)`
+### `upload(file, privacy=None, title=None, description=None, post_type=None, include_metadata=None, priority=None)`
 
-Upload a file. Accepts a file path string, bytes, or a file-like object.
+Upload a file as a new post. Accepts a file path string, bytes, or a file-like object. Returns `url` (the direct file URL) and `post`.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -76,82 +107,117 @@ Upload a file. Accepts a file path string, bytes, or a file-like object.
 | `privacy` | `str \| None` | `"public"`, `"unlisted"`, or `"private"`. Defaults to `private` when omitted. |
 | `title` | `str \| None` | Optional post title (max 30 chars). |
 | `description` | `str \| None` | Optional post description (max 200 chars). |
-| `post_type` | `str \| None` | Sent as the `post-type` header. Has no effect through `upload()`, which sends a single file; use `append_upload` to build an album. |
+| `post_type` | `str \| None` | Sent as the `post-type` header. Has no effect through `upload()`, which sends a single file; use `add_files` to build an album. |
+| `include_metadata` | `bool \| None` | Keep the file's metadata (EXIF, location, and the like). Omitted, the server strips it. |
+| `priority` | `bool \| None` | Use priority (adaptive) streaming for videos. Omitted, the server enables it when your plan is eligible. |
 
 ```python
 result = client.upload("image.png", privacy="unlisted", title="My screenshot")
-print(result["url"])
+print(result["url"], result["post"]["url"])
 ```
 
-### `list_uploads(limit=None)`
+### `update_post(code, title=None, description=None, privacy=None)`
 
-List the authenticated user's recent uploads. Defaults to 30. Pass `limit` to control the count (max 1000).
-
-| Argument | Type | Description |
-|----------|------|-------------|
-| `limit` | `int \| None` | Maximum uploads to return (1-1000). |
-
-```python
-uploads = client.list_uploads(limit=100)
-```
-
-### `edit_upload(code, title=None, description=None, privacy=None)`
-
-Edit an existing upload's title, description, or privacy.
+Update a post's title, description, or privacy. Only the arguments you pass are changed. A team post's privacy cannot be changed. Returns `post`.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `code` | `str` | The share code of the upload. |
+| `code` | `str` | The share code of the post. |
 | `title` | `str \| None` | New title (max 30 chars). Empty string to clear. |
 | `description` | `str \| None` | New description (max 200 chars). Empty string to clear. |
 | `privacy` | `str \| None` | `"public"`, `"unlisted"`, or `"private"`. |
 
 ```python
-client.edit_upload("AbCd1234", title="New title", privacy="public")
+client.update_post("AbCd1234", title="New title", privacy="public")
 ```
 
-### `append_upload(code, files)`
+### `add_files(code, files, include_metadata=None, priority=None)`
 
-Add one or more files to an existing album post. The post's share code, privacy, title, and description are preserved. Albums cap at 50 files total. Requests that would exceed the cap are rejected. New files inherit the post's privacy. Returned URLs are signed with a 24-hour expiry for private posts.
+Add one or more files to an existing post, turning it into an album. The post's share code, privacy, title, and description are preserved. Posts cap at 50 files total. Requests that would exceed the cap are rejected. New files inherit the post's privacy. Returns `post`, plus `failed` when some files were rejected, each with its `index` and `error`.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `code` | `str` | Share code of the post to append to. |
+| `code` | `str` | Share code of the post. |
 | `files` | `list[str \| bytes \| BinaryIO]` | One or more files. Each item may be a file path, raw bytes, or a file-like object. |
+| `include_metadata` | `bool \| None` | Keep the files' metadata (EXIF, location, and the like). Omitted, the server strips it. |
+| `priority` | `bool \| None` | Use priority (adaptive) streaming for videos. Omitted, the server enables it when your plan is eligible. |
 
 ```python
-result = client.append_upload("AbCd1234", ["photo-a.png", "photo-b.png"])
-print(result["post"]["file_count"])
+result = client.add_files("AbCd1234", ["photo-a.png", "photo-b.png"], include_metadata=True)
+print(result["post"]["file_count"], result.get("failed", []))
 ```
 
-### `delete_upload(filename)`
+### `delete_file(code, name)`
 
-Delete an upload by its filename. On albums, only that file is removed; on single-file posts the entire post is deleted.
+Delete one file from a post, by the `name` it has in `post["files"]`. Deleting a post's only file deletes the post.
 
 ```python
-client.delete_upload("a3f7b2c91d4e8f0612ab34cd56ef7890.png")
+post = client.get_post("AbCd1234")["post"]
+client.delete_file("AbCd1234", post["files"][1]["name"])
 ```
 
-### `report_post(code, reason="")`
+### `delete_post(code)`
+
+Delete a post and every file in it.
+
+```python
+client.delete_post("AbCd1234")
+```
+
+### `report_post(code, reason=None)`
 
 Report a post, with an optional reason (max 200 chars).
 
 ```python
-client.report_post("AbC123", "Spam")
+client.report_post("AbCd1234", "Spam")
+```
+
+### `report_user(user_id, reason=None)`
+
+Report a user, with an optional reason (max 200 chars).
+
+```python
+client.report_user("987654321098765432", "Impersonation")
 ```
 
 ## Error Handling
 
-All API errors raise a `SnippError` with `status`, `message`, and `body` attributes. `body` is the parsed JSON error response, or `None` when the response was not JSON. It carries the fields the API sends alongside `error`, such as `suspended` on a suspended user or `moderated` on a moderated post.
+All API errors raise a `SnippError` with these attributes:
+
+| Attribute | Type | Description |
+|-----------|------|-------------|
+| `status` | `int` | HTTP status code. |
+| `type` | `str \| None` | Error type, such as `not_found`, `rate_limited`, or `quota_exceeded`. `None` when the response did not carry one. |
+| `message` | `str` | Human-readable message, or the HTTP status text when the response did not carry one. |
+| `body` | `dict \| None` | Parsed JSON response, or `None` when it was not JSON. Context fields live under `body["error"]`, such as `resets_at` on `quota_exceeded`. |
 
 ```python
 from snipp import SnippClient, SnippError
 
 try:
-    client.get_user("987654321098765432")
+    client.upload("image.png")
 except SnippError as err:
-    if err.body and err.body.get("suspended"):
-        print(f"{err.body['username']} is suspended")
+    if err.type == "quota_exceeded":
+        print(f"Weekly quota used up, resets at {err.body['error']['resets_at']}")
     else:
-        print(err.status, err.message)
+        raise
 ```
+
+## Migrating from 2.x
+
+3.0 follows the reorganized Snipp API.
+
+| 2.x | 3.0 |
+|-----|-----|
+| `list_uploads(limit)` | `list_posts(limit, cursor)`, cursor-paginated posts |
+| `edit_upload(code, ...)` | `update_post(code, ...)` |
+| `append_upload(code, files)` | `add_files(code, files)` |
+| `delete_upload(filename)` | `delete_file(code, name)`, which now needs the post's share code |
+| `get_user(user_id, include_posts, posts_limit)` | `get_user(user_id)` plus `get_user_posts(user_id, limit, cursor)` |
+| `report_post(code, reason="")` | `report_post(code, reason=None)` |
+| | New: `delete_post(code)`, `report_user(user_id, reason=None)` |
+
+- Posts use one shape everywhere: `privacy` (was `post_privacy`), `created_at` (was `created`), `view_count` (was `views`), `files[].name` (was `file_name`), and `file_count` replaces `is_album`. The top-level `urls`, `file`, and `thumbnail_url` are gone; read `files`.
+- `upload()` returns `url` and `post`; `message`, `file`, and `processing_time` are gone.
+- Users carry `plan` (`free`, `plus`, or `ultra`) in place of `plus`, `ultra`, and `badges`, `created_at` in place of `created`, and `blocking` in place of `blocked_by_you`.
+- The API now sends every error as an `error` object with `type`, `message`, and any context fields. `SnippError` gains `type`, `message` falls back to the HTTP status text instead of the raw response body, and context fields moved from the top of `body` into `body["error"]`. A check like `err.body.get("suspended")` becomes `err.type == "suspended"`.

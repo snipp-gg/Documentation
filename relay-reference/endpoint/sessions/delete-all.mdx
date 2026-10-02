@@ -1,0 +1,36 @@
+---
+title: "Log Out All Sessions"
+openapi: "relay-reference/openapi.json DELETE /sessions"
+---
+
+Log out every website session on your account.
+
+## Behavior
+
+- `deleted_count` is how many sessions were removed.
+- A logged-out device may keep working on the website for up to 30 seconds.
+- Your relay key is not affected, so the app making this call stays signed in.
+- Shares a rate limit bucket with the other session endpoints: 30 requests per minute.
+
+## Examples
+
+```bash
+curl -X DELETE "https://relay.snipp.gg/sessions" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "deleted_count": 2
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `suspended` | Your account is suspended |
+| `429` | `rate_limited` | More than 30 requests per minute |

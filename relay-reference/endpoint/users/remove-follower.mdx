@@ -1,0 +1,39 @@
+---
+title: "Remove Follower"
+openapi: "relay-reference/openapi.json DELETE /users/{id}/followers/{follower_id}"
+---
+
+Remove a user from your followers. `id` must be `@me` or your own ID.
+
+## Behavior
+
+- `follower_id` is the follower's numeric user ID.
+- Removing someone who does not follow you succeeds and changes nothing.
+- They can follow you again afterwards. To stop that, [block](/relay-reference/endpoint/users/block) them.
+- Shares a rate limit bucket with [Unfollow User](/relay-reference/endpoint/users/unfollow): 30 requests per minute.
+
+## Examples
+
+```bash
+curl -X DELETE "https://relay.snipp.gg/users/@me/followers/987654321098765432" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "id": "987654321098765432",
+  "deleted": true
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | Invalid `follower_id` |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `forbidden` | `id` is not you |
+| `403` | `suspended` | Your account is suspended |
+| `429` | `rate_limited` | More than 30 requests per minute |

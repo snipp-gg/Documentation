@@ -1,0 +1,36 @@
+---
+title: "Mark Notifications Read"
+openapi: "relay-reference/openapi.json POST /notifications/read"
+---
+
+Mark every unread notification as read.
+
+## Behavior
+
+- Marks all unread notifications at once. There is no way to mark a single one.
+- Read notifications stay in the list with `read: true`. There is no endpoint to delete them.
+- The response is the unread count after the call, always `0`.
+- Shares a rate limit bucket with the other notification endpoints: 60 requests per minute.
+
+## Examples
+
+```bash
+curl -X POST "https://relay.snipp.gg/notifications/read" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "unread_count": 0
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `suspended` | Your account is suspended |
+| `429` | `rate_limited` | More than 60 requests per minute |

@@ -50,10 +50,10 @@ Maximum file size depends on your plan:
 | Ultra | 50 GB |
 | Team keys | 50 GB |
 
-PLUS and Ultra have no per-file cap beyond your weekly quota: a single file can use the whole week's allowance (20 GB on PLUS, 50 GB on Ultra). Team keys are capped at **50 GB per file**. A file larger than your plan's limit is rejected with `File size exceeds the 50 MB limit.` (20 GB on PLUS, 50 GB on Ultra and team keys), like any other per-file failure. When the whole request's declared size already exceeds your weekly quota, it is refused up front with `413` and the same message.
+PLUS and Ultra have no per-file cap beyond your weekly quota: a single file can use the whole week's allowance (20 GB on PLUS, 50 GB on Ultra). Team keys are capped at **50 GB per file**. A file larger than your plan's limit fails with type `file_too_large` and `File size exceeds the 50 MB limit.` (20 GB on PLUS, 50 GB on Ultra and team keys), like any other per-file failure. When it is the only file in the request the status is `413`. When the whole request's declared size already exceeds your weekly quota, it is refused up front with `413` and the same message.
 
 <Info>
-  Videos have a hard ceiling of **30 GB** per file. It only applies on Ultra and team keys, since PLUS is already capped at 20 GB and Free at 50 MB. A larger video is rejected with `400` and `Video exceeds the 30 GB limit.`.
+  Videos have a hard ceiling of **30 GB** per file. It only applies on Ultra and team keys, since PLUS is already capped at 20 GB and Free at 50 MB. A larger video fails with type `file_too_large` and `Video exceeds the 30 GB limit.`, with status `413` when it is the only file.
 </Info>
 
 <Info>
@@ -62,14 +62,19 @@ PLUS and Ultra have no per-file cap beyond your weekly quota: a single file can 
 
 ## Unsupported Files
 
-The type is detected from the file's own bytes, not its name or the declared content type. If you upload a file with an unsupported format, the API returns a `400` error:
+The type is detected from the file's own bytes, not its name or the declared content type. If you upload a file with an unsupported format, the API returns `400` with type `unsupported_type`:
 
 ```json
 {
-  "error": "Unsupported file type."
+  "error": {
+    "type": "unsupported_type",
+    "message": "Unsupported file type."
+  }
 }
 ```
 
+In a multi-file upload the file is listed in `failed` instead, and the other files are still stored. See [Partial upload failures](/concepts/errors#partial-upload-failures).
+
 ## Reserved Marker
 
-Files that begin with an internal encryption marker are rejected by the upload endpoint. If you encounter this error, the file may be corrupted or use a reserved byte sequence. Try re-exporting the file from its original source.
+Files that begin with an internal encryption marker are rejected by the upload endpoint with type `unsupported_type` and `File starts with a reserved marker.` If you encounter this error, the file may be corrupted or use a reserved byte sequence. Try re-exporting the file from its original source.

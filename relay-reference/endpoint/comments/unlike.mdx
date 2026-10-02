@@ -1,0 +1,39 @@
+---
+title: "Unlike Comment"
+openapi: "relay-reference/openapi.json DELETE /comments/{id}/like"
+---
+
+Remove your like from a comment.
+
+## Behavior
+
+- Unliking a comment you have not liked succeeds and changes nothing. `liked` and `like_count` are the state after the call.
+- The same visibility rules as [Like Comment](/relay-reference/endpoint/comments/like) apply.
+- Shares a rate limit bucket with post likes: 30 requests per minute.
+
+## Examples
+
+```bash
+curl -X DELETE "https://relay.snipp.gg/comments/0b7c4e2a-9f13-4d6b-8a21-5c3e7f9d1a04/like" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "liked": false,
+  "like_count": 3
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | `id` is not a valid comment ID |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `moderated` | The post is moderated |
+| `403` | `blocked` | The comment's author has blocked you |
+| `404` | `not_found` | No such comment, or you cannot see its post |
+| `429` | `rate_limited` | More than 30 likes per minute |

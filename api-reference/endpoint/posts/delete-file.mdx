@@ -1,0 +1,43 @@
+---
+title: "Delete File"
+openapi: "api-reference/openapi.json DELETE /posts/{code}/files/{name}"
+---
+
+Remove one file from a post.
+
+## Behavior
+
+- `name` is the stored file name from `files[].name`: 32 lowercase hex characters, a dot, and the extension (for example `a1b2c3d4e5f6789012345678abcdef01.png`). The extension is required.
+- Removing a file from an album keeps the rest of the post. Removing the last file deletes the post.
+- You must own the post. A team post needs that team's access key.
+- Requires [gallery access](/authentication#api-key-permissions) on the key.
+- Files in a moderated post cannot be removed and return `403` with type `moderated`.
+- To delete the whole post in one call, use [Delete Post](/api-reference/endpoint/posts/delete).
+- Shares a rate limit bucket with Delete Post: 20 requests per 30 seconds.
+
+## Examples
+
+```bash
+curl -X DELETE "https://api.snipp.gg/posts/AlBm5678/files/b2c3d4e5f6789012345678abcdef0102.png" \
+  -H "api-key: YOUR_API_KEY"
+```
+
+## Responses
+
+```json
+{
+  "name": "b2c3d4e5f6789012345678abcdef0102.png",
+  "deleted": true
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | Invalid `code` or `name` |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `forbidden` | Not your post, or the key has no gallery access |
+| `403` | `moderated` | The post is moderated |
+| `404` | `not_found` | No such post, or the file is not in it |
+| `429` | `rate_limited` | Too many deletes |

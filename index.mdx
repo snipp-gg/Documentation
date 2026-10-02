@@ -15,13 +15,13 @@ Snipp is a modern file-sharing platform with a developer-friendly API. Upload im
   <Card icon="cloud-arrow-up" href="/api-reference/endpoint/upload" title="Upload Files">
     Upload images and videos with `POST /upload`. Includes privacy controls.
   </Card>
-  <Card icon="list" href="/api-reference/endpoint/uploads" title="Manage Uploads">
-    List your recent uploads with `GET /uploads` and remove files with `DELETE /deleteUpload`.
+  <Card icon="list" href="/api-reference/endpoint/posts/list" title="Manage Posts">
+    List your posts with `GET /posts`, edit them with `PATCH /posts/{code}` and delete them with `DELETE /posts/{code}`.
   </Card>
-  <Card icon="user" href="/api-reference/endpoint/users" title="User Profiles">
-    Fetch profile data, badges, and public uploads for any user with `GET /users/{id}`.
+  <Card icon="user" href="/api-reference/endpoint/users/get" title="User Profiles">
+    Fetch any user's profile with `GET /users/{id}` and their public posts with `GET /users/{id}/posts`.
   </Card>
-  <Card icon="compass" href="/relay-reference/introduction" title="Discover Feed">
+  <Card icon="compass" href="/relay-reference/endpoint/discover" title="Discover Feed">
     Browse community uploads with `GET /discover` on the Relay API.
   </Card>
 </Columns>
@@ -40,5 +40,11 @@ Snipp is a modern file-sharing platform with a developer-friendly API. Upload im
   </Card>
   <Card title="Plans" icon="gem" href="/concepts/plans">
     Compare Free, PLUS, and Ultra tiers.
+  </Card>
+  <Card title="Errors" icon="triangle-exclamation" href="/concepts/errors">
+    Read error types and handle partial upload failures.
+  </Card>
+  <Card title="Migrating to API v3" icon="arrow-right-arrow-left" href="/migration">
+    Map old endpoints and fields to the redesigned API.
   </Card>
 </CardGroup>

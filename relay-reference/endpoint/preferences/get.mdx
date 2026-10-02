@@ -1,0 +1,54 @@
+---
+title: "Get Preferences"
+openapi: "relay-reference/openapi.json GET /preferences"
+---
+
+Read your notification, email and upload preferences. They follow your account to every device and match the settings on the website.
+
+## Behavior
+
+- `notifications.likes` covers post likes and comment likes. `notifications.payouts` covers payout notifications.
+- Some notifications cannot be turned off and are not listed: mentions, shared posts, post removals and restrictions, and account changes. The same goes for security and transactional emails.
+- `emails.payouts` covers creator payout and referral emails. `emails.sign_ins` sends an email every time someone signs in to your account on the website. Both are on by default.
+- `uploads.default_privacy` is what upload screens pre-select. The API never applies it: an upload without a `post-privacy` header is always private.
+- `uploads.adaptive_streaming` is on by default. The other upload toggles are off by default.
+- Shares a rate limit bucket with [Update Preferences](/relay-reference/endpoint/preferences/update): 20 requests per minute.
+
+## Examples
+
+```bash
+curl "https://relay.snipp.gg/preferences" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "notifications": {
+    "follows": true,
+    "likes": true,
+    "comments": true,
+    "payouts": true
+  },
+  "emails": {
+    "payouts": true,
+    "sign_ins": true
+  },
+  "uploads": {
+    "default_privacy": "unlisted",
+    "adaptive_streaming": true,
+    "auto_compress": false,
+    "include_metadata": false,
+    "auto_copy_url": false
+  }
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `suspended` | Your account is suspended |
+| `429` | `rate_limited` | More than 20 requests per minute |

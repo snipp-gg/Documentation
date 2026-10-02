@@ -1,0 +1,96 @@
+---
+title: "Pagination"
+description: "How list endpoints page with limit, cursor, has_more and next_cursor."
+---
+
+## How it works
+
+List endpoints return one page at a time, newest first, under a plural key such as `posts`, with two extra fields:
+
+```json
+{
+  "posts": [ ... ],
+  "has_more": true,
+  "next_cursor": "eyJ0IjoiMjAyNi0wOS0yOFQxMDowMDowMC4wMDBaIiwiayI6IlF3RXI1Njc4In0"
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `has_more` | `true` when there is at least one more page. |
+| `next_cursor` | Pass it as `cursor` to fetch the next page. `null` on the last page. |
+
+Two query parameters control paging:
+
+| Parameter | Description |
+|-----------|-------------|
+| `limit` | Items per page, from `1` to `100`. Defaults to `30`. |
+| `cursor` | The `next_cursor` from the previous page. Omit it for the first page. |
+
+A `limit` outside `1` to `100`, or a malformed `cursor`, returns `400` with type `invalid_request`.
+
+## Cursors
+
+- Treat a cursor as an opaque string. Do not build, parse or edit one.
+- A cursor marks a position, not an offset, so items added while you page never shift the results or cause duplicates.
+- Cursors do not expire, and a cursor from one endpoint is not meant for another.
+- Keep the same filters (such as `search` or `tab`) for every page of one listing. `limit` can change between pages.
+
+## Paginated endpoints
+
+| Endpoint | Key | Available on |
+|----------|-----|--------------|
+| [`GET /posts`](/api-reference/endpoint/posts/list) | `posts` | API and Relay |
+| [`GET /users/{id}/posts`](/api-reference/endpoint/users/posts) | `posts` | API and Relay |
+| [`GET /gifs`](/api-reference/endpoint/gifs) | `posts` | API and Relay |
+| [`GET /users/{id}/followers`](/relay-reference/endpoint/users/followers) | `users` | Relay |
+| [`GET /users/{id}/following`](/relay-reference/endpoint/users/following) | `users` | Relay |
+| [`GET /users/{id}/blocks`](/relay-reference/endpoint/users/blocks) | `blocks` | Relay |
+| [`GET /notifications`](/relay-reference/endpoint/notifications/list) | `notifications` | Relay |
+
+These lists return everything in one response and have no paging fields: [`GET /discover`](/relay-reference/endpoint/discover) (up to 50 random posts), [`GET /posts/{code}/comments`](/relay-reference/endpoint/posts/comments) (at most 500 comments) and [`GET /sessions`](/relay-reference/endpoint/sessions/list).
+
+## Short pages
+
+A page can hold fewer than `limit` items while `has_more` is still `true`. This happens when items are filtered after the page is read: `GET /gifs` with a narrow `search`, follower lists that skip suspended users, and notifications that group several events into one entry. Always loop on `has_more`, never on the page length.
+
+## Fetching every page
+
+<CodeGroup>
+```javascript JavaScript
+const posts = [];
+let cursor = null;
+do {
+  const url = new URL("https://api.snipp.gg/posts");
+  url.searchParams.set("limit", "100");
+  if (cursor) url.searchParams.set("cursor", cursor);
+  const res = await fetch(url, { headers: { "api-key": process.env.SNIPP_API_KEY } });
+  const page = await res.json();
+  if (!res.ok) throw new Error(page.error.message);
+  posts.push(...page.posts);
+  cursor = page.has_more ? page.next_cursor : null;
+} while (cursor);
+```
+
+```python Python
+import os
+import requests
+
+posts, cursor = [], None
+while True:
+    params = {"limit": 100}
+    if cursor:
+        params["cursor"] = cursor
+    res = requests.get(
+        "https://api.snipp.gg/posts",
+        headers={"api-key": os.environ["SNIPP_API_KEY"]},
+        params=params,
+    )
+    page = res.json()
+    res.raise_for_status()
+    posts.extend(page["posts"])
+    if not page["has_more"]:
+        break
+    cursor = page["next_cursor"]
+```
+</CodeGroup>

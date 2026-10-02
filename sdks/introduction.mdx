@@ -25,6 +25,10 @@ Snipp provides official SDK packages so you can skip raw HTTP calls and focus on
   </Card>
 </CardGroup>
 
+<Note>
+  Version 3.0 renames and reshapes several methods to match the current API. Upgrading from 2.x? Each SDK page ends with a Migrating from 2.x section.
+</Note>
+
 ## Installation
 
 <Tabs>
@@ -42,7 +46,7 @@ Snipp provides official SDK packages so you can skip raw HTTP calls and focus on
     Add to your `Cargo.toml`:
     ```toml
     [dependencies]
-    snipp = "2"
+    snipp = "3"
     tokio = { version = "1", features = ["full"] }
     ```
   </Tab>
@@ -55,8 +59,8 @@ Snipp provides official SDK packages so you can skip raw HTTP calls and focus on
 import { SnippClient } from "@snipp-gg/snipp";
 
 const snipp = new SnippClient({ apiKey: process.env.SNIPP_API_KEY });
-const me = await snipp.getUser("@me");
-console.log(me.user.username);
+const { user } = await snipp.getUser("@me");
+console.log(user.username);
 ```
 
 ```python Python
@@ -73,7 +77,7 @@ use snipp::SnippClient;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = SnippClient::new("YOUR_API_KEY");
-    let me = client.get_user("@me", None).await?;
+    let me = client.get_user("@me").await?;
     println!("{}", me.user.username.unwrap_or_default());
     Ok(())
 }

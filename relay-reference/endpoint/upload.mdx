@@ -1,42 +1,50 @@
 ---
-title: "Upload File(s)"
-openapi: "POST /upload"
+title: "Upload Files"
+openapi: "relay-reference/openapi.json POST /upload"
 ---
 
-Upload between 1 and 50 files in a single request. Every upload automatically creates a post. When sending multiple files, they are grouped into an album by default.
+Upload between 1 and 50 files in one request. Every upload creates a post. Two or more files are grouped into one album post unless you ask for individual posts.
 
 ## Headers
 
 | Header | Required | Description |
 |--------|----------|-------------|
-| `relay-key` | Yes | Your Relay key |
-| `post-privacy` | No | `public`, `unlisted`, or `private` (default) |
-| `post-type` | No | `album` (default) or `individual`. Only applies to two or more files. |
-| `include-metadata` | No | `true` to keep file metadata. Omitted or `false` strips it (default). |
-| `priority` | No | `false` to opt video uploads out of priority (adaptive) streaming. Omitted or `true` keeps it on (default), subject to your remaining priority minutes. |
+| `relay-key` | Yes | Your relay key, or a [team access key](/authentication#team-access-keys) |
+| `post-privacy` | No | `public`, `unlisted` or `private`. Omitted means `private`. Any other value returns `400`. |
+| `post-type` | No | `album` (default) or `individual`. Only matters for two or more files. |
+| `include-metadata` | No | `true` keeps file metadata. Omitted or `false` strips it. |
+| `priority` | No | `false` opts videos out of priority (adaptive) streaming. Omitted or `true` keeps it on, subject to your remaining priority minutes. |
 
-## Form Fields
+Header values are trimmed and case-insensitive. Boolean headers accept only `true` or `false`; anything else returns `400`.
+
+## Form fields
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `file` | Yes | The file to upload. Repeat the field for 2 to 50 files. |
-| `title` | No | Post title, max 30 characters |
-| `description` | No | Post description, max 200 characters |
+| `file` | Yes | The file. Repeat the field for up to 50 files. |
+| `title` | No | Up to 30 characters. Longer titles return `400`. |
+| `description` | No | Up to 200 characters. Longer descriptions return `400`. |
 
 ## Behavior
 
-- **One file:** creates a single post. `post-type` is ignored.
-- **Two or more files, no header or `album`:** creates one album post containing all files.
-- **Two or more files, `individual`:** creates a separate post for each file.
-- **`post-privacy: private`:** the returned `url` (and any `urls` in albums) is a signed URL with a 24-hour expiry. After it expires, call [`GET /posts/{code}`](/relay-reference/endpoint/post) or [`GET /uploads`](/relay-reference/endpoint/uploads) to get a fresh signed URL.
-- **Video uploads:** `.mp4`, `.mov`, and `.mkv` files are remuxed to MP4 with `+faststart` so the browser can begin playback before the full file has downloaded. `.mov` and `.mkv` uploads are stored (and returned) with an `.mp4` extension. If remuxing fails, the file is rejected as corrupt or unplayable. See [File Types](/concepts/file-types) for details.
-- **Metadata:** Metadata (camera, GPS location, timestamp) is stripped by default. For images, metadata is removed from PNG, JPG, WebP and GIF at any size, without re-encoding, so the pixels are untouched. Display orientation is preserved on JPG and WebP, and GIF animation and looping are preserved. For videos, container metadata is removed during the MP4 remux. Send `include-metadata: true` to keep it.
-- **Priority streaming:** Eligible videos are streamed with adaptive bitrate by default, spending [priority minutes](/concepts/plans). Send `priority: false` to upload in standard quality instead and save your minutes. The post's `priority` field reflects whether the video ended up on adaptive streaming.
-- **Failures:** when every file in the request fails, the response is `400`. For a single-file upload the reason is returned directly as `error` (for example `Weekly usage limit exceeded.`). For multi-file uploads the response is `All files failed to upload.` with a `failed` array naming each file by `index`.
+- **One file:** creates one post. `post-type` is ignored.
+- **Two or more files:** creates one album post, or one post per file with `post-type: individual`.
+- **Response shape:** when one post is created the body is `{url, post}`, where `url` is the direct URL of the post's first file (`post.files[0].url`). When several posts are created (`individual`), the body is `{posts}`. An album where only one file survived also returns `{url, post}`.
+- **`url` and `post.url`:** the top-level `url` is the direct file on `i.snipp.gg`. `post.url` is the share page, `https://snipp.gg/p/{code}`.
+- **Private posts:** file URLs are signed and expire after 24 hours. Fetch the post again with [`GET /posts/{code}`](/relay-reference/endpoint/posts/get) for fresh ones.
+- **Videos:** `.mp4`, `.mov` and `.mkv` are remuxed to MP4 with `+faststart`, so `.mov` and `.mkv` come back with an `.mp4` name. A file that cannot be remuxed is rejected as corrupt. Uploaded videos get a thumbnail in `files[].thumbnail_url`. See [File Types](/concepts/file-types).
+- **Metadata:** stripped by default. PNG, JPG, WebP and GIF are stripped at any size without re-encoding, so pixels are untouched; JPG and WebP keep their orientation and GIF keeps its animation. Videos lose container metadata during the remux.
+- **Priority streaming:** eligible videos use adaptive streaming by default and spend [priority minutes](/concepts/plans#priority-minutes). `post.priority` is `true` when a video was queued for it. Minutes are charged after the response; if your budget runs out first, the video falls back to standard quality and the post later reports `priority: false`.
+- **Partial failures:** files that fail are listed in `failed`, each with its zero-based `index` and an `error` object. The stored files are still returned with `200`.
+- **Every file failed:** a one-file request returns that file's error at the top level, with `413` for `file_too_large`, `500` for `internal` and `400` otherwise. A request with several files returns `400` with type `upload_failed` and the same `failed` array. See [Errors](/concepts/errors#partial-upload-failures).
+- **Weekly quota:** a file that would exceed your [weekly usage limit](/concepts/plans#weekly-usage-limit) fails with type `quota_exceeded`, carrying `quota`, `used` and `resets_at`.
+- **Size limits:** a file over your plan's per-file limit fails with type `file_too_large`. A request whose declared `Content-Length` is already larger than your weekly quota (or 50 times the per-file limit) is refused with `413` before any file is read.
+- **Team keys:** posts are always created `private`, whatever `post-privacy` says, and count against the team's quota. A lapsed team returns `403` with type `forbidden`.
+- New posts are scanned automatically. A flagged post is moderated after the response.
 
 ## Examples
 
-Upload a single file:
+One file:
 
 ```bash
 curl -X POST "https://relay.snipp.gg/upload" \
@@ -46,123 +54,302 @@ curl -X POST "https://relay.snipp.gg/upload" \
   -F "file=@screenshot.png"
 ```
 
-Upload an album (two or more files default to album):
+An album:
 
 ```bash
 curl -X POST "https://relay.snipp.gg/upload" \
   -H "relay-key: YOUR_RELAY_KEY" \
   -H "post-privacy: public" \
-  -F "title=Game Moderation Evidence" \
+  -F "title=Match highlights" \
   -F "file=@photo1.png" \
-  -F "file=@photo2.png" \
-  -F "file=@photo3.png"
+  -F "file=@photo2.png"
 ```
 
-Upload multiple files as individual posts:
+One post per file:
 
 ```bash
 curl -X POST "https://relay.snipp.gg/upload" \
   -H "relay-key: YOUR_RELAY_KEY" \
   -H "post-type: individual" \
   -F "file=@image1.png" \
-  -F "file=@image2.png"
+  -F "file=@image2.png" \
+  -F "file=@image3.png"
 ```
 
 ## Responses
 
-Single file:
+One file:
 
 ```json
 {
-  "message": "Upload successful!",
   "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
-  "file": {
-    "size": 2487312,
-    "size_formatted": "2.37 MB",
-    "mime_type": "image/png",
-    "dimensions": { "width": 1920, "height": 1080 }
-  },
-  "processing_time": 412,
   "post": {
     "code": "AbCd1234",
     "url": "https://snipp.gg/p/AbCd1234",
-    "post_privacy": "unlisted",
-    "priority": false
+    "title": "my gaming POV",
+    "description": null,
+    "privacy": "unlisted",
+    "created_at": "2026-10-01T09:15:27.204Z",
+    "view_count": 0,
+    "like_count": 0,
+    "comment_count": 0,
+    "priority": false,
+    "file_count": 1,
+    "files": [
+      {
+        "name": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+        "size": 2487312,
+        "mime_type": "image/png",
+        "width": 1920,
+        "height": 1080,
+        "thumbnail_url": null
+      }
+    ],
+    "team_id": null,
+    "author": {
+      "id": "123456789012345678",
+      "username": "playerone",
+      "nickname": "Player One",
+      "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+      "verified": false,
+      "plan": "plus"
+    },
+    "liked": false,
+    "moderated": false,
+    "restricted": false
   }
 }
 ```
 
-`priority` is `true` when the upload is a video that was placed on priority (adaptive) streaming, and `false` otherwise.
-
-Album (two or more files, default): one `post` containing every file.
+A private upload. The file URLs are signed:
 
 ```json
 {
-  "message": "Upload successful!",
-  "files": [
+  "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png?e=1790035200&s=9f2c4b7d1e8a3f6c0b5d2e9a7c4f1b8e3d6a0c9f2b5e8d1a4c7f0b3e6d9a2c5f",
+  "post": {
+    "code": "AbCd1234",
+    "url": "https://snipp.gg/p/AbCd1234",
+    "title": null,
+    "description": null,
+    "privacy": "private",
+    "created_at": "2026-10-01T09:15:27.204Z",
+    "view_count": 0,
+    "like_count": 0,
+    "comment_count": 0,
+    "priority": false,
+    "file_count": 1,
+    "files": [
+      {
+        "name": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png?e=1790035200&s=9f2c4b7d1e8a3f6c0b5d2e9a7c4f1b8e3d6a0c9f2b5e8d1a4c7f0b3e6d9a2c5f",
+        "size": 2487312,
+        "mime_type": "image/png",
+        "width": 1920,
+        "height": 1080,
+        "thumbnail_url": null
+      }
+    ],
+    "team_id": null,
+    "author": {
+      "id": "123456789012345678",
+      "username": "playerone",
+      "nickname": "Player One",
+      "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+      "verified": false,
+      "plan": "plus"
+    },
+    "liked": false,
+    "moderated": false,
+    "restricted": false
+  }
+}
+```
+
+An album:
+
+```json
+{
+  "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+  "post": {
+    "code": "AlBm5678",
+    "url": "https://snipp.gg/p/AlBm5678",
+    "title": "Match highlights",
+    "description": null,
+    "privacy": "public",
+    "created_at": "2026-10-01T09:15:27.204Z",
+    "view_count": 0,
+    "like_count": 0,
+    "comment_count": 0,
+    "priority": false,
+    "file_count": 2,
+    "files": [
+      {
+        "name": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+        "size": 2487312,
+        "mime_type": "image/png",
+        "width": 1920,
+        "height": 1080,
+        "thumbnail_url": null
+      },
+      {
+        "name": "b2c3d4e5f6789012345678abcdef0102.png",
+        "url": "https://i.snipp.gg/123456789012345678/b2c3d4e5f6789012345678abcdef0102.png",
+        "size": 1843210,
+        "mime_type": "image/png",
+        "width": 1280,
+        "height": 720,
+        "thumbnail_url": null
+      }
+    ],
+    "team_id": null,
+    "author": {
+      "id": "123456789012345678",
+      "username": "playerone",
+      "nickname": "Player One",
+      "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+      "verified": false,
+      "plan": "plus"
+    },
+    "liked": false,
+    "moderated": false,
+    "restricted": false
+  }
+}
+```
+
+Individual posts, where the third file went over the weekly quota:
+
+```json
+{
+  "posts": [
     {
-      "index": 0,
-      "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
-      "size": 2487312,
-      "size_formatted": "2.37 MB",
-      "mime_type": "image/png",
-      "status": "success",
-      "dimensions": { "width": 1920, "height": 1080 }
+      "code": "InDv0001",
+      "url": "https://snipp.gg/p/InDv0001",
+      "title": null,
+      "description": null,
+      "privacy": "public",
+      "created_at": "2026-10-01T09:15:27.204Z",
+      "view_count": 0,
+      "like_count": 0,
+      "comment_count": 0,
+      "priority": false,
+      "file_count": 1,
+      "files": [
+        {
+          "name": "a1b2c3d4e5f6789012345678abcdef01.png",
+          "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+          "size": 2487312,
+          "mime_type": "image/png",
+          "width": 1920,
+          "height": 1080,
+          "thumbnail_url": null
+        }
+      ],
+      "team_id": null,
+      "author": {
+        "id": "123456789012345678",
+        "username": "playerone",
+        "nickname": "Player One",
+        "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+        "verified": false,
+        "plan": "plus"
+      },
+      "liked": false,
+      "moderated": false,
+      "restricted": false
     },
     {
-      "index": 1,
-      "url": "https://i.snipp.gg/123456789012345678/b2c3d4e5f6789012345678abcdef0102.png",
-      "size": 1840221,
-      "size_formatted": "1.76 MB",
-      "mime_type": "image/png",
-      "status": "success",
-      "dimensions": { "width": 1280, "height": 720 }
-    }
-  ],
-  "processing_time": 938,
-  "post": {
-    "code": "AbCd1234",
-    "url": "https://snipp.gg/p/AbCd1234",
-    "post_privacy": "public",
-    "is_album": true,
-    "file_count": 2,
-    "priority": false
-  }
-}
-```
-
-Individual (`post-type: individual`): one entry in `post.posts` per file. If a file fails, a `failed` array is included alongside `files` and the message counts what landed.
-
-```json
-{
-  "message": "1 of 2 files uploaded successfully.",
-  "files": [
-    {
-      "index": 0,
-      "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
-      "size": 2487312,
-      "size_formatted": "2.37 MB",
-      "mime_type": "image/png",
-      "status": "success"
+      "code": "InDv0002",
+      "url": "https://snipp.gg/p/InDv0002",
+      "title": null,
+      "description": null,
+      "privacy": "public",
+      "created_at": "2026-10-01T09:15:27.204Z",
+      "view_count": 0,
+      "like_count": 0,
+      "comment_count": 0,
+      "priority": false,
+      "file_count": 1,
+      "files": [
+        {
+          "name": "b2c3d4e5f6789012345678abcdef0102.png",
+          "url": "https://i.snipp.gg/123456789012345678/b2c3d4e5f6789012345678abcdef0102.png",
+          "size": 1843210,
+          "mime_type": "image/png",
+          "width": 1280,
+          "height": 720,
+          "thumbnail_url": null
+        }
+      ],
+      "team_id": null,
+      "author": {
+        "id": "123456789012345678",
+        "username": "playerone",
+        "nickname": "Player One",
+        "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+        "verified": false,
+        "plan": "plus"
+      },
+      "liked": false,
+      "moderated": false,
+      "restricted": false
     }
   ],
   "failed": [
     {
-      "index": 1,
-      "error": "Weekly usage limit exceeded.",
-      "status": "failed"
+      "index": 2,
+      "error": {
+        "type": "quota_exceeded",
+        "message": "Weekly usage limit exceeded.",
+        "quota": 21474836480,
+        "used": 21470000000,
+        "resets_at": "2026-10-04T16:20:00.000Z"
+      }
     }
-  ],
-  "processing_time": 938,
-  "post": {
-    "posts": [
+  ]
+}
+```
+
+Every file failed:
+
+```json
+{
+  "error": {
+    "type": "upload_failed",
+    "message": "All files failed to upload.",
+    "failed": [
       {
-        "code": "AbCd1234",
-        "url": "https://snipp.gg/p/AbCd1234",
-        "post_privacy": "public",
-        "priority": false
+        "index": 0,
+        "error": {
+          "type": "unsupported_type",
+          "message": "Unsupported file type."
+        }
+      },
+      {
+        "index": 1,
+        "error": {
+          "type": "file_too_large",
+          "message": "File size exceeds the 50 MB limit."
+        }
       }
     ]
   }
 }
 ```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | Bad header value, no file, more than 50 files, title or description too long, or a corrupt video |
+| `400` | `unsupported_type` | The only file is not a supported type |
+| `400` | `quota_exceeded` | The only file would exceed your weekly quota |
+| `400` | `upload_failed` | Every file of a multi-file request failed |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `suspended` | Your account, or the team owner's, is suspended |
+| `403` | `forbidden` | The team's subscription has lapsed |
+| `413` | `file_too_large` | The only file is over your limit, or the declared request size is |
+| `429` | `rate_limited` | More than 20 uploads in 30 seconds |
+| `500` | `internal` | The upload could not be saved |

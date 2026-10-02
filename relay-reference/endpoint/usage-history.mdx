@@ -1,25 +1,24 @@
 ---
 title: "Get Usage History"
-openapi: "GET /usage-history"
+openapi: "relay-reference/openapi.json GET /usage-history"
 ---
 
-Fetch your daily upload activity for the last 365 days, along with aggregate stats. This is the same data that powers the Upload Activity heatmap in the Snipp Console, exposed so you can rebuild it in your own tools.
+Fetch your daily upload activity for the last 365 days, with summary stats. This is the data behind the Upload Activity heatmap in the Snipp Console.
 
 ## Behavior
 
-- Authenticated with your `relay-key`. Returns activity for the key's owner only.
-- `history` is ascending by date. Days with no uploads are omitted, so the array is sparse.
-- `bytes` and `count` reflect successful uploads. A reservation that fails mid-upload is rolled back and does not appear.
-- `stats.current_streak` counts consecutive days with uploads ending on the current UTC day. It is `0` if you have not uploaded today.
+- Returns activity for the key's owner only. Team keys get `401`.
+- `history` is oldest first. Days with no uploads are left out, so the array is sparse.
+- `bytes` and `upload_count` count successful uploads only.
+- `stats.upload_count` and `stats.total_bytes` cover the whole 365-day window.
+- `stats.current_streak` counts consecutive days with uploads ending today (UTC). It is `0` if you have not uploaded today.
 - `stats.biggest_day` is `null` when there is no activity in the window.
-- All dates are UTC.
+- All days are UTC, formatted `YYYY-MM-DD`.
 
 ## Examples
 
-Fetch your usage history:
-
 ```bash
-curl -X GET "https://relay.snipp.gg/usage-history" \
+curl "https://relay.snipp.gg/usage-history" \
   -H "relay-key: YOUR_RELAY_KEY"
 ```
 
@@ -29,23 +28,34 @@ curl -X GET "https://relay.snipp.gg/usage-history" \
 {
   "history": [
     {
-      "day": "2026-05-12",
+      "day": "2026-09-28",
       "bytes": 5242880,
-      "count": 3
+      "upload_count": 3
     },
     {
-      "day": "2026-05-14",
+      "day": "2026-09-30",
       "bytes": 1048576,
-      "count": 1
+      "upload_count": 1
     }
   ],
   "stats": {
     "total_bytes": 6291456,
-    "total_uploads": 4,
+    "upload_count": 4,
     "active_days": 2,
     "current_streak": 1,
-    "biggest_day": { "day": "2026-05-12", "bytes": 5242880 },
+    "biggest_day": {
+      "day": "2026-09-28",
+      "bytes": 5242880
+    },
     "window_days": 365
   }
 }
 ```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `suspended` | Your account is suspended |
+| `429` | `rate_limited` | More than 30 requests per minute |

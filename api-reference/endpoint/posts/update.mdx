@@ -1,0 +1,101 @@
+---
+title: "Update Post"
+openapi: "api-reference/openapi.json PATCH /posts/{code}"
+---
+
+Change a post's title, description or privacy. Send only the fields you want to change.
+
+## Body
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | string or null | Up to 30 characters. `""` or `null` clears it. |
+| `description` | string or null | Up to 200 characters. `""` or `null` clears it. |
+| `privacy` | string | `public`, `unlisted` or `private`. |
+
+## Behavior
+
+- Send a JSON body. At least one field is required.
+- Text over the limit returns `400`; it is never truncated. Surrounding whitespace is trimmed.
+- You must own the post. For a team post, use that team's access key.
+- Requires [gallery access](/authentication#api-key-permissions) on the key.
+- Moderated posts cannot be changed and return `403` with type `moderated`.
+- A restricted post cannot be made public and returns `403` with type `forbidden`. It can still switch between `private` and `unlisted`.
+- Team posts are always private. Sending `privacy: private` on a team post is accepted and changes nothing; any other value returns `403`.
+- Making a post public runs the same automatic scan as a new upload.
+- The response is the full updated post.
+
+## Examples
+
+Change the title and make the post public:
+
+```bash
+curl -X PATCH "https://api.snipp.gg/posts/AbCd1234" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"title": "New title", "privacy": "public"}'
+```
+
+Clear the description:
+
+```bash
+curl -X PATCH "https://api.snipp.gg/posts/AbCd1234" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"description": null}'
+```
+
+## Responses
+
+```json
+{
+  "post": {
+    "code": "AbCd1234",
+    "url": "https://snipp.gg/p/AbCd1234",
+    "title": "New title",
+    "description": null,
+    "privacy": "public",
+    "created_at": "2026-09-30T18:42:11.512Z",
+    "view_count": 128,
+    "like_count": 42,
+    "comment_count": 3,
+    "priority": false,
+    "file_count": 1,
+    "files": [
+      {
+        "name": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+        "size": 2487312,
+        "mime_type": "image/png",
+        "width": 1920,
+        "height": 1080,
+        "thumbnail_url": null
+      }
+    ],
+    "team_id": null,
+    "author": {
+      "id": "123456789012345678",
+      "username": "playerone",
+      "nickname": "Player One",
+      "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+      "verified": false,
+      "plan": "plus"
+    },
+    "liked": false,
+    "moderated": false,
+    "restricted": false
+  }
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | No fields, a field of the wrong type, text over the limit, or an invalid `privacy` |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `forbidden` | Not your post, no gallery access, a restricted post made public, or a team post made non-private |
+| `403` | `moderated` | The post is moderated |
+| `403` | `suspended` | Your account is suspended |
+| `404` | `not_found` | No such post |
+| `429` | `rate_limited` | More than 20 edits in 30 seconds |

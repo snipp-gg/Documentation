@@ -1,0 +1,34 @@
+---
+title: "Unread Count"
+openapi: "relay-reference/openapi.json GET /notifications/unread-count"
+---
+
+The number of unread notifications, for a badge.
+
+## Behavior
+
+- Counts raw notifications, not the groups from [List Notifications](/relay-reference/endpoint/notifications/list). Three people liking one post count as three, but show as one entry.
+- Shares a rate limit bucket with the other notification endpoints: 60 requests per minute.
+
+## Examples
+
+```bash
+curl "https://relay.snipp.gg/notifications/unread-count" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "unread_count": 4
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `suspended` | Your account is suspended |
+| `429` | `rate_limited` | More than 60 requests per minute |

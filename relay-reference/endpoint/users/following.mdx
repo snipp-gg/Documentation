@@ -1,0 +1,60 @@
+---
+title: "List Following"
+openapi: "relay-reference/openapi.json GET /users/{id}/following"
+---
+
+List the users a profile follows, most recent first. Use `@me` for your own.
+
+## Behavior
+
+- Each entry is a user with `following`: whether you also follow that user.
+- Results are [paginated](/concepts/pagination): pass `limit` (1 to 100, default 30) and the previous page's `next_cursor` as `cursor`.
+- Suspended users are left out after the page is read, so a page can hold fewer than `limit` users while `has_more` is `true`.
+- If the profile's owner has blocked you, the response is `403` with type `blocked`.
+- Shares a rate limit bucket with the other follow and block lists: 30 requests per minute.
+
+## Examples
+
+```bash
+curl "https://relay.snipp.gg/users/987654321098765432/following?limit=50" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "users": [
+    {
+      "id": "555555555555555555",
+      "username": "alice",
+      "nickname": "Alice",
+      "avatar": "https://i.snipp.gg/avatars/555555555555555555/0a1b2c3d4e5f60718293a4b5c6d7e8f9.webp",
+      "verified": true,
+      "plan": "ultra",
+      "following": true
+    },
+    {
+      "id": "987654321098765432",
+      "username": "playertwo",
+      "nickname": "Player Two",
+      "avatar": "https://cdn.snipp.gg/avatar.png",
+      "verified": false,
+      "plan": "free",
+      "following": false
+    }
+  ],
+  "has_more": true,
+  "next_cursor": "eyJ0IjoiMjAyNi0wOS0xMlQwODozMDowMC4wMDBaIiwiayI6IjQyMTcifQ"
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | Invalid `id`, `limit` or `cursor` |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `blocked` | The user has blocked you |
+| `403` | `suspended` | Your account is suspended |
+| `429` | `rate_limited` | More than 30 requests per minute |

@@ -50,7 +50,7 @@ A missing, empty, or unrecognized relay key returns `401`.
 
 ### Team Access Keys
 
-[Teams](/concepts/plans#teams) (an Ultra feature) each have a dedicated **access key**. Pass it in the `relay-key` header in place of a personal relay key, and uploads go to the team's shared gallery instead of a personal account. It works on `/upload`, `/appendUpload`, `/editUpload`, `/deleteUpload`, and `/convert`; every other endpoint is personal only and returns `401` for a team key.
+[Teams](/concepts/plans#teams) (an Ultra feature) each have a dedicated **access key**. Pass it in the `relay-key` header in place of a personal relay key, and uploads go to the team's shared gallery instead of a personal account. It works on `POST /upload`, `PATCH /posts/{code}`, `DELETE /posts/{code}`, `POST /posts/{code}/files`, `DELETE /posts/{code}/files/{name}` and `POST /convert`; every other endpoint is personal only and returns `401` for a team key.
 
 ```
 relay-key: YOUR_TEAM_ACCESS_KEY
@@ -62,7 +62,8 @@ Key differences when uploading with a team key:
 - Uploads count against the **team's** weekly quota, never a member's personal quota.
 - Team-key uploads are always created **private**, regardless of the `post-privacy` header, and their privacy cannot be changed afterward. Team posts are never **unlisted** or **public**.
 - Only the team owner can regenerate or delete the key, from the team's settings page.
-- If the team's subscription lapses, uploads with the key return `403`. Editing and deleting existing team posts keep working.
+- If the team's subscription lapses, uploading, adding files and converting with the key return `403` with type `forbidden`. Editing and deleting existing team posts keep working.
+- Team members can also edit team posts with their own relay key, through [`PATCH /posts/{code}`](/relay-reference/endpoint/posts/update), unless their role is viewer.
 - If the team owner's account is suspended, the key is refused with `403` on every endpoint that accepts it.
 
 Anyone who holds a team key can upload with it, so treat it like any other credential and share it only with trusted team members.
@@ -71,45 +72,54 @@ Anyone who holds a team key can upload with it, so treat it like any other crede
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `GET` | `/users/{id}` | Fetch a user profile. Use `@me` for your own account. |
-| `GET` | `/posts/{code}` | Fetch a single post by share code. |
-| `POST` | `/upload` | Upload an image or video file. |
-| `GET` | `/uploads` | List your personal uploads. |
-| `PATCH` | `/editUpload` | Update title, description, or privacy of a post. |
-| `POST` | `/appendUpload` | Add files to an existing album. |
-| `DELETE` | `/deleteUpload` | Delete a file or post. |
-| `GET` | `/discover` | Browse public uploads from the community. |
-| `GET` | `/blocks` | List your blocked users. |
-| `POST` | `/block` | Block a user by ID. |
-| `POST` | `/unblock` | Unblock a user by ID. |
-| `POST` | `/follow` | Follow a user by ID. |
-| `POST` | `/unfollow` | Unfollow a user, or remove one of your own followers. |
-| `GET` | `/followers` | List the users following a profile. |
-| `GET` | `/following` | List the users a profile is following. |
-| `POST` | `/like` | Like or unlike a post. |
-| `GET` | `/comments` | List comments on a post. |
-| `POST` | `/comment` | Create a comment on a post. |
-| `DELETE` | `/comment` | Delete a comment. |
-| `POST` | `/comment-like` | Like or unlike a comment. |
-| `GET` | `/notifications` | List your notifications, newest first. |
-| `GET` | `/notifications/unread` | Number of unread notifications. |
-| `POST` | `/notifications/read` | Mark every notification as read. |
-| `GET` | `/notification-prefs` | Read your notification and email preferences. |
-| `POST` | `/notification-prefs` | Update your notification and email preferences. |
-| `GET` | `/sessions` | List the devices signed in to your account on the website. |
-| `POST` | `/sessions` | Log out one website session, or all of them. |
-| `POST` | `/report-post` | Report a post. |
-| `POST` | `/report-comment` | Report a comment. |
-| `POST` | `/report-user` | Report a user. |
-| `PATCH` | `/profile` | Update profile fields. |
-| `POST` | `/profile/avatar` | Upload a new avatar. |
-| `POST` | `/profile/banner` | Upload a new banner. |
-| `PATCH` | `/theme` | Set your account color theme. PLUS only. |
-| `GET` | `/gifs` | Browse public GIFs across Snipp, newest first. No auth required. |
-| `GET` | `/usage-history` | Fetch your daily upload activity for the last 365 days. |
-| `GET` | `/analytics` | Fetch your analytics over time plus lifetime totals. PLUS only. |
-| `GET` | `/region` | Return the region serving the request. No auth required. |
-| `POST` | `/convert` | Convert one image or video to another format and get the bytes back. |
+| `POST` | [`/upload`](/relay-reference/endpoint/upload) | Upload 1 to 50 images or videos. Creates a post. |
+| `GET` | [`/posts`](/relay-reference/endpoint/posts/list) | List your posts. |
+| `GET` | [`/posts/{code}`](/relay-reference/endpoint/posts/get) | Fetch a post. Counts a view. |
+| `PATCH` | [`/posts/{code}`](/relay-reference/endpoint/posts/update) | Change a post's text, privacy, priority streaming or access list. |
+| `DELETE` | [`/posts/{code}`](/relay-reference/endpoint/posts/delete) | Delete a post. |
+| `POST` | [`/posts/{code}/files`](/relay-reference/endpoint/posts/add-files) | Add files to a post. |
+| `DELETE` | [`/posts/{code}/files/{name}`](/relay-reference/endpoint/posts/delete-file) | Remove one file from a post. |
+| `POST` | [`/posts/{code}/report`](/relay-reference/endpoint/posts/report) | Report a post. |
+| `POST` | [`/posts/{code}/like`](/relay-reference/endpoint/posts/like) | Like a post. |
+| `DELETE` | [`/posts/{code}/like`](/relay-reference/endpoint/posts/unlike) | Unlike a post. |
+| `GET` | [`/posts/{code}/comments`](/relay-reference/endpoint/posts/comments) | List a post's comments. |
+| `POST` | [`/posts/{code}/comments`](/relay-reference/endpoint/posts/create-comment) | Comment on a post. |
+| `DELETE` | [`/comments/{id}`](/relay-reference/endpoint/comments/delete) | Delete a comment. |
+| `POST` | [`/comments/{id}/like`](/relay-reference/endpoint/comments/like) | Like a comment. |
+| `DELETE` | [`/comments/{id}/like`](/relay-reference/endpoint/comments/unlike) | Unlike a comment. |
+| `POST` | [`/comments/{id}/report`](/relay-reference/endpoint/comments/report) | Report a comment. |
+| `GET` | [`/discover`](/relay-reference/endpoint/discover) | Up to 50 recent public posts in random order. |
+| `GET` | [`/users/{id}`](/relay-reference/endpoint/users/get) | Fetch a user. Use `@me` for your own account. |
+| `PATCH` | [`/users/@me`](/relay-reference/endpoint/users/update) | Update your profile and theme. |
+| `POST` | [`/users/@me/avatar`](/relay-reference/endpoint/users/upload-avatar) | Upload an avatar. |
+| `DELETE` | [`/users/@me/avatar`](/relay-reference/endpoint/users/delete-avatar) | Remove your avatar. |
+| `POST` | [`/users/@me/banner`](/relay-reference/endpoint/users/upload-banner) | Upload a banner. |
+| `DELETE` | [`/users/@me/banner`](/relay-reference/endpoint/users/delete-banner) | Remove your banner. |
+| `GET` | [`/users/{id}/posts`](/relay-reference/endpoint/users/posts) | List a user's public posts. |
+| `POST` | [`/users/{id}/report`](/relay-reference/endpoint/users/report) | Report a user. |
+| `POST` | [`/users/{id}/follow`](/relay-reference/endpoint/users/follow) | Follow a user. |
+| `DELETE` | [`/users/{id}/follow`](/relay-reference/endpoint/users/unfollow) | Unfollow a user. |
+| `DELETE` | [`/users/@me/followers/{id}`](/relay-reference/endpoint/users/remove-follower) | Remove one of your followers. |
+| `GET` | [`/users/{id}/followers`](/relay-reference/endpoint/users/followers) | List a user's followers. |
+| `GET` | [`/users/{id}/following`](/relay-reference/endpoint/users/following) | List who a user follows. |
+| `POST` | [`/users/{id}/block`](/relay-reference/endpoint/users/block) | Block a user. |
+| `DELETE` | [`/users/{id}/block`](/relay-reference/endpoint/users/unblock) | Unblock a user. |
+| `GET` | [`/users/@me/blocks`](/relay-reference/endpoint/users/blocks) | List the users you block. |
+| `GET` | [`/notifications`](/relay-reference/endpoint/notifications/list) | List your notifications. |
+| `GET` | [`/notifications/unread-count`](/relay-reference/endpoint/notifications/unread-count) | Number of unread notifications. |
+| `POST` | [`/notifications/read`](/relay-reference/endpoint/notifications/read) | Mark every notification as read. |
+| `GET` | [`/preferences`](/relay-reference/endpoint/preferences/get) | Read your notification, email and upload preferences. |
+| `PATCH` | [`/preferences`](/relay-reference/endpoint/preferences/update) | Change your preferences. |
+| `GET` | [`/sessions`](/relay-reference/endpoint/sessions/list) | List the devices signed in on the website. |
+| `DELETE` | [`/sessions/{id}`](/relay-reference/endpoint/sessions/delete) | Log out one website session. |
+| `DELETE` | [`/sessions`](/relay-reference/endpoint/sessions/delete-all) | Log out every website session. |
+| `GET` | [`/gifs`](/relay-reference/endpoint/gifs) | Browse public GIFs. No key required. |
+| `POST` | [`/convert`](/relay-reference/endpoint/convert) | Convert an image or video. Returns the file and stores nothing. |
+| `GET` | [`/usage-history`](/relay-reference/endpoint/usage-history) | Your daily upload activity for the last 365 days. |
+| `GET` | [`/analytics`](/relay-reference/endpoint/analytics) | Your analytics and payout estimate. Snipp+ only. |
+| `GET` | [`/region`](/relay-reference/endpoint/region) | The region serving the request. No key required. |
+
+Wherever a user ID goes in the path, `@me` works too.
 
 ## View Counting
 
@@ -117,29 +127,27 @@ Relay does not expose a dedicated view endpoint. Views increment automatically w
 
 To prevent inflation, views are deduplicated per IP and post: an IP can contribute up to 3 counted views per post per hour. Views are only counted on public, non-moderated posts.
 
-## Rate Limits
+## Conventions
 
-Rate limits apply per endpoint, not per account. See [Rate Limits](/concepts/rate-limits) for the full table and details on handling `429` responses.
+Relay follows the same conventions as the [API](/api-reference/introduction#conventions): JSON bodies with `snake_case` keys, resources in the path, `limit` and `cursor` [pagination](/concepts/pagination), ISO 8601 timestamps, and a `request-id` header on every response.
 
-## Error Format
+## Errors
 
-All errors return a JSON object with an `error` field:
+Errors return a non-`2xx` status and an `error` object with a stable `type` and a readable `message`:
 
 ```json
 {
-  "error": "Unauthorized. No relay-key header found."
+  "error": {
+    "type": "unauthorized",
+    "message": "Missing relay-key header."
+  }
 }
 ```
 
-## HTTP Status Codes
+See [Errors](/concepts/errors) for every type and status.
 
-| Code | Meaning |
-|------|---------|
-| `200` | Success |
-| `400` | Bad request. Invalid input, unsupported file type, or file too large. |
-| `401` | Unauthorized. Missing or invalid relay key. |
-| `403` | Forbidden. Account suspended or insufficient permissions. |
-| `404` | Not found |
-| `413` | Payload too large. File exceeds your plan's size limit. |
-| `429` | Rate limit exceeded |
-| `500` | Internal server error |
+## Rate Limits
+
+Rate limits apply per endpoint, not per account. See [Rate Limits](/concepts/rate-limits) for the full table and how to handle `429` responses.
+
+Upgrading from the old endpoints such as `/follow`, `/like` or `/profile`? See the [migration guide](/migration).

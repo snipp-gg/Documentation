@@ -45,13 +45,16 @@
             "pages": [
               "index",
               "quickstart",
-              "authentication"
+              "authentication",
+              "migration"
             ]
           },
           {
             "group": "Concepts",
             "pages": [
               "concepts/file-types",
+              "concepts/errors",
+              "concepts/pagination",
               "concepts/rate-limits",
               "concepts/custom-domains",
               "concepts/plans"
@@ -97,28 +100,30 @@
             "group": "Uploads",
             "pages": [
               "api-reference/endpoint/upload",
-              "api-reference/endpoint/convert",
-              "api-reference/endpoint/uploads",
-              "api-reference/endpoint/edit",
-              "api-reference/endpoint/append",
-              "api-reference/endpoint/delete"
+              "api-reference/endpoint/convert"
             ]
           },
           {
             "group": "Posts",
             "pages": [
-              "api-reference/endpoint/post",
-              "api-reference/endpoint/gifs",
-              "api-reference/endpoint/report-post"
+              "api-reference/endpoint/posts/list",
+              "api-reference/endpoint/posts/get",
+              "api-reference/endpoint/posts/update",
+              "api-reference/endpoint/posts/delete",
+              "api-reference/endpoint/posts/add-files",
+              "api-reference/endpoint/posts/delete-file",
+              "api-reference/endpoint/posts/report",
+              "api-reference/endpoint/gifs"
             ]
           },
           {
             "group": "Users",
             "pages": [
-              "api-reference/endpoint/users",
+              "api-reference/endpoint/users/get",
+              "api-reference/endpoint/users/posts",
+              "api-reference/endpoint/users/report",
               "api-reference/endpoint/usage-history",
-              "api-reference/endpoint/analytics",
-              "api-reference/endpoint/report-user"
+              "api-reference/endpoint/analytics"
             ]
           },
           {
@@ -142,57 +147,80 @@
             "group": "Uploads",
             "pages": [
               "relay-reference/endpoint/upload",
-              "relay-reference/endpoint/convert",
-              "relay-reference/endpoint/uploads",
-              "relay-reference/endpoint/edit",
-              "relay-reference/endpoint/append",
-              "relay-reference/endpoint/delete"
+              "relay-reference/endpoint/convert"
             ]
           },
           {
             "group": "Posts",
             "pages": [
-              "relay-reference/endpoint/post",
+              "relay-reference/endpoint/posts/list",
+              "relay-reference/endpoint/posts/get",
+              "relay-reference/endpoint/posts/update",
+              "relay-reference/endpoint/posts/delete",
+              "relay-reference/endpoint/posts/add-files",
+              "relay-reference/endpoint/posts/delete-file",
+              "relay-reference/endpoint/posts/report",
               "relay-reference/endpoint/discover",
-              "relay-reference/endpoint/gifs",
-              "relay-reference/endpoint/like",
-              "relay-reference/endpoint/comments",
-              "relay-reference/endpoint/comment-create",
-              "relay-reference/endpoint/comment-delete",
-              "relay-reference/endpoint/comment-like",
-              "relay-reference/endpoint/report-comment",
-              "relay-reference/endpoint/report-post"
+              "relay-reference/endpoint/gifs"
+            ]
+          },
+          {
+            "group": "Likes and Comments",
+            "pages": [
+              "relay-reference/endpoint/posts/like",
+              "relay-reference/endpoint/posts/unlike",
+              "relay-reference/endpoint/posts/comments",
+              "relay-reference/endpoint/posts/create-comment",
+              "relay-reference/endpoint/comments/delete",
+              "relay-reference/endpoint/comments/like",
+              "relay-reference/endpoint/comments/unlike",
+              "relay-reference/endpoint/comments/report"
             ]
           },
           {
             "group": "Users",
             "pages": [
-              "relay-reference/endpoint/users",
-              "relay-reference/endpoint/profile",
-              "relay-reference/endpoint/theme",
-              "relay-reference/endpoint/avatar",
-              "relay-reference/endpoint/banner",
-              "relay-reference/endpoint/blocks",
-              "relay-reference/endpoint/block",
-              "relay-reference/endpoint/unblock",
-              "relay-reference/endpoint/followers",
-              "relay-reference/endpoint/following",
-              "relay-reference/endpoint/follow",
-              "relay-reference/endpoint/unfollow",
+              "relay-reference/endpoint/users/get",
+              "relay-reference/endpoint/users/update",
+              "relay-reference/endpoint/users/upload-avatar",
+              "relay-reference/endpoint/users/delete-avatar",
+              "relay-reference/endpoint/users/upload-banner",
+              "relay-reference/endpoint/users/delete-banner",
+              "relay-reference/endpoint/users/posts",
+              "relay-reference/endpoint/users/report",
               "relay-reference/endpoint/usage-history",
-              "relay-reference/endpoint/analytics",
-              "relay-reference/endpoint/sessions",
-              "relay-reference/endpoint/preferences",
-              "relay-reference/endpoint/report-user"
+              "relay-reference/endpoint/analytics"
+            ]
+          },
+          {
+            "group": "Social",
+            "pages": [
+              "relay-reference/endpoint/users/follow",
+              "relay-reference/endpoint/users/unfollow",
+              "relay-reference/endpoint/users/remove-follower",
+              "relay-reference/endpoint/users/followers",
+              "relay-reference/endpoint/users/following",
+              "relay-reference/endpoint/users/block",
+              "relay-reference/endpoint/users/unblock",
+              "relay-reference/endpoint/users/blocks"
             ]
           },
           {
             "group": "Notifications",
             "pages": [
-              "relay-reference/endpoint/notifications",
-              "relay-reference/endpoint/notifications-unread",
-              "relay-reference/endpoint/notifications-read",
-              "relay-reference/endpoint/notification-prefs"
+              "relay-reference/endpoint/notifications/list",
+              "relay-reference/endpoint/notifications/unread-count",
+              "relay-reference/endpoint/notifications/read"
+            ]
+          },
+          {
+            "group": "Account",
+            "pages": [
+              "relay-reference/endpoint/preferences/get",
+              "relay-reference/endpoint/preferences/update",
+              "relay-reference/endpoint/sessions/list",
+              "relay-reference/endpoint/sessions/delete",
+              "relay-reference/endpoint/sessions/delete-all"
             ]
           },
           {
@@ -240,6 +268,201 @@
     {
       "source": "/sdks/shadowplay",
       "destination": "https://snipp.gg/download",
+      "permanent": true
+    },
+    {
+      "source": "/api-reference/endpoint/uploads",
+      "destination": "/api-reference/endpoint/posts/list",
+      "permanent": true
+    },
+    {
+      "source": "/api-reference/endpoint/edit",
+      "destination": "/api-reference/endpoint/posts/update",
+      "permanent": true
+    },
+    {
+      "source": "/api-reference/endpoint/append",
+      "destination": "/api-reference/endpoint/posts/add-files",
+      "permanent": true
+    },
+    {
+      "source": "/api-reference/endpoint/delete",
+      "destination": "/api-reference/endpoint/posts/delete-file",
+      "permanent": true
+    },
+    {
+      "source": "/api-reference/endpoint/post",
+      "destination": "/api-reference/endpoint/posts/get",
+      "permanent": true
+    },
+    {
+      "source": "/api-reference/endpoint/report-post",
+      "destination": "/api-reference/endpoint/posts/report",
+      "permanent": true
+    },
+    {
+      "source": "/api-reference/endpoint/report-user",
+      "destination": "/api-reference/endpoint/users/report",
+      "permanent": true
+    },
+    {
+      "source": "/api-reference/endpoint/users",
+      "destination": "/api-reference/endpoint/users/get",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/uploads",
+      "destination": "/relay-reference/endpoint/posts/list",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/edit",
+      "destination": "/relay-reference/endpoint/posts/update",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/append",
+      "destination": "/relay-reference/endpoint/posts/add-files",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/delete",
+      "destination": "/relay-reference/endpoint/posts/delete-file",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/post",
+      "destination": "/relay-reference/endpoint/posts/get",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/report-post",
+      "destination": "/relay-reference/endpoint/posts/report",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/report-user",
+      "destination": "/relay-reference/endpoint/users/report",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/users",
+      "destination": "/relay-reference/endpoint/users/get",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/profile",
+      "destination": "/relay-reference/endpoint/users/update",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/theme",
+      "destination": "/relay-reference/endpoint/users/update",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/avatar",
+      "destination": "/relay-reference/endpoint/users/upload-avatar",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/banner",
+      "destination": "/relay-reference/endpoint/users/upload-banner",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/follow",
+      "destination": "/relay-reference/endpoint/users/follow",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/unfollow",
+      "destination": "/relay-reference/endpoint/users/unfollow",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/followers",
+      "destination": "/relay-reference/endpoint/users/followers",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/following",
+      "destination": "/relay-reference/endpoint/users/following",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/block",
+      "destination": "/relay-reference/endpoint/users/block",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/unblock",
+      "destination": "/relay-reference/endpoint/users/unblock",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/blocks",
+      "destination": "/relay-reference/endpoint/users/blocks",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/like",
+      "destination": "/relay-reference/endpoint/posts/like",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/comments",
+      "destination": "/relay-reference/endpoint/posts/comments",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/comment-create",
+      "destination": "/relay-reference/endpoint/posts/create-comment",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/comment-delete",
+      "destination": "/relay-reference/endpoint/comments/delete",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/comment-like",
+      "destination": "/relay-reference/endpoint/comments/like",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/report-comment",
+      "destination": "/relay-reference/endpoint/comments/report",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/notifications",
+      "destination": "/relay-reference/endpoint/notifications/list",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/notifications-unread",
+      "destination": "/relay-reference/endpoint/notifications/unread-count",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/notifications-read",
+      "destination": "/relay-reference/endpoint/notifications/read",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/notification-prefs",
+      "destination": "/relay-reference/endpoint/preferences/get",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/preferences",
+      "destination": "/relay-reference/endpoint/preferences/get",
+      "permanent": true
+    },
+    {
+      "source": "/relay-reference/endpoint/sessions",
+      "destination": "/relay-reference/endpoint/sessions/list",
       "permanent": true
     }
   ]

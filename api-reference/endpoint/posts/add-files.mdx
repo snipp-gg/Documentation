@@ -1,0 +1,174 @@
+---
+title: "Add Files"
+openapi: "api-reference/openapi.json POST /posts/{code}/files"
+---
+
+Add one or more files to an existing post. The share code, privacy, title and description stay the same. Adding a file to a single-file post turns it into an album.
+
+## Headers
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `api-key` | Yes | Your API key, or the team's access key for a team post |
+| `include-metadata` | No | `true` keeps file metadata. Omitted or `false` strips it. |
+| `priority` | No | `false` opts the new videos out of priority (adaptive) streaming. |
+
+Send the files as `multipart/form-data`, repeating the `file` field.
+
+## Behavior
+
+- You must own the post. A team post needs that team's access key, and a lapsed team returns `403`.
+- Requires [gallery access](/authentication#api-key-permissions) on the key.
+- Moderated posts cannot be changed and return `403` with type `moderated`.
+- A post holds at most **50 files**. A full post, or a request that would go past 50, returns `400`.
+- New files take the post's privacy. On a private post their URLs are signed and expire after 24 hours.
+- Videos are remuxed to MP4 and metadata is stripped exactly as in [Upload Files](/api-reference/endpoint/upload). Videos added here do not get a thumbnail.
+- Each file is checked against your [weekly quota](/concepts/plans#weekly-usage-limit) on its own. A file that does not fit fails with type `quota_exceeded`.
+- Failures work like uploads: stored files come back with `200` and the rest are listed in `failed`. If every file fails, a one-file request returns that file's error and a multi-file request returns `400` with type `upload_failed`. See [Errors](/concepts/errors#partial-upload-failures).
+- New files are scanned automatically. If any file, or the post's text, is flagged, the whole post is moderated.
+- The response is the full updated post.
+
+## Examples
+
+```bash
+curl -X POST "https://api.snipp.gg/posts/AlBm5678/files" \
+  -H "api-key: YOUR_API_KEY" \
+  -F "file=@photo3.png"
+```
+
+## Responses
+
+```json
+{
+  "post": {
+    "code": "AlBm5678",
+    "url": "https://snipp.gg/p/AlBm5678",
+    "title": "Match highlights",
+    "description": null,
+    "privacy": "public",
+    "created_at": "2026-09-30T18:42:11.512Z",
+    "view_count": 128,
+    "like_count": 42,
+    "comment_count": 3,
+    "priority": false,
+    "file_count": 3,
+    "files": [
+      {
+        "name": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+        "size": 2487312,
+        "mime_type": "image/png",
+        "width": 1920,
+        "height": 1080,
+        "thumbnail_url": null
+      },
+      {
+        "name": "b2c3d4e5f6789012345678abcdef0102.png",
+        "url": "https://i.snipp.gg/123456789012345678/b2c3d4e5f6789012345678abcdef0102.png",
+        "size": 1843210,
+        "mime_type": "image/png",
+        "width": 1280,
+        "height": 720,
+        "thumbnail_url": null
+      },
+      {
+        "name": "f6789012345678abcdef010203040506.png",
+        "url": "https://i.snipp.gg/123456789012345678/f6789012345678abcdef010203040506.png",
+        "size": 912384,
+        "mime_type": "image/png",
+        "width": 1080,
+        "height": 1920,
+        "thumbnail_url": null
+      }
+    ],
+    "team_id": null,
+    "author": {
+      "id": "123456789012345678",
+      "username": "playerone",
+      "nickname": "Player One",
+      "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+      "verified": false,
+      "plan": "plus"
+    },
+    "liked": false,
+    "moderated": false,
+    "restricted": false
+  }
+}
+```
+
+One of two files failed:
+
+```json
+{
+  "post": {
+    "code": "AlBm5678",
+    "url": "https://snipp.gg/p/AlBm5678",
+    "title": "Match highlights",
+    "description": null,
+    "privacy": "public",
+    "created_at": "2026-09-30T18:42:11.512Z",
+    "view_count": 128,
+    "like_count": 42,
+    "comment_count": 3,
+    "priority": false,
+    "file_count": 2,
+    "files": [
+      {
+        "name": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+        "size": 2487312,
+        "mime_type": "image/png",
+        "width": 1920,
+        "height": 1080,
+        "thumbnail_url": null
+      },
+      {
+        "name": "b2c3d4e5f6789012345678abcdef0102.png",
+        "url": "https://i.snipp.gg/123456789012345678/b2c3d4e5f6789012345678abcdef0102.png",
+        "size": 1843210,
+        "mime_type": "image/png",
+        "width": 1280,
+        "height": 720,
+        "thumbnail_url": null
+      }
+    ],
+    "team_id": null,
+    "author": {
+      "id": "123456789012345678",
+      "username": "playerone",
+      "nickname": "Player One",
+      "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+      "verified": false,
+      "plan": "plus"
+    },
+    "liked": false,
+    "moderated": false,
+    "restricted": false
+  },
+  "failed": [
+    {
+      "index": 1,
+      "error": {
+        "type": "unsupported_type",
+        "message": "Unsupported file type."
+      }
+    }
+  ]
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | No file, too many files, a bad header value, or a corrupt video |
+| `400` | `unsupported_type` | The only file is not a supported type |
+| `400` | `quota_exceeded` | The only file would exceed your weekly quota |
+| `400` | `upload_failed` | Every file of a multi-file request failed |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `forbidden` | Not your post, no gallery access, or a lapsed team |
+| `403` | `moderated` | The post is moderated |
+| `404` | `not_found` | No such post |
+| `413` | `file_too_large` | The only file is over your per-file limit |
+| `429` | `rate_limited` | More than 10 requests per minute |

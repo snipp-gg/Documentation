@@ -1,0 +1,39 @@
+---
+title: "Log Out Session"
+openapi: "relay-reference/openapi.json DELETE /sessions/{id}"
+---
+
+Log out one website session.
+
+## Behavior
+
+- `id` is a session ID from [List Sessions](/relay-reference/endpoint/sessions/list).
+- A logged-out device may keep working on the website for up to 30 seconds.
+- Your relay key is not affected.
+- Shares a rate limit bucket with the other session endpoints: 30 requests per minute.
+
+## Examples
+
+```bash
+curl -X DELETE "https://relay.snipp.gg/sessions/1768911a-e0f1-4705-9603-22ec8218e297" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "id": "1768911a-e0f1-4705-9603-22ec8218e297",
+  "deleted": true
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | `id` is not a valid session ID |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `suspended` | Your account is suspended |
+| `404` | `not_found` | No such session on your account |
+| `429` | `rate_limited` | More than 30 requests per minute |

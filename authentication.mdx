@@ -49,16 +49,16 @@ Every key can upload. Reaching the uploads already in your gallery is a separate
 
 | Permission | Description |
 |------------|-------------|
-| **Base** | Upload files, fetch your profile, read posts, browse Discover. Always enabled. |
-| **Gallery** | List, edit, append to, and delete uploads you already have. Off by default. Turn it on with the **Gallery Access** switch in the API section of settings. |
+| **Base** | Upload files, convert files, fetch users and posts, report. Always enabled. |
+| **Gallery** | List, edit, add files to, and delete posts you already have. Off by default. Turn it on with the **Gallery Access** switch in the API section of settings. |
 
-Without gallery access, `GET /uploads`, `PATCH /editUpload`, `POST /appendUpload` and `DELETE /deleteUpload` return `403`. `POST /upload` is unaffected.
+Without gallery access, `GET /posts`, `PATCH /posts/{code}`, `DELETE /posts/{code}`, `POST /posts/{code}/files` and `DELETE /posts/{code}/files/{name}` return `403` with type `forbidden`. `POST /upload` is unaffected.
 
 You can check whether gallery access is enabled by calling `GET /users/@me` and reviewing the `key_has_uploads_access` field. The field name is historical and reports gallery access.
 
 ### Team Access Keys
 
-[Teams](/concepts/plans#teams) (an Ultra feature) each have a dedicated **access key**. A team key is passed in the same `api-key` header as a personal API key, and uploads made with it go to the team's shared gallery instead of a personal account. It is only accepted on `POST /upload`, `POST /appendUpload`, `PATCH /editUpload`, `DELETE /deleteUpload`, and `POST /convert`. Every other endpoint, including `GET /users/@me`, `GET /uploads`, and `GET /posts/{code}`, returns `401` for a team key. Read team posts with a member's personal key.
+[Teams](/concepts/plans#teams) (an Ultra feature) each have a dedicated **access key**. A team key is passed in the same `api-key` header as a personal API key, and uploads made with it go to the team's shared gallery instead of a personal account. It is only accepted on `POST /upload`, `PATCH /posts/{code}`, `DELETE /posts/{code}`, `POST /posts/{code}/files`, `DELETE /posts/{code}/files/{name}` and `POST /convert`. Every other endpoint, including `GET /users/@me`, `GET /posts` and `GET /posts/{code}`, returns `401` for a team key. Read team posts with a member's personal key.
 
 ```
 api-key: YOUR_TEAM_ACCESS_KEY
@@ -70,10 +70,10 @@ Key differences when uploading with a team key:
 - Uploads count against the **team's** weekly quota, never a member's personal quota.
 - Team-key uploads are always created **private**, regardless of the `post-privacy` header, and their privacy cannot be changed afterward. Team posts are never **unlisted** or **public**.
 - Only the team owner can regenerate or delete the key, from the team's settings page.
-- If the team's subscription lapses, `POST /upload`, `POST /appendUpload`, and `POST /convert` with the key return `403` with `This team's subscription has lapsed. Renew it to upload again.` Editing and deleting existing team posts keep working.
-- If the team owner's account is suspended, the key is refused on every endpoint with the same `403` a suspended personal key gets: `Your account has been suspended. Uploads and certain features are restricted.`
+- If the team's subscription lapses, `POST /upload`, `POST /posts/{code}/files` and `POST /convert` with the key return `403` with type `forbidden`. Editing and deleting existing team posts keep working.
+- If the team owner's account is suspended, the key is refused on every endpoint with the same `403` a suspended personal key gets, with type `suspended`.
 
-The same key also works on the [Relay API](/relay-reference/introduction), passed in its `relay-key` header, on `/upload`, `/appendUpload`, `/editUpload`, `/deleteUpload`, and `/convert`.
+The same key also works on the [Relay API](/relay-reference/introduction), passed in its `relay-key` header, on the same endpoints.
 
 Anyone who holds a team key can upload with it, so treat it like any other credential and share it only with trusted team members.
 
@@ -86,10 +86,11 @@ Anyone who holds a team key can upload with it, so treat it like any other crede
 
 ### Error Responses
 
-| Status | Cause |
-|--------|-------|
-| `401` | Missing `api-key` header |
-| `401` | Invalid or expired API key |
-| `403` | Account suspended or insufficient permissions |
+| Status | Type | Cause |
+|--------|------|-------|
+| `401` | `unauthorized` | Missing `api-key` header |
+| `401` | `unauthorized` | Invalid key, or a team key on an endpoint that does not accept one |
+| `403` | `suspended` | Your account, or the team owner's, is suspended |
+| `403` | `forbidden` | The key has no gallery access, or the team's subscription has lapsed |
 
-All errors return a JSON object with an `error` field describing the issue.
+Every error returns an `error` object with `type` and `message`. See [Errors](/concepts/errors).

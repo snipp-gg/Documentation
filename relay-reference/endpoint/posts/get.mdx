@@ -1,0 +1,235 @@
+---
+title: "Get Post"
+openapi: "relay-reference/openapi.json GET /posts/{code}"
+---
+
+Fetch a post by its share code.
+
+## Behavior
+
+- `files` lists every file in the post, in order. `file_count` is its length; a post with more than one file is an album.
+- `url` is the share page. Each `files[].url` is the direct file. On private posts the file and thumbnail URLs are signed and expire after 24 hours; fetch the post again for fresh ones.
+- `files[].name` is what [Delete File](/relay-reference/endpoint/posts/delete-file) takes.
+- `files[].thumbnail_url` is a still frame for videos uploaded with [`POST /upload`](/relay-reference/endpoint/upload), and `null` otherwise. `width`, `height`, `size` and `mime_type` are `null` when unknown.
+- `liked` is whether you have liked the post.
+- `moderated` and `restricted` are only present when you own the post. A restricted post keeps its privacy, is hidden from Discover and profiles, and cannot be made public.
+- When you own a personal post, it also carries `access`: the users who can open it while it is private. Change it with [Update Post](/relay-reference/endpoint/posts/update).
+- Each request counts a view on public posts that are not moderated. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour. The returned `view_count` includes the view just counted.
+- **Who can see what:**
+  - Drafts are visible only to their owner.
+  - Private posts are visible to their owner and to users the owner has given access to.
+  - Team posts are visible only to members of that team. They have `team_id` set and `like_count` and `liked` are `null`, since team posts cannot be liked.
+  - Posts whose owner is suspended are visible only to the owner.
+  - Anyone else gets `404` with type `not_found`.
+- A moderated post is returned in full to its owner, with `moderated: true`. Anyone else who could otherwise see it gets `403` with type `moderated`.
+- If the post's author has blocked you, the response is `403` with type `blocked`.
+- Shares a rate limit bucket with [`GET /users/{id}/posts`](/relay-reference/endpoint/users/posts).
+
+## Examples
+
+```bash
+curl "https://relay.snipp.gg/posts/AbCd1234" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+Your own post:
+
+```json
+{
+  "post": {
+    "code": "AbCd1234",
+    "url": "https://snipp.gg/p/AbCd1234",
+    "title": "Nice shot",
+    "description": null,
+    "privacy": "private",
+    "created_at": "2026-09-30T18:42:11.512Z",
+    "view_count": 0,
+    "like_count": 0,
+    "comment_count": 0,
+    "priority": false,
+    "file_count": 1,
+    "files": [
+      {
+        "name": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png?e=1790035200&s=9f2c4b7d1e8a3f6c0b5d2e9a7c4f1b8e3d6a0c9f2b5e8d1a4c7f0b3e6d9a2c5f",
+        "size": 2487312,
+        "mime_type": "image/png",
+        "width": 1920,
+        "height": 1080,
+        "thumbnail_url": null
+      }
+    ],
+    "team_id": null,
+    "author": {
+      "id": "123456789012345678",
+      "username": "playerone",
+      "nickname": "Player One",
+      "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+      "verified": false,
+      "plan": "plus"
+    },
+    "liked": false,
+    "moderated": false,
+    "restricted": false,
+    "access": [
+      {
+        "id": "987654321098765432",
+        "username": "playertwo",
+        "nickname": "Player Two",
+        "avatar": "https://cdn.snipp.gg/avatar.png",
+        "verified": false,
+        "plan": "free"
+      }
+    ]
+  }
+}
+```
+
+Someone else's post. `moderated` and `restricted` are omitted:
+
+```json
+{
+  "post": {
+    "code": "QwEr5678",
+    "url": "https://snipp.gg/p/QwEr5678",
+    "title": "Launch teaser",
+    "description": null,
+    "privacy": "public",
+    "created_at": "2026-09-28T10:00:00.000Z",
+    "view_count": 311,
+    "like_count": 17,
+    "comment_count": 2,
+    "priority": false,
+    "file_count": 1,
+    "files": [
+      {
+        "name": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "url": "https://i.snipp.gg/987654321098765432/a1b2c3d4e5f6789012345678abcdef01.png",
+        "size": 2487312,
+        "mime_type": "image/png",
+        "width": 1920,
+        "height": 1080,
+        "thumbnail_url": null
+      }
+    ],
+    "team_id": null,
+    "author": {
+      "id": "987654321098765432",
+      "username": "playertwo",
+      "nickname": "Player Two",
+      "avatar": "https://cdn.snipp.gg/avatar.png",
+      "verified": false,
+      "plan": "free"
+    },
+    "liked": true
+  }
+}
+```
+
+An album:
+
+```json
+{
+  "post": {
+    "code": "AlBm5678",
+    "url": "https://snipp.gg/p/AlBm5678",
+    "title": "Match highlights",
+    "description": null,
+    "privacy": "public",
+    "created_at": "2026-09-30T18:42:11.512Z",
+    "view_count": 128,
+    "like_count": 42,
+    "comment_count": 3,
+    "priority": false,
+    "file_count": 2,
+    "files": [
+      {
+        "name": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "url": "https://i.snipp.gg/123456789012345678/a1b2c3d4e5f6789012345678abcdef01.png",
+        "size": 2487312,
+        "mime_type": "image/png",
+        "width": 1920,
+        "height": 1080,
+        "thumbnail_url": null
+      },
+      {
+        "name": "b2c3d4e5f6789012345678abcdef0102.png",
+        "url": "https://i.snipp.gg/123456789012345678/b2c3d4e5f6789012345678abcdef0102.png",
+        "size": 1843210,
+        "mime_type": "image/png",
+        "width": 1280,
+        "height": 720,
+        "thumbnail_url": null
+      }
+    ],
+    "team_id": null,
+    "author": {
+      "id": "123456789012345678",
+      "username": "playerone",
+      "nickname": "Player One",
+      "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+      "verified": false,
+      "plan": "plus"
+    },
+    "liked": false,
+    "moderated": false,
+    "restricted": false
+  }
+}
+```
+
+A team post:
+
+```json
+{
+  "post": {
+    "code": "TeAm1357",
+    "url": "https://snipp.gg/p/TeAm1357",
+    "title": "Sprint review",
+    "description": null,
+    "privacy": "private",
+    "created_at": "2026-09-30T18:42:11.512Z",
+    "view_count": 0,
+    "like_count": null,
+    "comment_count": 1,
+    "priority": false,
+    "file_count": 1,
+    "files": [
+      {
+        "name": "a1b2c3d4e5f6789012345678abcdef01.png",
+        "url": "https://i.snipp.gg/team-246813579246813579/a1b2c3d4e5f6789012345678abcdef01.png?e=1790035200&s=9f2c4b7d1e8a3f6c0b5d2e9a7c4f1b8e3d6a0c9f2b5e8d1a4c7f0b3e6d9a2c5f",
+        "size": 2487312,
+        "mime_type": "image/png",
+        "width": 1920,
+        "height": 1080,
+        "thumbnail_url": null
+      }
+    ],
+    "team_id": "246813579246813579",
+    "author": {
+      "id": "123456789012345678",
+      "username": "playerone",
+      "nickname": "Player One",
+      "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+      "verified": false,
+      "plan": "plus"
+    },
+    "liked": null,
+    "moderated": false,
+    "restricted": false
+  }
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | `code` is not a valid share code |
+| `401` | `unauthorized` | Missing or invalid key, or a team key |
+| `403` | `moderated` | The post is moderated and you are not its owner |
+| `403` | `blocked` | The author has blocked you |
+| `404` | `not_found` | No such post, or you cannot see it |
+| `429` | `rate_limited` | More than 20 requests in 30 seconds |

@@ -1,0 +1,179 @@
+---
+title: "Migrating to API v3"
+description: "Every removed path, field and header in the API and Relay redesign, and what replaces it."
+---
+
+The API and Relay were redesigned so every endpoint follows the same rules: resources in the path, verbs as HTTP methods, one error shape, one pagination scheme, and one shape for each object wherever it appears. This page maps every old path, field and header to its replacement.
+
+If you only upload with ShareX, XerahS or iShare, read [What did not change](#what-did-not-change) first: your config most likely keeps working as is.
+
+<Note>
+  The official SDKs follow this redesign in version 3.0. See [SDKs](/sdks/introduction); each SDK page ends with a section on migrating from 2.x.
+</Note>
+
+## What did not change
+
+These are frozen so installed uploader configs keep working:
+
+- `POST /upload`, with the file in the multipart `file` field.
+- The `api-key`, `post-privacy` and `include-metadata` headers. `post-type` and `priority` also work as before.
+- A missing `post-privacy` header still uploads as `private`.
+- A successful upload still returns `200`.
+- The top-level `url` in the upload response is still the direct file URL.
+- `post.url` is still the share page (`https://snipp.gg/p/{code}`), and `post.code` is still the share code.
+
+So `.sxcu` and `.iscu` configs that read `{json:url}`, `{json:post.url}` or `{json:post.code}` need no changes. If you added a custom error field that reads `{json:error}`, change it to `{json:error.message}`, because `error` is now an object.
+
+## Global changes
+
+| Before | Now |
+|--------|-----|
+| `{"error": "Message."}` | `{"error": {"type": "not_found", "message": "Message."}}`. Branch on `error.type`. See [Errors](/concepts/errors). |
+| Extra error flags such as `suspended: true` or `moderated: true` beside `error` | `error.type` is `suspended` or `moderated`. A suspended user's `username` moves inside `error`. |
+| `message`, `success` or `ok` keys on successful responses | Removed. A `2xx` status is success. |
+| Toggle endpoints (`/like`, `/comment-like`) | `POST` turns it on, `DELETE` turns it off. Both are safe to repeat. |
+| IDs and codes in headers, query strings or bodies | In the path: `/posts/{code}`, `/users/{id}`, `/comments/{id}`. |
+| `offset` and `before` paging, fixed caps | `limit` and `cursor`, with `has_more` and `next_cursor`. See [Pagination](/concepts/pagination). |
+| Over-long titles and descriptions truncated | Rejected with `400`: title over 30 characters, description, reason or comment over 200. |
+| Boolean headers (`include-metadata`, `priority`) | `true` or `false` only (trimmed, case-insensitive). Anything else returns `400`. |
+| `post-privacy` values | Only `public`, `unlisted` and `private` (trimmed, case-insensitive). Anything else returns `400`. |
+| Wrong HTTP method | `405` with type `method_not_allowed` and an `Allow` header. |
+| Timestamps named `created`, `uploaded` | `created_at`, as ISO 8601 UTC. |
+| Counts named `views`, `likes`, `uploads`, `count` | `view_count`, `like_count`, `upload_count`. |
+| Boolean prefixes `is_`, `you_` | Plain adjectives: `verified`, `following`, `blocking`. Derivable flags (`is_album`, `is_you`) are removed. |
+| `plus` and `ultra` booleans | One `plan` field: `free`, `plus` or `ultra`. |
+| No request ID | Every response has a `request-id` header. |
+
+## API paths
+
+| Removed | Replacement |
+|---------|-------------|
+| `GET /uploads` | [`GET /posts`](/api-reference/endpoint/posts/list), paginated with `limit` (max 100) and `cursor`. |
+| `PATCH /editUpload` with `code` and `post-privacy` headers and multipart fields | [`PATCH /posts/{code}`](/api-reference/endpoint/posts/update) with a JSON body: `title`, `description`, `privacy`. |
+| `POST /appendUpload` with a `post-code` header | [`POST /posts/{code}/files`](/api-reference/endpoint/posts/add-files). |
+| `DELETE /deleteUpload` with a `file` header | [`DELETE /posts/{code}/files/{name}`](/api-reference/endpoint/posts/delete-file) for one file, or [`DELETE /posts/{code}`](/api-reference/endpoint/posts/delete) for the whole post. The file name now needs its extension. |
+| `POST /report-post` with `code` in the body | [`POST /posts/{code}/report`](/api-reference/endpoint/posts/report) with an optional `reason`. |
+| `POST /report-user` with `target_user_id` in the body | [`POST /users/{id}/report`](/api-reference/endpoint/users/report) with an optional `reason`. |
+| `GET /users/{id}` with `include_posts` and `posts_limit` | [`GET /users/{id}/posts`](/api-reference/endpoint/users/posts) lists public posts, paginated. |
+| `GET /gifs` with `offset` | [`GET /gifs`](/api-reference/endpoint/gifs) with `cursor`. `limit` now goes up to 100. |
+
+## Relay paths
+
+All of the API changes above apply to Relay too. Relay also replaced these:
+
+| Removed | Replacement |
+|---------|-------------|
+| `PATCH /profile` | [`PATCH /users/@me`](/relay-reference/endpoint/users/update) |
+| `PATCH /theme` | [`PATCH /users/@me`](/relay-reference/endpoint/users/update) with `theme` |
+| `POST /profile/avatar` | [`POST /users/@me/avatar`](/relay-reference/endpoint/users/upload-avatar). New: [`DELETE /users/@me/avatar`](/relay-reference/endpoint/users/delete-avatar). |
+| `POST /profile/banner` | [`POST /users/@me/banner`](/relay-reference/endpoint/users/upload-banner). New: [`DELETE /users/@me/banner`](/relay-reference/endpoint/users/delete-banner). |
+| `POST /follow` with `target_id` | [`POST /users/{id}/follow`](/relay-reference/endpoint/users/follow) |
+| `POST /unfollow` with `target_id` | [`DELETE /users/{id}/follow`](/relay-reference/endpoint/users/unfollow) |
+| `POST /unfollow` with `remove_follower` | [`DELETE /users/@me/followers/{id}`](/relay-reference/endpoint/users/remove-follower) |
+| `GET /followers?id=` | [`GET /users/{id}/followers`](/relay-reference/endpoint/users/followers) |
+| `GET /following?id=` | [`GET /users/{id}/following`](/relay-reference/endpoint/users/following) |
+| `POST /block` with `target_id` | [`POST /users/{id}/block`](/relay-reference/endpoint/users/block) |
+| `POST /unblock` with `target_id` | [`DELETE /users/{id}/block`](/relay-reference/endpoint/users/unblock) |
+| `GET /blocks` | [`GET /users/@me/blocks`](/relay-reference/endpoint/users/blocks) |
+| `POST /like` with `code` (toggle) | [`POST /posts/{code}/like`](/relay-reference/endpoint/posts/like) and [`DELETE /posts/{code}/like`](/relay-reference/endpoint/posts/unlike) |
+| `GET /comments?code=` | [`GET /posts/{code}/comments`](/relay-reference/endpoint/posts/comments) |
+| `POST /comment` with `code` and `text` | [`POST /posts/{code}/comments`](/relay-reference/endpoint/posts/create-comment) with `body` |
+| `DELETE /comment` with `code` and `comment_id` | [`DELETE /comments/{id}`](/relay-reference/endpoint/comments/delete) |
+| `POST /comment-like` with `comment_id` (toggle) | [`POST /comments/{id}/like`](/relay-reference/endpoint/comments/like) and [`DELETE /comments/{id}/like`](/relay-reference/endpoint/comments/unlike) |
+| `POST /report-comment` with `comment_id` | [`POST /comments/{id}/report`](/relay-reference/endpoint/comments/report) |
+| `GET /notifications?before=` | [`GET /notifications`](/relay-reference/endpoint/notifications/list) with `cursor` |
+| `GET /notifications/unread` | [`GET /notifications/unread-count`](/relay-reference/endpoint/notifications/unread-count) |
+| `GET /notification-prefs`, `POST /notification-prefs` | [`GET /preferences`](/relay-reference/endpoint/preferences/get), [`PATCH /preferences`](/relay-reference/endpoint/preferences/update) |
+| `POST /preferences` | [`PATCH /preferences`](/relay-reference/endpoint/preferences/update) |
+| `POST /sessions` with `id` | [`DELETE /sessions/{id}`](/relay-reference/endpoint/sessions/delete) |
+| `POST /sessions` with `all: true` | [`DELETE /sessions`](/relay-reference/endpoint/sessions/delete-all) |
+
+## Upload responses
+
+| Before | Now |
+|--------|-----|
+| `message`, `processing_time` | Removed. |
+| `file` (`size`, `size_formatted`, `mime_type`, `dimensions`) | `post.files[0]`: `size`, `mime_type`, `width`, `height`. |
+| `files` array with `index` and `status` | `post.files`, the full file objects of the post. |
+| `post` with only `code`, `url`, `post_privacy`, `priority` (and `is_album`, `file_count` on albums) | `post` is the full [post object](#posts). |
+| `post.posts` for individual uploads | Top-level `posts`. With one surviving post the body is `{url, post}` instead. |
+| `failed` entries `{index, error: "Message.", status: "failed"}` | `{index, error: {type, message}}`. |
+| Every file failed, multi-file: `{"error": "All files failed to upload.", "failed": [...]}` | `400` with type `upload_failed`, `failed` inside `error`. |
+| Single-file quota failure on a personal key had no quota fields | `quota`, `used` and `resets_at` are always present on `quota_exceeded`. |
+
+The same applies to [`POST /posts/{code}/files`](/api-reference/endpoint/posts/add-files), which now returns `{post, failed?}`.
+
+## Posts
+
+The post object is now the same everywhere: uploads, `GET /posts`, `GET /posts/{code}`, `GET /users/{id}/posts`, `GET /gifs` and `GET /discover`.
+
+| Before | Now |
+|--------|-----|
+| `url` on `GET /posts/{code}` was the direct file URL | `url` is always the share page. The direct URL is `files[0].url`. |
+| `urls` | `files[].url` |
+| `is_album` | `file_count > 1` |
+| `files[].file_name` | `files[].name` |
+| `files[].index`, `files[].size_formatted` | Removed. Use the array position and format `size` yourself. |
+| `file` summary object | Removed. Use `files[0]`. |
+| `post_privacy`, `public` | `privacy` |
+| `created`, `uploaded` | `created_at` |
+| `views` | `view_count` |
+| Top-level `thumbnail_url` | `files[].thumbnail_url` |
+| `author` with `plus` | `author` is a [user reference](#users) with `plan`. |
+| Discover's flat `author`, `author_id`, `author_username`, `author_avatar`, `author_plus`, `is_verified` | `author` user reference. |
+| `GET /uploads` items and `GET /gifs` items (`code`, `url`, `title`, `size`, ...) | Full post objects. |
+| `uploads` key on `GET /discover` and `gifs` key on `GET /gifs` | `posts` |
+
+New on every post: `like_count`, `comment_count`, `liked` and `team_id`. On team posts `like_count` and `liked` are `null`. `moderated` and `restricted` are only present for the post's owner.
+
+## Users
+
+| Before | Now |
+|--------|-----|
+| `plus`, `ultra` | `plan` |
+| `badges` object | Removed. Its fields (`verified`, `staff`, `partner`, `translator`, `bug_hunter_tier`) are already top-level; `plus` is `plan`. |
+| `uploads` | `upload_count` |
+| `created` | `created_at` |
+| `blocked_by_you` | `blocking` |
+| `public_uploads` | [`GET /users/{id}/posts`](/api-reference/endpoint/users/posts) |
+| `limits.plan` | Top-level `plan` |
+| `limits.*.window_start`, `window_end`, `resets_in_seconds` | `limits.*.resets_at` |
+| Relay `subscription.plan` | Top-level `plan` |
+| Suspended user: `403` with `suspended: true` and `username` | `403` with type `suspended` and `username` inside `error`. |
+
+Every profile now has `follower_count`, `following_count`, `following` and `blocking`, on the API as well as Relay. Wherever a user appears inside another object (post authors, comment authors, notification actors, follower lists, blocks, access lists) it is the same reference: `{id, username, nickname, avatar, verified, plan}`.
+
+## Relay responses
+
+| Endpoint | Before | Now |
+|----------|--------|-----|
+| Follow | `{following}` | `{following, follower_count}` |
+| Remove follower | `{removed: true}` | `{id, deleted: true}` |
+| Follower lists | `you_follow`, `is_you`, capped at 200 | `following`; compare `id` to your own; paginated |
+| Block, unblock | `{blocked}`, sometimes with `message` | `{blocking}` |
+| Blocks | `{user_id, created}` | `{user, created_at}`, paginated |
+| Like, comment like | `{liked, likes}` | `{liked, like_count}` |
+| Comments | Flat `user_id`, `username`, `nickname`, `avatar`, `is_verified`, `plus`; `likes` | `user` reference; `like_count` |
+| Create comment | `{comment, comments}` | `{comment}` |
+| Delete comment | `{comments}` | `{id, deleted: true}` |
+| Notifications | `post_thumb`; actors without `id` or `plan` | `post_thumbnail_url`; actors are user references |
+| Unread count | `{unread}` | `{unread_count}` |
+| Mark read | `{read: true}` | `{unread_count: 0}` |
+| Sessions | `created`, `last_active` | `created_at`, `last_active_at` |
+| Log out sessions | `{message}`, `{message, count}` | `{id, deleted: true}`, `{deleted_count}` |
+| Update profile | Echo of the sent fields with `message` | `{user}`, your full account |
+| Avatar, banner | `{url, type}` | `{user}`, your full account |
+| Theme | `{message, theme}` | `{user}` from `PATCH /users/@me` |
+| Analytics | Top-level `payout` with `payout.payout` | `analytics.payout` with `amount` |
+| Get post | `access` entries `{id, username, nickname, avatar, verified}` | Still owner-only; entries are user references, which add `plan` |
+
+## Other responses
+
+| Endpoint | Before | Now |
+|----------|--------|-----|
+| Update post | `{message, post: {code, title, description, post_privacy}}` | `{post}`, the full post |
+| Delete post or file | `{message}` | `{code, deleted: true}` or `{name, deleted: true}` |
+| Reports | `{success: true}` | `{reported: true}` |
+| Usage history | `history[].count`, `stats.total_uploads` | `history[].upload_count`, `stats.upload_count` |
+| Analytics | An invalid `range` fell back to 30 | Returns `400` |
+| Weekly quota error | Shape varied by endpoint | Always type `quota_exceeded` with `quota`, `used` and `resets_at` |

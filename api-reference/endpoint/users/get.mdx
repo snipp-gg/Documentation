@@ -1,0 +1,140 @@
+---
+title: "Get User"
+openapi: "api-reference/openapi.json GET /users/{id}"
+---
+
+Fetch your own account (`@me`) or another user's profile.
+
+## Behavior
+
+- `@me` or your own ID returns your full account: every profile field plus `api_key`, `key_has_uploads_access`, `upload_count` and `limits`.
+- Any other ID returns that user's public profile.
+- `plan` is `free`, `plus` or `ultra`.
+- `avatar` is always a URL. Users without an avatar get `https://cdn.snipp.gg/avatar.png`. `banner` is `null` when none is set.
+- `bug_hunter_tier` is `0` (none), `1` (Bug Hunter) or `2` (Elite Bug Hunter).
+- `following` and `blocking` are from your point of view: whether you follow or block that user. Both are `false` on your own profile.
+- `limits.usage` is your weekly upload quota in bytes. `limits.priority_minutes` is your 30-day [priority minutes](/concepts/plans#priority-minutes) budget in minutes. `resets_at` is `null` if no window has been assigned yet.
+- `limits.max_file_size` is the largest single file you can upload, in bytes.
+- `upload_count` counts the files stored in your personal gallery.
+- To list a user's posts, call [`GET /users/{id}/posts`](/api-reference/endpoint/users/posts).
+- If the user is suspended, the response is `403` with type `suspended` and their `username`. This is checked before blocks.
+- If the user has blocked you, the response is `403` with type `blocked`.
+- Team keys are not accepted here and get `401`.
+
+## Examples
+
+Fetch your own account:
+
+```bash
+curl "https://api.snipp.gg/users/@me" \
+  -H "api-key: YOUR_API_KEY"
+```
+
+Fetch another user:
+
+```bash
+curl "https://api.snipp.gg/users/987654321098765432" \
+  -H "api-key: YOUR_API_KEY"
+```
+
+## Responses
+
+Your own account:
+
+```json
+{
+  "user": {
+    "id": "123456789012345678",
+    "username": "playerone",
+    "nickname": "Player One",
+    "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+    "banner": "https://i.snipp.gg/banners/123456789012345678/1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f.png",
+    "bio": "Building things at Snipp",
+    "socials": {
+      "github": "https://github.com/playerone"
+    },
+    "plan": "plus",
+    "verified": false,
+    "staff": false,
+    "partner": false,
+    "translator": false,
+    "bug_hunter_tier": 0,
+    "suspended": false,
+    "created_at": "2026-01-04T09:30:00.000Z",
+    "custom_embed": null,
+    "follower_count": 128,
+    "following_count": 47,
+    "following": false,
+    "blocking": false,
+    "api_key": "aB3xK9mP2qR7sT1vW4yZ6cD8fG0hJ5kL",
+    "key_has_uploads_access": true,
+    "upload_count": 42,
+    "limits": {
+      "max_file_size": 21474836480,
+      "usage": {
+        "used": 1073741824,
+        "limit": 21474836480,
+        "used_percent": 5,
+        "resets_at": "2026-10-04T16:20:00.000Z"
+      },
+      "priority_minutes": {
+        "used": 12,
+        "limit": 100,
+        "used_percent": 12,
+        "resets_at": "2026-10-19T16:20:00.000Z"
+      }
+    }
+  }
+}
+```
+
+Another user:
+
+```json
+{
+  "user": {
+    "id": "987654321098765432",
+    "username": "playertwo",
+    "nickname": "Player Two",
+    "avatar": "https://cdn.snipp.gg/avatar.png",
+    "banner": null,
+    "bio": null,
+    "socials": null,
+    "plan": "free",
+    "verified": false,
+    "staff": false,
+    "partner": false,
+    "translator": false,
+    "bug_hunter_tier": 1,
+    "suspended": false,
+    "created_at": "2026-02-18T14:00:00.000Z",
+    "custom_embed": null,
+    "follower_count": 12,
+    "following_count": 30,
+    "following": true,
+    "blocking": false
+  }
+}
+```
+
+A suspended user:
+
+```json
+{
+  "error": {
+    "type": "suspended",
+    "message": "This user has been suspended.",
+    "username": "playertwo"
+  }
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | `id` is not `@me` or a numeric ID |
+| `401` | `unauthorized` | Missing or invalid key, or a team key |
+| `403` | `suspended` | The user is suspended |
+| `403` | `blocked` | The user has blocked you |
+| `404` | `not_found` | No user with that ID |

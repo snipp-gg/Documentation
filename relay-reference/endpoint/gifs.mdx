@@ -1,48 +1,78 @@
 ---
 title: "List Public GIFs"
-openapi: "GET /gifs"
+openapi: "relay-reference/openapi.json GET /gifs"
 ---
 
-Browse public GIFs across Snipp, newest first, like a public GIF feed. Defaults to 30. Pass `?limit=N` (max 50) and `?offset=N` to page. Pass `?search=kitty cat` to match word prefixes in the title or description.
+Browse public GIFs across Snipp, newest first. No key required.
 
 ## Behavior
 
-- No authentication required. Rate limited per IP.
-- Only posts whose first file is a `.gif` are returned.
-- Returns public posts only. Unlisted, private, draft, moderated, and team posts are excluded, as are posts from suspended accounts.
-- `?search` matches word prefixes (case-insensitive) in the title or description. `kitt` matches "kitty" and "kitten" but not "skittle", since it must match the start of a word.
-- Multiple words are combined with AND, order independent. `kit cat` matches a post whose title or description has a word starting with "kit" and a word starting with "cat", anywhere. Up to 6 words are used.
-- `thumbnail_url` is only present when the post has a thumbnail.
-- `title` and `description` are `null` when none is set.
-- `has_more` is `true` when another page is likely available. Page with `offset`.
+- Returns public posts whose first file is a `.gif`. Unlisted, private, draft, moderated, restricted and team posts are excluded, as are posts by suspended users.
+- Each item is a full post object. `liked` is always `false`, since the request is anonymous.
+- Results are [paginated](/concepts/pagination): pass `limit` (1 to 100, default 30) and the previous page's `next_cursor` as `cursor`.
+- `search` matches the start of words in the title or description, case-insensitively. `kitt` matches "kitty" and "kitten" but not "skittle".
+- Several words must all match, in any order. Up to 6 words are used.
+- With a narrow `search`, a page can hold fewer than `limit` posts while `has_more` is still `true`. Keep following `next_cursor` until `has_more` is `false`.
+- Rate limited per IP: 60 requests per minute.
 
 ## Examples
 
 ```bash
-curl -X GET "https://relay.snipp.gg/gifs?limit=50&offset=0"
+curl "https://relay.snipp.gg/gifs?limit=50"
 ```
 
 ```bash
-curl -X GET "https://relay.snipp.gg/gifs?search=kitty"
+curl "https://relay.snipp.gg/gifs?search=kitty%20cat"
 ```
 
 ## Responses
 
 ```json
 {
-  "gifs": [
+  "posts": [
     {
-      "code": "AbCd1234",
-      "url": "https://i.snipp.gg/364836696149458944/16483ec5681c5fc2b5cc08dd49b7dbae.gif",
-      "thumbnail_url": "https://i.snipp.gg/364836696149458944/thumb/16483ec5681c5fc2b5cc08dd49b7dbae.jpg",
+      "code": "GiFs4242",
+      "url": "https://snipp.gg/p/GiFs4242",
       "title": "Nice loop",
       "description": null,
-      "created": "2026-03-27T11:42:18.000Z",
-      "views": 128
+      "privacy": "public",
+      "created_at": "2026-09-29T21:03:44.019Z",
+      "view_count": 128,
+      "like_count": 9,
+      "comment_count": 0,
+      "priority": false,
+      "file_count": 1,
+      "files": [
+        {
+          "name": "e5f6789012345678abcdef0102030405.gif",
+          "url": "https://i.snipp.gg/987654321098765432/e5f6789012345678abcdef0102030405.gif",
+          "size": 3145728,
+          "mime_type": "image/gif",
+          "width": 480,
+          "height": 270,
+          "thumbnail_url": null
+        }
+      ],
+      "team_id": null,
+      "author": {
+        "id": "987654321098765432",
+        "username": "playertwo",
+        "nickname": "Player Two",
+        "avatar": "https://cdn.snipp.gg/avatar.png",
+        "verified": false,
+        "plan": "free"
+      },
+      "liked": false
     }
   ],
   "has_more": true,
-  "offset": 0,
-  "limit": 50
+  "next_cursor": "eyJ0IjoiMjAyNi0wOS0yOVQyMTowMzo0NC4wMTlaIiwiayI6IkdpRnM0MjQyIn0"
 }
 ```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | Invalid `limit` or `cursor` |
+| `429` | `rate_limited` | More than 60 requests per minute from your IP |

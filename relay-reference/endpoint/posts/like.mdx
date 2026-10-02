@@ -1,0 +1,44 @@
+---
+title: "Like Post"
+openapi: "relay-reference/openapi.json POST /posts/{code}/like"
+---
+
+Like a post.
+
+## Behavior
+
+- Liking a post you already like succeeds and changes nothing. `liked` and `like_count` are the state after the call.
+- The post's owner gets a `like` notification the first time you like it, unless they turned like notifications off.
+- Team posts cannot be liked: members get `403` with type `forbidden`, everyone else `404`.
+- Moderated posts return `403` with type `moderated`. If the author has blocked you, the response is `403` with type `blocked`.
+- Drafts, private posts you do not own, and posts by suspended users return `404`.
+- Shares a rate limit bucket with Unlike Post and comment likes: 30 requests per minute.
+
+## Examples
+
+```bash
+curl -X POST "https://relay.snipp.gg/posts/AbCd1234/like" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "liked": true,
+  "like_count": 43
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | `code` is not a valid share code |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `forbidden` | A team post |
+| `403` | `moderated` | The post is moderated |
+| `403` | `blocked` | The author has blocked you |
+| `403` | `suspended` | Your account is suspended |
+| `404` | `not_found` | No such post, or you cannot see it |
+| `429` | `rate_limited` | More than 30 likes per minute |

@@ -1,0 +1,42 @@
+---
+title: "Report Post"
+openapi: "api-reference/openapi.json POST /posts/{code}/report"
+---
+
+Report a post to the moderation team.
+
+## Behavior
+
+- `reason` is optional. When sent it must be a string of at most 200 characters after trimming. Longer reasons are rejected, not truncated.
+- You can report posts you can see. Drafts, team posts, and private posts not shared with you return `404`.
+- You cannot report your own post, a post that is already moderated, or a post whose author has blocked you.
+- Reports share one rate limit bucket with [user reports](/api-reference/endpoint/users/report): 3 per minute.
+
+## Examples
+
+```bash
+curl -X POST "https://api.snipp.gg/posts/AbCd1234/report" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"reason": "Inappropriate content"}'
+```
+
+## Responses
+
+```json
+{
+  "reported": true
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | Invalid `code`, `reason` over 200 characters or not a string, or reporting your own post |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `moderated` | The post is already moderated |
+| `403` | `blocked` | The author has blocked you |
+| `403` | `suspended` | Your account is suspended |
+| `404` | `not_found` | No such post, or you cannot see it |
+| `429` | `rate_limited` | Too many reports |

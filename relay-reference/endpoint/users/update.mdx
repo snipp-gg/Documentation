@@ -1,0 +1,117 @@
+---
+title: "Update Profile"
+openapi: "relay-reference/openapi.json PATCH /users/{id}"
+---
+
+Update your own profile. `id` must be `@me` or your own ID. Send only the fields you want to change.
+
+## Body
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `username` | string | 4 to 15 characters: letters, numbers and underscores. Must not be taken (case-insensitive). |
+| `nickname` | string or null | Up to 15 characters. `""` or `null` clears it. |
+| `bio` | string or null | Up to 200 characters. `""` or `null` clears it. |
+| `socials` | object | Keyed by `roblox`, `github`, `spotify`, `youtube`, `tiktok`, `X`, `bluesky`, `discord`. Replaces the whole set; an empty object clears it. `null` changes nothing. |
+| `custom_embed` | object or null | Snipp+ only. `null` or `{}` clears it. |
+| `theme` | string | Accent theme key. Snipp+ only. |
+
+## Behavior
+
+- Send a JSON body. A body with nothing to change returns `400`.
+- Each `socials` value must be a link on that platform's domain. `discord` also accepts a bare Discord user ID.
+- `custom_embed` fields:
+  - `title` (up to 60 characters) and `description` (up to 200): templates that accept `%{post_title}%`, `%{post_description}%`, `%{username}%` and `%{nickname}%`.
+  - `theme_color`: a hex color such as `#F0B100`.
+  - `small_text` (up to 50): the small site name line.
+- `theme` must be one of `red`, `orange`, `amber`, `yellow`, `pastel_yellow`, `pastel_orange`, `lime`, `light_green`, `slime`, `green`, `emerald`, `teal`, `ice`, `cyan`, `sky`, `pastel_blue`, `blue`, `midnight_blue`, `indigo`, `light_violet`, `violet`, `purple`, `magneta`, `fuchsia`, `pastel_purple`, `light_pink`, `pink`, `rose`, `dark_rose` or `dynamic`. It is only visible to you.
+- On Free, sending `theme`, or `custom_embed` as anything but `null`, returns `403` with type `plan_required`. Free accounts can still clear an embed with `null`.
+- `avatar` and `banner` are not accepted here; use [Upload Avatar](/relay-reference/endpoint/users/upload-avatar) and [Upload Banner](/relay-reference/endpoint/users/upload-banner). `email` can only be changed on the website. Both return `400`.
+- A suspended account cannot change its username, nickname or bio.
+- The response is your full account, as returned by [`GET /users/@me`](/relay-reference/endpoint/users/get).
+- Rate limited to 10 requests per minute.
+
+## Examples
+
+```bash
+curl -X PATCH "https://relay.snipp.gg/users/@me" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"bio": "Shipping clips daily", "nickname": "P1"}'
+```
+
+```bash
+curl -X PATCH "https://relay.snipp.gg/users/@me" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"theme": "pastel_blue"}'
+```
+
+## Responses
+
+```json
+{
+  "user": {
+    "id": "123456789012345678",
+    "username": "playerone",
+    "nickname": "P1",
+    "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+    "banner": "https://i.snipp.gg/banners/123456789012345678/1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f.png",
+    "bio": "Shipping clips daily",
+    "socials": {
+      "github": "https://github.com/playerone"
+    },
+    "plan": "plus",
+    "verified": false,
+    "staff": false,
+    "partner": false,
+    "translator": false,
+    "bug_hunter_tier": 0,
+    "suspended": false,
+    "created_at": "2026-01-04T09:30:00.000Z",
+    "custom_embed": null,
+    "follower_count": 128,
+    "following_count": 47,
+    "following": false,
+    "blocking": false,
+    "api_key": "aB3xK9mP2qR7sT1vW4yZ6cD8fG0hJ5kL",
+    "key_has_uploads_access": true,
+    "relay_key": "Zy7wV4uT1sR8qP5nM2kJ9hG6fD3bC0aX",
+    "upload_count": 42,
+    "limits": {
+      "max_file_size": 21474836480,
+      "usage": {
+        "used": 1073741824,
+        "limit": 21474836480,
+        "used_percent": 5,
+        "resets_at": "2026-10-04T16:20:00.000Z"
+      },
+      "priority_minutes": {
+        "used": 12,
+        "limit": 100,
+        "used_percent": 12,
+        "resets_at": "2026-10-19T16:20:00.000Z"
+      }
+    },
+    "theme": "pastel_blue",
+    "subscription": {
+      "status": "active",
+      "started_at": "2026-01-04T09:30:00.000Z",
+      "expires_at": "2026-11-04T09:30:00.000Z",
+      "cancel_at_period_end": false,
+      "gifted": false
+    }
+  }
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | Nothing to change, an invalid or taken value, or `avatar`, `banner` or `email` in the body |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `forbidden` | `id` is not you |
+| `403` | `plan_required` | `theme` or `custom_embed` without Snipp+ |
+| `403` | `suspended` | A suspended account changing username, nickname or bio |
+| `429` | `rate_limited` | More than 10 requests per minute |

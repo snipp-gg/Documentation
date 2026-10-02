@@ -1,33 +1,32 @@
 ---
 title: "Convert a File"
-openapi: "POST /convert"
+openapi: "relay-reference/openapi.json POST /convert"
 ---
 
-Convert one image or video to another format and get the converted file back in the response. Nothing is stored, no post is created, and no upload quota is consumed.
+Convert one image or video to another format and get the converted file back. Nothing is stored, no post is created, and no quota is used.
 
 ## Headers
 
 | Header | Required | Description |
 |--------|----------|-------------|
-| `relay-key` | Yes | Your Relay key |
-| `convert-target` | Yes | `png`, `jpeg`, `webp`, `avif`, `gif`, `mp4`, or `mp3` |
+| `relay-key` | Yes | Your relay key, or a team access key |
+| `convert-target` | Yes | `png`, `jpeg`, `webp`, `avif`, `gif`, `mp4` or `mp3` |
 
 ## Behavior
 
-- Send the file as `multipart/form-data`. Only the first file in the request is read.
-- The response body is the converted file itself, sent as an attachment, not JSON. Write it straight to disk.
-- The source format is detected from the file's own bytes, not its name or the declared content type.
-- **What can become what:** PNG, JPG and WebP convert to png, jpeg, webp, avif or gif. GIF converts to png, jpeg, webp, avif or mp4. MP4, MOV and MKV convert to mp4, gif or mp3.
-- **Video to GIF requires Snipp+** and uses the first 10 seconds only, at 15fps and 480px wide.
+- Send the file as `multipart/form-data` in the `file` field. Only the first file is read.
+- On success the body is the converted file itself, sent as an attachment, not JSON. Errors are JSON like every other endpoint.
+- The source type is detected from the file's bytes, not its name.
+- **What converts to what:** PNG, JPG and WebP convert to `png`, `jpeg`, `webp`, `avif` or `gif`. GIF converts to `png`, `jpeg`, `webp`, `avif` or `mp4`. MP4, MOV and MKV convert to `mp4`, `gif` or `mp3`.
+- **Video to GIF requires Snipp+.** It uses the first 10 seconds at 15 fps and 480 px wide.
 - **MP4 output** is remuxed with `+faststart` when the source is already H.264, and transcoded otherwise.
-- **Metadata is always stripped.** Images are re-encoded without it and videos are written with `-map_metadata -1`. JPG orientation is applied to the pixels first, so photos stay the right way up.
-- Files are capped at 50 MB on the free plan, 20 GB on Snipp+, and 50 GB on Ultra and team keys. Conversion runs inside the request, so a large video can take a while to come back.
-- Rate limited to 10 conversions per minute. Converting does not count toward your weekly upload limit.
-- To host the result, pipe it into [`POST /upload`](/relay-reference/endpoint/upload). Note that avif and mp3 are not accepted upload types, so those two are download-only.
+- **Metadata is always stripped.** JPG orientation is applied to the pixels first, so photos stay upright.
+- Files are capped at 50 MB on Free, 20 GB on Snipp+, and 50 GB on Ultra and team keys. Converting does not count toward your weekly quota.
+- Conversion runs inside the request, so a large video can take a while.
+- To host the result, upload it with [`POST /upload`](/relay-reference/endpoint/upload). AVIF and MP3 are not upload types, so those are download-only.
+- Rate limited to 10 conversions per minute.
 
 ## Examples
-
-Convert a screenshot to WebP:
 
 ```bash
 curl -X POST "https://relay.snipp.gg/convert" \
@@ -37,8 +36,6 @@ curl -X POST "https://relay.snipp.gg/convert" \
   -o screenshot.webp
 ```
 
-Pull the audio out of a clip:
-
 ```bash
 curl -X POST "https://relay.snipp.gg/convert" \
   -H "relay-key: YOUR_RELAY_KEY" \
@@ -47,23 +44,9 @@ curl -X POST "https://relay.snipp.gg/convert" \
   -o clip.mp3
 ```
 
-Convert, then host the result:
-
-```bash
-curl -X POST "https://relay.snipp.gg/convert" \
-  -H "relay-key: YOUR_RELAY_KEY" \
-  -H "convert-target: mp4" \
-  -F "file=@loop.gif" \
-  -o loop.mp4
-
-curl -X POST "https://relay.snipp.gg/upload" \
-  -H "relay-key: YOUR_RELAY_KEY" \
-  -F "file=@loop.mp4"
-```
-
 ## Responses
 
-On success the body is the converted file and the headers name it:
+On success the headers name the file:
 
 ```
 HTTP/1.1 200 OK
@@ -76,6 +59,22 @@ On failure the body is JSON:
 
 ```json
 {
-  "error": "That file cannot be converted to this format."
+  "error": {
+    "type": "unsupported_type",
+    "message": "That file cannot be converted to this format."
+  }
 }
 ```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | Missing or invalid `convert-target`, or no file |
+| `400` | `unsupported_type` | The source type is not supported, or cannot become the target |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `plan_required` | Video to GIF without Snipp+ |
+| `403` | `forbidden` | The team's subscription has lapsed |
+| `413` | `file_too_large` | The file is over your limit |
+| `429` | `rate_limited` | More than 10 conversions per minute |
+| `500` | `internal` | The conversion failed |

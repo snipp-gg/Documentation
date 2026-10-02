@@ -1,0 +1,95 @@
+---
+title: "Upload Banner"
+openapi: "relay-reference/openapi.json POST /users/{id}/banner"
+---
+
+Upload a new banner. `id` must be `@me` or your own ID.
+
+## Behavior
+
+- Send one image as `multipart/form-data` in the `file` field. More than one file returns `400`.
+- PNG, JPG, WebP or GIF, up to **30 MB**. The type is detected from the file's bytes.
+- The image keeps its aspect ratio; it is not cropped. GIFs stay animated.
+- Metadata is stripped.
+- The new banner replaces the old one, which is deleted.
+- A suspended account cannot upload a banner.
+- The response is your full account, with the new `banner` URL.
+- Shares a rate limit bucket with [Remove Banner](/relay-reference/endpoint/users/delete-banner): 10 requests per minute.
+
+## Examples
+
+```bash
+curl -X POST "https://relay.snipp.gg/users/@me/banner" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -F "file=@banner.png"
+```
+
+## Responses
+
+```json
+{
+  "user": {
+    "id": "123456789012345678",
+    "username": "playerone",
+    "nickname": "Player One",
+    "avatar": "https://i.snipp.gg/avatars/123456789012345678/7e1f0a2b3c4d5e6f708192a3b4c5d6e7.png",
+    "banner": "https://i.snipp.gg/banners/123456789012345678/2b3c4d5e6f708192a3b4c5d6e7f80910.png",
+    "bio": "Building things at Snipp",
+    "socials": {
+      "github": "https://github.com/playerone"
+    },
+    "plan": "plus",
+    "verified": false,
+    "staff": false,
+    "partner": false,
+    "translator": false,
+    "bug_hunter_tier": 0,
+    "suspended": false,
+    "created_at": "2026-01-04T09:30:00.000Z",
+    "custom_embed": null,
+    "follower_count": 128,
+    "following_count": 47,
+    "following": false,
+    "blocking": false,
+    "api_key": "aB3xK9mP2qR7sT1vW4yZ6cD8fG0hJ5kL",
+    "key_has_uploads_access": true,
+    "relay_key": "Zy7wV4uT1sR8qP5nM2kJ9hG6fD3bC0aX",
+    "upload_count": 42,
+    "limits": {
+      "max_file_size": 21474836480,
+      "usage": {
+        "used": 1073741824,
+        "limit": 21474836480,
+        "used_percent": 5,
+        "resets_at": "2026-10-04T16:20:00.000Z"
+      },
+      "priority_minutes": {
+        "used": 12,
+        "limit": 100,
+        "used_percent": 12,
+        "resets_at": "2026-10-19T16:20:00.000Z"
+      }
+    },
+    "theme": "pastel_blue",
+    "subscription": {
+      "status": "active",
+      "started_at": "2026-01-04T09:30:00.000Z",
+      "expires_at": "2026-11-04T09:30:00.000Z",
+      "cancel_at_period_end": false,
+      "gifted": false
+    }
+  }
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | No file, or more than one |
+| `400` | `unsupported_type` | Not a PNG, JPG, WebP or GIF |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `forbidden` | `id` is not you |
+| `403` | `suspended` | Your account is suspended |
+| `413` | `file_too_large` | Over 30 MB |
+| `429` | `rate_limited` | More than 10 requests per minute |

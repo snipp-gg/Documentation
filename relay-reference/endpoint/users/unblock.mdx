@@ -1,0 +1,36 @@
+---
+title: "Unblock User"
+openapi: "relay-reference/openapi.json DELETE /users/{id}/block"
+---
+
+Unblock a user.
+
+## Behavior
+
+- Unblocking someone you do not block succeeds and changes nothing.
+- Follows removed by the block are not restored.
+- Rate limited to 10 unblocks per minute.
+
+## Examples
+
+```bash
+curl -X DELETE "https://relay.snipp.gg/users/987654321098765432/block" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
+
+## Responses
+
+```json
+{
+  "blocking": false
+}
+```
+
+## Errors
+
+| Status | Type | When |
+|--------|------|------|
+| `400` | `invalid_request` | Invalid `id`, or yourself |
+| `401` | `unauthorized` | Missing or invalid key |
+| `403` | `suspended` | Your account is suspended |
+| `429` | `rate_limited` | More than 10 unblocks per minute |
