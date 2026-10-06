@@ -5048,11 +5048,12 @@
             "properties": {
               "api_key": {
                 "type": "string",
-                "description": "Your API key."
+                "nullable": true,
+                "description": "Your oldest app's API key, or null when you have no apps."
               },
               "key_has_uploads_access": {
                 "type": "boolean",
-                "description": "Whether the API key has gallery access."
+                "description": "Whether that app has gallery access. False when you have no apps."
               },
               "relay_key": {
                 "type": "string",

@@ -2410,11 +2410,11 @@
             "properties": {
               "api_key": {
                 "type": "string",
-                "description": "Your API key."
+                "description": "The API key used for this request."
               },
               "key_has_uploads_access": {
                 "type": "boolean",
-                "description": "Whether the API key has gallery access."
+                "description": "Whether the API key used for this request has gallery access."
               },
               "upload_count": {
                 "type": "integer",

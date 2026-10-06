@@ -7,7 +7,7 @@ Fetch your own account (`@me`) or another user's profile.
 
 ## Behavior
 
-- `@me` or your own ID returns your full account: every profile field plus `api_key`, `key_has_uploads_access`, `upload_count` and `limits`.
+- `@me` or your own ID returns your full account: every profile field plus `api_key`, `key_has_uploads_access`, `upload_count` and `limits`. `api_key` and `key_has_uploads_access` describe the key used for the request.
 - Any other ID returns that user's public profile.
 - `plan` is `free`, `plus` or `ultra`.
 - `avatar` is always a URL. Users without an avatar get `https://cdn.snipp.gg/avatar.png`. `banner` is `null` when none is set.
