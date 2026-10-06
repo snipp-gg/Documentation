@@ -16,7 +16,7 @@ api-key: YOUR_API_KEY
 API keys belong to **apps**. Each app is a named key, such as one for ShareX and one for a script, so you can revoke one without breaking the others. You can create up to 10 apps, and every app uploads to your own gallery and counts against your own quota.
 
 1. Sign in to your account.
-2. Go to **Settings** and open **Console**.
+2. Go to **Settings** and open **Apps**.
 3. Create an app, or open an existing one, and copy its API key.
 
 ### Examples
@@ -52,7 +52,7 @@ Every key can upload. Reaching the uploads already in your gallery is a separate
 | Permission | Description |
 |------------|-------------|
 | **Base** | Upload files, convert files, fetch users and posts, report. Always enabled. |
-| **Gallery** | List, edit, add files to, and delete posts you already have. Off by default. Turn it on with the **Gallery Access** switch on the app's page in the Console. |
+| **Gallery** | List, edit, add files to, and delete posts you already have. Off by default. Turn it on with the **Gallery Access** switch on the app's page under **Apps** in settings. |
 
 Without gallery access, `GET /posts`, `PATCH /posts/{code}`, `DELETE /posts/{code}`, `POST /posts/{code}/files` and `DELETE /posts/{code}/files/{name}` return `403` with type `forbidden`. `POST /upload` is unaffected.
 
@@ -84,7 +84,7 @@ Anyone who holds a team key can upload with it, so treat it like any other crede
 - **Never expose your API key** in client-side code, public repositories, or shared documents.
 - **Use environment variables** in production (for example, `process.env.SNIPP_API_KEY`).
 - **Use one app per integration** so a leaked key can be revoked without touching anything else.
-- **Rotate your key** immediately if you suspect it has been compromised. You can regenerate it, or delete the app, from the Console.
+- **Rotate your key** immediately if you suspect it has been compromised. You can regenerate it, or delete the app, under **Apps** in settings.
 - **Limit upload access** if your integration only needs read access.
 
 ### Error Responses
