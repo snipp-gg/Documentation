@@ -20,7 +20,7 @@ These are frozen so installed uploader configs keep working:
 - A missing `post-privacy` header still uploads as `private`.
 - A successful upload still returns `200`.
 - The top-level `url` in the upload response is still the direct file URL.
-- `post.url` is still the share page (`https://snipp.gg/p/{code}`), and `post.code` is still the share code.
+- `post.url` is still the share page (`https://snipp.gg/p/{code}`, or `https://{domain}/{code}` with a [link domain](/concepts/custom-domains)), and `post.code` is still the share code.
 
 So `.sxcu` and `.iscu` configs that read `{json:url}`, `{json:post.url}` or `{json:post.code}` need no changes. If you added a custom error field that reads `{json:error}`, change it to `{json:error.message}`, because `error` is now an object.
 

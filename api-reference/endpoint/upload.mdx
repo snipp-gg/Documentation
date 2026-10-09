@@ -30,7 +30,7 @@ Header values are trimmed and case-insensitive. Boolean headers accept only `tru
 - **One file:** creates one post. `post-type` is ignored.
 - **Two or more files:** creates one album post, or one post per file with `post-type: individual`.
 - **Response shape:** when one post is created the body is `{url, post}`, where `url` is the direct URL of the post's first file (`post.files[0].url`). When several posts are created (`individual`), the body is `{posts}`. An album where only one file survived also returns `{url, post}`.
-- **`url` and `post.url`:** the top-level `url` is the direct file on `i.snipp.gg`. `post.url` is the share page, `https://snipp.gg/p/{code}`.
+- **`url` and `post.url`:** the top-level `url` is the direct file on `i.snipp.gg`. `post.url` is the share page, `https://snipp.gg/p/{code}`, or `https://{domain}/{code}` when the account has picked another [link domain](/concepts/custom-domains).
 - **Private posts:** file URLs are signed and expire after 24 hours. Fetch the post again with [`GET /posts/{code}`](/api-reference/endpoint/posts/get) for fresh ones.
 - **Videos:** `.mp4`, `.mov` and `.mkv` are remuxed to MP4 with `+faststart`, so `.mov` and `.mkv` come back with an `.mp4` name. A file that cannot be remuxed is rejected as corrupt. Uploaded videos get a thumbnail in `files[].thumbnail_url`. See [File Types](/concepts/file-types).
 - **Metadata:** stripped by default. PNG, JPG, WebP and GIF are stripped at any size without re-encoding, so pixels are untouched; JPG and WebP keep their orientation and GIF keeps its animation. Videos lose container metadata during the remux.

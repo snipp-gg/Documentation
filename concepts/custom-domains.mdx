@@ -1,92 +1,50 @@
 ---
 title: "Custom Domains"
-description: "Use your own domain for Snipp post links."
+description: "Choose the domain your Snipp post links use, or connect your own."
 ---
 
 ## Overview
 
-You can serve Snipp post links from your own domain by setting up a redirect from `example.com/[code]` to `snipp.gg/p/[code]`. This is a DNS-level redirect that you configure with your own domain provider. Snipp does not host your domain.
+Your link domain decides the domain on every post link you get from Snipp: the copy buttons on the site, `post.url` in API and Relay responses, ShareX and XerahS, and the Discord bot. Pick it in **Settings** under **Custom Domains**.
 
-Because the redirect catches every path on your domain, your custom domain should be dedicated to Snipp. Do not point a domain you also use for a website or other services.
+Custom domains are available on every plan, including Free.
 
-The address bar will switch to `snipp.gg` after the redirect completes. Snipp does not currently offer true custom hostnames where the URL stays on your domain.
+| Link domain | Post link |
+|-------------|-----------|
+| `snipp.gg` (default) | `https://snipp.gg/p/{code}` |
+| A Snipp domain, like `screenshott.ing` | `https://screenshott.ing/{code}` |
+| Your own domain | `https://i.example.com/{code}` |
 
-Custom domains are available on every plan, including Free. There is nothing to enable in your account settings, since the redirect is configured entirely on your own domain.
+Every link domain redirects to `https://snipp.gg/p/{code}`, so the post always opens on Snipp and the address bar shows `snipp.gg` after the redirect. Every domain opens every post, and changing your link domain never breaks links you already shared.
 
-If you are a PLUS Subscriber, you can pair a custom domain with the **Custom Embeds** feature to fully personalize how your posts appear when shared. When combined, the two features let you present uploads under your own brand and design rather than the default Snipp look.
+## Connecting your own domain
 
-<Note>
-We are working on the ability to set a custom domain as your default link domain across Snipp. Once shipped, copied links and shared URLs will use your chosen domain automatically, so you will not have to swap `snipp.gg` for your domain by hand each time.
-</Note>
+Each account can connect one domain.
 
-## Using a Custom Domain in ShareX
+1. In **Settings** → **Custom Domains**, enter a subdomain you own, like `i.example.com`, and click **Add Domain**.
+2. Where your domain's DNS is managed, add a CNAME record:
 
-If you upload through [ShareX](https://getsharex.com) (or [XerahS](https://xerahs.com) on macOS), you can already make your custom uploader return links on your own domain by editing the configuration file.
+| Type | Name | Target |
+|------|------|--------|
+| `CNAME` | `i.example.com` | `x.snipp.gg` |
 
-Open your `.sxcu` (or `.iscu`) file and change the `URL` field to:
-
-```
-https://example.com/{json:post.code}
-```
-
-Replace `example.com` with your custom domain. ShareX will copy the new URL format directly after every upload.
-
-## Setup with Cloudflare
-
-Cloudflare offers two ways to do this. Either works for a single-domain vanity setup. Pick whichever you are more familiar with.
-
-### Option A: Bulk Redirects (Recommended)
-
-[Bulk Redirects](https://developers.cloudflare.com/rules/url-forwarding/bulk-redirects/) are the newer, list-based equivalent. Free on every plan and not limited to 3 entries.
-
-1. Go to your Cloudflare dashboard → **Bulk Redirects**.
-2. Create a new list with a redirect rule:
-
-| Field | Value |
-|-------|-------|
-| Source URL | `https://example.com/` |
-| Target URL | `https://snipp.gg/p/` |
-| Status | `301` |
-| Preserve path suffix | Enabled |
-
-3. Attach the list to your zone.
-
-### Option B: Page Rules
-
-[Page Rules](https://developers.cloudflare.com/rules/page-rules/) are the simplest one-rule option. The Free plan includes 3 page rules per zone.
-
-1. Go to your Cloudflare dashboard → **Rules** → **Page Rules**.
-2. Create a new rule:
-
-| Field | Value |
-|-------|-------|
-| URL match | `example.com/*` |
-| Setting | **Forwarding URL** |
-| Status code | `301 Permanent Redirect` |
-| Destination URL | `https://snipp.gg/p/${1}` |
-
-3. Save and deploy.
+3. Snipp checks the record and issues an HTTPS certificate for the subdomain. This usually takes a few minutes. Click the refresh button to check again.
+4. Once the status shows **Active**, pick the domain as your **Link Domain**.
 
 <Note>
-Cloudflare is gradually migrating Page Rules to the newer Rules engine. Existing rules continue to work, but new setups may want Bulk Redirects for longevity.
+Use a subdomain. Most DNS providers do not allow a CNAME record on a bare domain like `example.com`. If your DNS is hosted on Cloudflare, CNAME flattening makes a bare domain work too.
 </Note>
 
-Either way, a visit to `example.com/[code]` will resolve to `snipp.gg/p/[code]`.
+Every path on a connected domain redirects to Snipp, so dedicate the subdomain to Snipp links. Keep the CNAME record in place: if it is removed, links on the domain stop working until it is restored, and a domain that stays unreachable is eventually disconnected.
 
-## Setup with Other Providers
+Removing the domain in settings stops every link shared on it from working.
 
-Most DNS providers support URL forwarding with path preservation. Look for:
+## API, Relay, and SDKs
 
-- **Namecheap:** Domain List → Manage → Redirect Domain (with "Path forwarding" enabled).
-- **Porkbun:** URL Forwarding → enable "Include path".
-- **GoDaddy:** Domain Settings → Forwarding → "Forward with masking" off, "Update my nameservers" off.
+There is nothing to configure. `post.url` in every API and Relay response, including uploads, uses the link domain of the account the key belongs to. Team keys always return `snipp.gg` links. A link domain change can take up to a minute to reach API and Relay responses.
 
-Configure forwarding from `https://example.com/` to `https://snipp.gg/p/` with path preservation enabled.
-
-If your provider does not support path-preserving forwarding, point the domain at a small worker, redirect script, or static host that issues a `301` to `https://snipp.gg/p/{code}`.
+ShareX and XerahS configs downloaded from Snipp copy `post.url`, so they pick up your link domain automatically. The top-level `url` on an upload, and `files[].url`, are direct file links on `i.snipp.gg` and are not affected.
 
 <Warning>
-A redirect lives entirely on your domain's DNS. Snipp has no way to know which domain redirects to which post, and it cannot stop another person from configuring a redirect that targets the same Snipp link. Treat the custom domain as a vanity layer, not a security boundary.
+A link domain changes how links look, not who can open a post. Anyone can open any Snipp post through any link domain, the same as through `snipp.gg`. Treat a custom domain as a vanity layer, not a security boundary.
 </Warning>
-
-Snipp does not offer hostname verification (TXT records, dashboard claims, etc.) for this feature. Even with verification, a third party could still point their own domain at the same `snipp.gg/p/[code]` URL. Verification would only confirm that you control your domain, not that you control who else can redirect to a public Snipp link. The end result is the same as the unverified setup, so the extra step would add friction without adding protection.

@@ -2487,7 +2487,7 @@
           },
           "url": {
             "type": "string",
-            "description": "Share page, `https://snipp.gg/p/{code}`."
+            "description": "Share page, `https://snipp.gg/p/{code}`. When the account has picked another link domain, `https://{domain}/{code}` instead."
           },
           "title": {
             "type": "string",
