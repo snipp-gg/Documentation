@@ -3799,11 +3799,9 @@
                   "notifications": {
                     "follows": true,
                     "likes": true,
-                    "comments": true,
-                    "payouts": true
+                    "comments": true
                   },
                   "emails": {
-                    "payouts": true,
                     "sign_ins": true
                   },
                   "uploads": {
@@ -3859,18 +3857,12 @@
                       },
                       "comments": {
                         "type": "boolean"
-                      },
-                      "payouts": {
-                        "type": "boolean"
                       }
                     }
                   },
                   "emails": {
                     "type": "object",
                     "properties": {
-                      "payouts": {
-                        "type": "boolean"
-                      },
                       "sign_ins": {
                         "type": "boolean"
                       }
@@ -3944,11 +3936,9 @@
                   "notifications": {
                     "follows": true,
                     "likes": false,
-                    "comments": true,
-                    "payouts": true
+                    "comments": true
                   },
                   "emails": {
-                    "payouts": true,
                     "sign_ins": true
                   },
                   "uploads": {
@@ -4650,20 +4640,6 @@
                         "previous": 17,
                         "change": 0.23529411764705882
                       }
-                    },
-                    "payout": {
-                      "eligible": true,
-                      "amount": 24.47,
-                      "series": [
-                        {
-                          "day": "2026-09-25",
-                          "value": 0
-                        },
-                        {
-                          "day": "2026-09-26",
-                          "value": 15
-                        }
-                      ]
                     }
                   }
                 }
@@ -5827,44 +5803,6 @@
               "views",
               "followers"
             ]
-          },
-          "payout": {
-            "type": "object",
-            "properties": {
-              "eligible": {
-                "type": "boolean"
-              },
-              "amount": {
-                "type": "number",
-                "description": "Estimated payout in USD for the current period.",
-                "nullable": true
-              },
-              "series": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "day": {
-                      "type": "string",
-                      "format": "date",
-                      "example": "2026-09-30"
-                    },
-                    "value": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "day",
-                    "value"
-                  ]
-                }
-              }
-            },
-            "required": [
-              "eligible",
-              "amount",
-              "series"
-            ]
           }
         },
         "required": [
@@ -5872,8 +5810,7 @@
           "buckets",
           "totals",
           "series",
-          "deltas",
-          "payout"
+          "deltas"
         ]
       },
       "FollowUser": {
@@ -6020,30 +5957,22 @@
               },
               "comments": {
                 "type": "boolean"
-              },
-              "payouts": {
-                "type": "boolean"
               }
             },
             "required": [
               "follows",
               "likes",
-              "comments",
-              "payouts"
+              "comments"
             ]
           },
           "emails": {
             "type": "object",
             "properties": {
-              "payouts": {
-                "type": "boolean"
-              },
               "sign_ins": {
                 "type": "boolean"
               }
             },
             "required": [
-              "payouts",
               "sign_ins"
             ]
           },

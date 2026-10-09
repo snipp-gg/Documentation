@@ -7,9 +7,9 @@ Read your notification, email, upload and sharing preferences. They follow your 
 
 ## Behavior
 
-- `notifications.likes` covers post likes and comment likes. `notifications.payouts` covers payout notifications.
+- `notifications.likes` covers post likes and comment likes.
 - Some notifications cannot be turned off and are not listed: mentions, shared posts, post removals and restrictions, and account changes. The same goes for security and transactional emails.
-- `emails.payouts` covers creator payout and referral emails. `emails.sign_ins` sends an email every time someone signs in to your account on the website. Both are on by default.
+- `emails.sign_ins` sends an email every time someone signs in to your account on the website. It is on by default.
 - `uploads.default_privacy` is what upload screens pre-select. The API never applies it: an upload without a `post-privacy` header is always private.
 - `uploads.adaptive_streaming` is on by default. The other upload toggles are off by default.
 - `sharing.share_policy` decides who can give you access to their private posts: `everyone` (default), `following` (only accounts you follow) or `nobody`. Changing it does not remove access you already have.
@@ -29,11 +29,9 @@ curl "https://relay.snipp.gg/preferences" \
   "notifications": {
     "follows": true,
     "likes": true,
-    "comments": true,
-    "payouts": true
+    "comments": true
   },
   "emails": {
-    "payouts": true,
     "sign_ins": true
   },
   "uploads": {

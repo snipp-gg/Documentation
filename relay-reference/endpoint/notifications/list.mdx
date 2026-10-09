@@ -24,7 +24,7 @@ List your notifications, newest first.
 - `actors` holds up to 10 users even when `actor_count` is higher. Suspended actors are left out of `actors` but still counted.
 - `type` is `follow`, `like`, `comment`, `comment_like`, `mention` or `post_shared` on the social tab, and a system type such as `post_auto_moderated` or `report_received` otherwise. New types can appear; ignore ones you do not know.
 - `mention` fires when someone @-mentions you in a post description or a comment. `post_shared` fires when someone gives you access to a private post. Neither can be turned off.
-- `body` is the comment text for `comment`, `comment_like` and `mention`, and the amount for payout notifications. Check `type` before rendering it.
+- `body` is the comment text for `comment`, `comment_like` and `mention`. Check `type` before rendering it.
 - `post_text` is the related post's title, falling back to its description. `post_thumbnail_url` is a thumbnail of it, or `null` for a video without one. Both are `null` on moderated posts.
 - If the related post is no longer visible to you, `post_thumbnail_url`, `post_text` and `body` are all `null`. `body` is also `null` when every actor on the entry is suspended.
 - Shares a rate limit bucket with the other notification endpoints: 60 requests per minute.

@@ -13,7 +13,6 @@ Fetch your analytics: posts, uploads, data uploaded, views, comments and likes r
 - `series` has one entry per day across the window, oldest first, including days with a value of `0`.
 - `totals.posts` and `totals.views` are lifetime. `totals.comments`, `totals.likes` and `totals.bytes` cover the fetch window, which is twice `range` with a floor of 30 days.
 - `deltas.change` is the fractional change against the previous window of the same length. It is `null` when the previous window was `0` and the current one is not, and `0` when both are `0`.
-- `payout` is the live creator payout estimate for the current payout period. `eligible` is `false` for accounts that are not monetized, with `amount` set to `null` and an empty `series`. When `true`, `amount` is the estimated share in US dollars and `series` is the daily referral score for the period.
 - All days are UTC.
 
 ## Examples
@@ -176,20 +175,6 @@ curl "https://relay.snipp.gg/analytics?range=90" \
         "previous": 17,
         "change": 0.23529411764705882
       }
-    },
-    "payout": {
-      "eligible": true,
-      "amount": 24.47,
-      "series": [
-        {
-          "day": "2026-09-25",
-          "value": 0
-        },
-        {
-          "day": "2026-09-26",
-          "value": 15
-        }
-      ]
     }
   }
 }

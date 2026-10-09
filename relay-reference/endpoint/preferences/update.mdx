@@ -8,7 +8,7 @@ Change any of your notification, email, upload and sharing preferences.
 ## Behavior
 
 - Send a JSON body with only the sections and keys you want to change. Anything you leave out keeps its value.
-- `notifications` accepts `follows`, `likes`, `comments` and `payouts`. `emails` accepts `payouts` and `sign_ins`. `uploads` accepts `default_privacy`, `adaptive_streaming`, `auto_compress`, `include_metadata` and `auto_copy_url`. `sharing` accepts `share_policy`.
+- `notifications` accepts `follows`, `likes` and `comments`. `emails` accepts `sign_ins`. `uploads` accepts `default_privacy`, `adaptive_streaming`, `auto_compress`, `include_metadata` and `auto_copy_url`. `sharing` accepts `share_policy`.
 - Every toggle must be a boolean. `uploads.default_privacy` must be `public`, `unlisted` or `private`. `sharing.share_policy` must be `everyone`, `following` or `nobody`.
 - An unknown key or a wrong value returns `400` and nothing is saved.
 - The response is the full set of preferences after the change. See [Get Preferences](/relay-reference/endpoint/preferences/get) for what each one does.
@@ -30,11 +30,9 @@ curl -X PATCH "https://relay.snipp.gg/preferences" \
   "notifications": {
     "follows": true,
     "likes": false,
-    "comments": true,
-    "payouts": true
+    "comments": true
   },
   "emails": {
-    "payouts": true,
     "sign_ins": true
   },
   "uploads": {
