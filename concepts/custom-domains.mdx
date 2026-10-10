@@ -45,7 +45,7 @@ If your PLUS or Ultra plan ends, a link domain set to your own domain goes back 
 
 ## API, Relay, and SDKs
 
-There is nothing to configure. `post.url` in every API and Relay response, including uploads, uses the link domain of the account the key belongs to. Team keys always return `snipp.gg` links. A link domain change can take up to a minute to reach API and Relay responses.
+There is nothing to configure. `post.url` in every API and Relay response, including uploads, uses the link domain of the account the key belongs to. Team keys, and `GET /gifs`, which takes no key, always return `snipp.gg` links. A link domain change can take up to a minute to reach API and Relay responses.
 
 ShareX and XerahS configs downloaded from Snipp copy `post.url`, so they pick up your link domain automatically. The top-level `url` on an upload, and `files[].url`, are direct file links on `i.snipp.gg` and are not affected.
 
