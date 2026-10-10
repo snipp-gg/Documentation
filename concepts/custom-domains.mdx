@@ -7,7 +7,7 @@ description: "Choose the domain your Snipp post links use, or connect your own."
 
 Your link domain decides the domain on every post link you get from Snipp: the copy buttons on the site, `post.url` in API and Relay responses, ShareX and XerahS, and the Discord bot. Pick it in **Settings** under **Domains**.
 
-Custom domains are available on every plan, including Free.
+Snipp's own domains, like `screenshott.ing`, are available on every plan. Connecting your own domain requires PLUS or Ultra.
 
 | Link domain | Post link |
 |-------------|-----------|
@@ -40,6 +40,8 @@ Use a subdomain. Most DNS providers do not allow a CNAME record on a bare domain
 Every path on a connected domain redirects to Snipp, so dedicate the subdomain to Snipp links. Keep the CNAME record in place: if it is removed, links on the domain stop working until it is restored, and a domain that stays unreachable is eventually disconnected.
 
 Removing the domain in settings stops every link shared on it from working.
+
+If your PLUS or Ultra plan ends while your own domain is your link domain, your link domain goes back to `snipp.gg`. The domain stays connected, so links already shared on it keep working, and you can pick it again after you resubscribe.
 
 ## API, Relay, and SDKs
 
