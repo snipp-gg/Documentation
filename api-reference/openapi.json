@@ -1868,7 +1868,7 @@
     "/analytics": {
       "get": {
         "summary": "Get Analytics",
-        "description": "Your analytics over time plus totals. Snipp+ only.",
+        "description": "Your analytics over time plus totals. Plus only.",
         "operationId": "getAnalytics",
         "parameters": [
           {

@@ -222,7 +222,7 @@
                   },
                   "theme": {
                     "type": "string",
-                    "description": "Accent theme key. Snipp+ only."
+                    "description": "Accent theme key. Plus only."
                   }
                 }
               },
@@ -4449,7 +4449,7 @@
     "/analytics": {
       "get": {
         "summary": "Get Analytics",
-        "description": "Your analytics over time plus totals. Snipp+ only.",
+        "description": "Your analytics over time plus totals. Plus only.",
         "operationId": "getAnalytics",
         "parameters": [
           {

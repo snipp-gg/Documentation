@@ -7,7 +7,7 @@ Fetch your analytics: posts, uploads, data uploaded, views, comments and likes r
 
 ## Behavior
 
-- Requires Snipp+ or Ultra. Free accounts get `403` with type `plan_required`.
+- Requires Plus or Ultra. Free accounts get `403` with type `plan_required`.
 - `range` sets the window for `series` and `deltas`: `7`, `30`, `90` or `365` days. Omitted means `30`; any other value returns `400`.
 - `buckets` are always today, the last 7 days and the last 30 days, whatever `range` is.
 - `series` has one entry per day across the window, oldest first, including days with a value of `0`.

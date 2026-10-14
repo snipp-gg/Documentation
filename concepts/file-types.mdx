@@ -46,18 +46,18 @@ Maximum file size depends on your plan:
 | Plan | Max File Size |
 |------|---------------|
 | Free | 50 MB |
-| PLUS | 20 GB |
+| Plus | 20 GB |
 | Ultra | 50 GB |
 | Team keys | 50 GB |
 
-PLUS and Ultra have no per-file cap beyond your weekly quota: a single file can use the whole week's allowance (20 GB on PLUS, 50 GB on Ultra). Team keys are capped at **50 GB per file**. A file larger than your plan's limit fails with type `file_too_large` and `File size exceeds the 50 MB limit.` (20 GB on PLUS, 50 GB on Ultra and team keys), like any other per-file failure. When it is the only file in the request the status is `413`. When the whole request's declared size already exceeds your weekly quota, it is refused up front with `413` and the same message.
+Plus and Ultra have no per-file cap beyond your weekly quota: a single file can use the whole week's allowance (20 GB on Plus, 50 GB on Ultra). Team keys are capped at **50 GB per file**. A file larger than your plan's limit fails with type `file_too_large` and `File size exceeds the 50 MB limit.` (20 GB on Plus, 50 GB on Ultra and team keys), like any other per-file failure. When it is the only file in the request the status is `413`. When the whole request's declared size already exceeds your weekly quota, it is refused up front with `413` and the same message.
 
 <Info>
-  Videos have a hard ceiling of **30 GB** per file. It only applies on Ultra and team keys, since PLUS is already capped at 20 GB and Free at 50 MB. A larger video fails with type `file_too_large` and `Video exceeds the 30 GB limit.`, with status `413` when it is the only file.
+  Videos have a hard ceiling of **30 GB** per file. It only applies on Ultra and team keys, since Plus is already capped at 20 GB and Free at 50 MB. A larger video fails with type `file_too_large` and `Video exceeds the 30 GB limit.`, with status `413` when it is the only file.
 </Info>
 
 <Info>
-  Upgrading to [PLUS](https://snipp.gg/pricing) removes the 50 MB per-file cap. Upload anything up to your full weekly quota in a single file.
+  Upgrading to [Plus](https://snipp.gg/pricing) removes the 50 MB per-file cap. Upload anything up to your full weekly quota in a single file.
 </Info>
 
 ## Unsupported Files

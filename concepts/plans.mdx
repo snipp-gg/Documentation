@@ -1,13 +1,13 @@
 ---
 title: "Plans"
-description: "Compare Free, PLUS, and Ultra plan features and limits."
+description: "Compare Free, Plus, and Ultra plan features and limits."
 ---
 
 ## Plan Tiers
 
 Snipp offers three tiers to suit different needs. All plans include full API access.
 
-| | Free | PLUS | Ultra |
+| | Free | Plus | Ultra |
 |--|------|------|------------|
 | **Price** | Free | $4.99/mo | $49/mo |
 | **Max File Size** | 50 MB | 20 GB (your weekly quota) | 50 GB (your weekly quota) |
@@ -17,7 +17,7 @@ Snipp offers three tiers to suit different needs. All plans include full API acc
 | **API Access** | Yes | Yes | Yes |
 | **Custom Domains** | No | Yes | Yes |
 | **Teams** | No | No | Yes |
-| **PLUS Badge** | No | Yes | Yes |
+| **Plus Badge** | No | Yes | Yes |
 | **Priority Support** | No | Yes | Yes |
 
 ## Weekly Usage Limit
@@ -39,7 +39,7 @@ Each plan gets a monthly budget of priority minutes:
 | Plan | Priority Minutes |
 |------|------------------|
 | Free | 10 minutes/month |
-| PLUS | 100 minutes/month |
+| Plus | 100 minutes/month |
 | Ultra | 300 minutes/month |
 
 A video's **duration** counts against the budget, not its file size. Only videos use priority minutes; images never do.
@@ -94,13 +94,13 @@ Call `GET /users/@me` to see your plan, weekly usage and priority minutes. The r
 |-------|-------------|
 | `plan` | Your plan: `free`, `plus` or `ultra` |
 | `upload_count` | Number of files stored in your personal gallery |
-| `limits.max_file_size` | Largest single file in bytes. 50 MB on Free; on PLUS and Ultra it equals the weekly quota (`limits.usage.limit`) |
+| `limits.max_file_size` | Largest single file in bytes. 50 MB on Free; on Plus and Ultra it equals the weekly quota (`limits.usage.limit`) |
 | `limits.usage.used` | Bytes uploaded in the current weekly window |
 | `limits.usage.limit` | Bytes allowed per weekly window |
 | `limits.usage.used_percent` | Share of the weekly quota used, rounded to the nearest integer. Can pass 100. |
 | `limits.usage.resets_at` | When the weekly window resets: your fixed reset moment, the same day and time every week. `null` if no window has been assigned yet. |
 | `limits.priority_minutes.used` | Priority minutes used in the current 30-day window, rounded to the nearest minute |
-| `limits.priority_minutes.limit` | Priority minutes per window (10 on Free, 100 on PLUS, 300 on Ultra) |
+| `limits.priority_minutes.limit` | Priority minutes per window (10 on Free, 100 on Plus, 300 on Ultra) |
 | `limits.priority_minutes.used_percent` | Share of the budget used, rounded, from 0 to 100 |
 | `limits.priority_minutes.resets_at` | When the full budget returns. `null` if no window has been assigned yet. |
 
@@ -120,9 +120,9 @@ Each team has a single **access key**. Anyone holding it can upload to the team 
 
 ## Upgrading
 
-You can upgrade to PLUS or Ultra anytime from the [pricing page](https://snipp.gg/pricing) or your account settings. Your new limits take effect immediately.
+You can upgrade to Plus or Ultra anytime from the [pricing page](https://snipp.gg/pricing) or your account settings. Your new limits take effect immediately.
 
-Upgrading from PLUS to Ultra replaces your existing subscription rather than adding a second one, and you are charged the difference for the rest of the current period.
+Upgrading from Plus to Ultra replaces your existing subscription rather than adding a second one, and you are charged the difference for the rest of the current period.
 
 Ultra includes 1 team with up to 10 members. For a higher team count or seat count, reach out to [support@snipp.gg](mailto:support@snipp.gg).
 
@@ -130,5 +130,5 @@ Ultra includes 1 team with up to 10 members. For a higher team count or seat cou
 
 - Your existing uploads remain accessible regardless of plan changes.
 - Files that exceed your new plan's size limit cannot be re-uploaded if deleted.
-- PLUS features such as the PLUS badge are removed at the end of your billing period.
+- Plus features such as the Plus badge are removed at the end of your billing period.
 - A [link domain](/concepts/custom-domains) set to your own domain goes back to `snipp.gg`. Your own domain stays connected for 30 days, so links already shared on it keep working, then it is removed.

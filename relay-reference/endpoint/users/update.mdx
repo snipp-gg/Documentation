@@ -13,8 +13,8 @@ Update your own profile. `id` must be `@me` or your own ID. Send only the fields
 | `nickname` | string or null | Up to 15 characters. `""` or `null` clears it. |
 | `bio` | string or null | Up to 200 characters. `""` or `null` clears it. |
 | `socials` | object | Keyed by `roblox`, `github`, `spotify`, `youtube`, `tiktok`, `X`, `bluesky`, `discord`. Replaces the whole set; an empty object clears it. `null` changes nothing. |
-| `custom_embed` | object or null | Snipp+ only. `null` or `{}` clears it. |
-| `theme` | string | Accent theme key. Snipp+ only. |
+| `custom_embed` | object or null | Plus only. `null` or `{}` clears it. |
+| `theme` | string | Accent theme key. Plus only. |
 
 ## Behavior
 
@@ -112,6 +112,6 @@ curl -X PATCH "https://relay.snipp.gg/users/@me" \
 | `400` | `invalid_request` | Nothing to change, an invalid or taken value, or `avatar`, `banner` or `email` in the body |
 | `401` | `unauthorized` | Missing or invalid key |
 | `403` | `forbidden` | `id` is not you |
-| `403` | `plan_required` | `theme` or `custom_embed` without Snipp+ |
+| `403` | `plan_required` | `theme` or `custom_embed` without Plus |
 | `403` | `suspended` | A suspended account changing username, nickname or bio |
 | `429` | `rate_limited` | More than 10 requests per minute |

@@ -18,10 +18,10 @@ Convert one image or video to another format and get the converted file back. No
 - On success the body is the converted file itself, sent as an attachment, not JSON. Errors are JSON like every other endpoint.
 - The source type is detected from the file's bytes, not its name.
 - **What converts to what:** PNG, JPG and WebP convert to `png`, `jpeg`, `webp`, `avif` or `gif`. GIF converts to `png`, `jpeg`, `webp`, `avif` or `mp4`. MP4, MOV and MKV convert to `mp4`, `gif` or `mp3`.
-- **Video to GIF requires Snipp+.** It uses the first 10 seconds at 15 fps and 480 px wide.
+- **Video to GIF requires Plus.** It uses the first 10 seconds at 15 fps and 480 px wide.
 - **MP4 output** is remuxed with `+faststart` when the source is already H.264, and transcoded otherwise.
 - **Metadata is always stripped.** JPG orientation is applied to the pixels first, so photos stay upright.
-- Files are capped at 50 MB on Free, 20 GB on Snipp+, and 50 GB on Ultra and team keys. Converting does not count toward your weekly quota.
+- Files are capped at 50 MB on Free, 20 GB on Plus, and 50 GB on Ultra and team keys. Converting does not count toward your weekly quota.
 - Conversion runs inside the request, so a large video can take a while.
 - To host the result, upload it with [`POST /upload`](/api-reference/endpoint/upload). AVIF and MP3 are not upload types, so those are download-only.
 - Rate limited to 10 conversions per minute.
@@ -73,7 +73,7 @@ On failure the body is JSON:
 | `400` | `invalid_request` | Missing or invalid `convert-target`, or no file |
 | `400` | `unsupported_type` | The source type is not supported, or cannot become the target |
 | `401` | `unauthorized` | Missing or invalid key |
-| `403` | `plan_required` | Video to GIF without Snipp+ |
+| `403` | `plan_required` | Video to GIF without Plus |
 | `403` | `forbidden` | The team's subscription has lapsed |
 | `413` | `file_too_large` | The file is over your limit |
 | `429` | `rate_limited` | More than 10 conversions per minute |

@@ -32,7 +32,7 @@ Successful responses never carry `error`, `message` or `success` keys. Any `2xx`
 | `suspended` | `403` | Your account is suspended. On user endpoints it can also mean the user you asked for is suspended. |
 | `blocked` | `403` | A block between you and the other user prevents this. |
 | `moderated` | `403` | The post has been moderated. |
-| `plan_required` | `403` | The feature needs Snipp+ or Ultra. |
+| `plan_required` | `403` | The feature needs Plus or Ultra. |
 | `quota_exceeded` | `400` | The upload would exceed your [weekly usage limit](/concepts/plans#weekly-usage-limit). On Relay, turning on priority streaming with no priority minutes left returns this type with `403`. |
 | `unsupported_type` | `400` | The file type is not supported, or cannot be converted to the requested format. |
 | `upload_failed` | `400` | Every file in a multi-file upload failed. See [Partial upload failures](#partial-upload-failures). |
