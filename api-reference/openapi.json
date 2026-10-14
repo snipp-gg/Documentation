@@ -3383,7 +3383,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "api-key",
-        "description": "Your API key from the Snipp Console"
+        "description": "Your API key from an app on snipp.gg/settings/apps"
       }
     }
   }

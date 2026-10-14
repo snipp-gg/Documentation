@@ -103,7 +103,7 @@ println!("{} {}", post.url, post.files[0].url);
 
 ### `upload(path, options)`
 
-Upload a file from disk as a new post. `UploadOptions` takes `privacy` (defaults to `private` when omitted), `title` (max 30 chars), `description` (max 200 chars), `post_type` (sent as the `post-type` header; it has no effect through `upload()`, which sends a single file, so use `add_files` to build an album), `include_metadata` (keep the file's metadata such as EXIF and location, which the server strips when `None`), and `priority` (priority adaptive streaming for videos; `None` lets the server enable it when your plan is eligible). Returns `url` (the direct file URL) and `post`.
+Upload a file from disk as a new post. `UploadOptions` takes `privacy` (defaults to `private` when omitted), `title` (max 30 chars), `description` (max 200 chars), `post_type` (sent as the `post-type` header; it has no effect through `upload()`, which sends a single file, so use `add_files` to build an album), `include_metadata` (keep the file's metadata such as EXIF and location, which the server strips when `None`), and `priority` (priority adaptive streaming for videos; `None` lets the server enable it when your plan is eligible). Returns `url` (the direct file URL) and `post`, whose `url` is the share page, `https://snipp.gg/p/{code}` or `https://{domain}/{code}` on your link domain.
 
 ```rust
 use snipp::{Privacy, UploadOptions};

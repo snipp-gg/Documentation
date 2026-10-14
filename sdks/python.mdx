@@ -99,7 +99,7 @@ print(post["url"], post["files"][0]["url"])
 
 ### `upload(file, privacy=None, title=None, description=None, post_type=None, include_metadata=None, priority=None)`
 
-Upload a file as a new post. Accepts a file path string, bytes, or a file-like object. Returns `url` (the direct file URL) and `post`.
+Upload a file as a new post. Accepts a file path string, bytes, or a file-like object. Returns `url` (the direct file URL) and `post`, whose `url` is the share page, `https://snipp.gg/p/{code}` or `https://{domain}/{code}` on your link domain.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
