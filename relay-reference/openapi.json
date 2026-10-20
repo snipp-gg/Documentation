@@ -3809,7 +3809,8 @@
                     "adaptive_streaming": true,
                     "auto_compress": false,
                     "include_metadata": false,
-                    "auto_copy_url": false
+                    "auto_copy_url": false,
+                    "auto_blur": false
                   },
                   "sharing": {
                     "share_policy": "everyone"
@@ -3890,6 +3891,9 @@
                       },
                       "auto_copy_url": {
                         "type": "boolean"
+                      },
+                      "auto_blur": {
+                        "type": "boolean"
                       }
                     }
                   },
@@ -3946,7 +3950,8 @@
                     "adaptive_streaming": true,
                     "auto_compress": false,
                     "include_metadata": false,
-                    "auto_copy_url": false
+                    "auto_copy_url": false,
+                    "auto_blur": false
                   },
                   "sharing": {
                     "share_policy": "everyone"
@@ -5998,6 +6003,9 @@
               },
               "auto_copy_url": {
                 "type": "boolean"
+              },
+              "auto_blur": {
+                "type": "boolean"
               }
             },
             "required": [
@@ -6005,7 +6013,8 @@
               "adaptive_streaming",
               "auto_compress",
               "include_metadata",
-              "auto_copy_url"
+              "auto_copy_url",
+              "auto_blur"
             ]
           },
           "sharing": {

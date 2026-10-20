@@ -22,7 +22,7 @@ Send the files as `multipart/form-data`, repeating the `file` field.
 - Moderated posts cannot be changed and return `403` with type `moderated`.
 - A post holds at most **50 files**. A full post, or a request that would go past 50, returns `400`.
 - New files take the post's privacy. On a private post their URLs are signed and expire after 24 hours.
-- Videos are remuxed to MP4 and metadata is stripped exactly as in [Upload Files](/api-reference/endpoint/upload). Videos added here do not get a thumbnail.
+- Videos are remuxed to MP4, metadata is stripped and Blur Personal Info checks pictures exactly as in [Upload Files](/api-reference/endpoint/upload). Videos added here do not get a thumbnail.
 - Each file is checked against your [weekly quota](/concepts/plans#weekly-usage-limit) on its own. A file that does not fit fails with type `quota_exceeded`.
 - Failures work like uploads: stored files come back with `200` and the rest are listed in `failed`. If every file fails, a one-file request returns that file's error and a multi-file request returns `400` with type `upload_failed`. See [Errors](/concepts/errors#partial-upload-failures).
 - New files are scanned automatically. If any file, or the post's text, is flagged, the whole post is moderated.

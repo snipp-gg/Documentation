@@ -8,9 +8,10 @@ Change any of your notification, email, upload and sharing preferences.
 ## Behavior
 
 - Send a JSON body with only the sections and keys you want to change. Anything you leave out keeps its value.
-- `notifications` accepts `follows`, `likes` and `comments`. `emails` accepts `sign_ins`. `uploads` accepts `default_privacy`, `adaptive_streaming`, `auto_compress`, `include_metadata` and `auto_copy_url`. `sharing` accepts `share_policy`.
+- `notifications` accepts `follows`, `likes` and `comments`. `emails` accepts `sign_ins`. `uploads` accepts `default_privacy`, `adaptive_streaming`, `auto_compress`, `include_metadata`, `auto_copy_url` and `auto_blur`. `sharing` accepts `share_policy`.
 - Every toggle must be a boolean. `uploads.default_privacy` must be `public`, `unlisted` or `private`. `sharing.share_policy` must be `everyone`, `following` or `nobody`.
 - An unknown key or a wrong value returns `400` and nothing is saved.
+- Turning `uploads.auto_blur` on without Plus or Ultra returns `403` with type `plan_required`. Turning it off always works.
 - The response is the full set of preferences after the change. See [Get Preferences](/relay-reference/endpoint/preferences/get) for what each one does.
 - Shares a rate limit bucket with Get Preferences: 20 requests per minute.
 
@@ -40,7 +41,8 @@ curl -X PATCH "https://relay.snipp.gg/preferences" \
     "adaptive_streaming": true,
     "auto_compress": false,
     "include_metadata": false,
-    "auto_copy_url": false
+    "auto_copy_url": false,
+    "auto_blur": false
   },
   "sharing": {
     "share_policy": "everyone"
@@ -54,5 +56,6 @@ curl -X PATCH "https://relay.snipp.gg/preferences" \
 |--------|------|------|
 | `400` | `invalid_request` | An unknown key or an invalid value |
 | `401` | `unauthorized` | Missing or invalid key |
+| `403` | `plan_required` | `uploads.auto_blur` turned on without Plus |
 | `403` | `suspended` | Your account is suspended |
 | `429` | `rate_limited` | More than 20 requests per minute |
