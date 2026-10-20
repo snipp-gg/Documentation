@@ -12,10 +12,12 @@ Upload between 1 and 50 files in one request. Every upload creates a post. Two o
 | `relay-key` | Yes | Your relay key, or a [team access key](/authentication#team-access-keys) |
 | `post-privacy` | No | `public`, `unlisted` or `private`. Omitted means `private`. Any other value returns `400`. |
 | `post-type` | No | `album` (default) or `individual`. Only matters for two or more files. |
-| `include-metadata` | No | `true` keeps file metadata. Omitted or `false` strips it. |
-| `priority` | No | `false` opts videos out of priority (adaptive) streaming. Omitted or `true` keeps it on, subject to your remaining priority minutes. |
+| `include-metadata` | No | `true` keeps file metadata, `false` strips it. Omitted, follows your Include Metadata preference, which is off by default. |
+| `post-priority` | No | `true` puts videos on priority (adaptive) streaming, subject to your remaining priority minutes, and `false` opts them out. Omitted, follows your Adaptive Streaming preference, which is on by default. |
 
 Header values are trimmed and case-insensitive. Boolean headers accept only `true` or `false`; anything else returns `400`.
+
+Preferences are set on the website or with [Update Preferences](/relay-reference/endpoint/preferences/update). A change made on the website reaches uploads within a minute. `post-privacy` never follows the Default Post Privacy preference.
 
 ## Form fields
 
@@ -33,14 +35,14 @@ Header values are trimmed and case-insensitive. Boolean headers accept only `tru
 - **`url` and `post.url`:** the top-level `url` is the direct file on `i.snipp.gg`. `post.url` is the share page, `https://snipp.gg/p/{code}`, or `https://{domain}/{code}` when the account has picked another [link domain](/concepts/custom-domains).
 - **Private posts:** file URLs are signed and expire after 24 hours. Fetch the post again with [`GET /posts/{code}`](/relay-reference/endpoint/posts/get) for fresh ones.
 - **Videos:** `.mp4`, `.mov` and `.mkv` are remuxed to MP4 with `+faststart`, so `.mov` and `.mkv` come back with an `.mp4` name. A file that cannot be remuxed is rejected as corrupt. Uploaded videos get a thumbnail in `files[].thumbnail_url`. See [File Types](/concepts/file-types).
-- **Metadata:** stripped by default. PNG, JPG, WebP and GIF are stripped at any size without re-encoding, so pixels are untouched; JPG and WebP keep their orientation and GIF keeps its animation. Videos lose container metadata during the remux.
+- **Metadata:** stripped unless `include-metadata` is `true`, or is left out while your Include Metadata preference is on. PNG, JPG, WebP and GIF are stripped at any size without re-encoding, so pixels are untouched; JPG and WebP keep their orientation and GIF keeps its animation. Videos lose container metadata during the remux.
 - **Blur Personal Info:** when it is on in your preferences (Plus and Ultra, set on the website or with [Update Preferences](/relay-reference/endpoint/preferences/update)), Snippy checks each PNG, JPG and WebP picture before it is stored and blurs personal details such as email addresses, phone numbers, addresses, account and card numbers, codes and keys. A picture where it found something gets a second look for anything the first one missed. A blurred picture is re-encoded, upright, in its own format. Each look adds a few seconds and uses some of your daily Snippy usage. If the first look cannot run because that usage ran out, or it fails, the picture is stored unblurred. GIFs, animated WebPs, videos and team keys are never checked.
-- **Priority streaming:** eligible videos use adaptive streaming by default and spend [priority minutes](/concepts/plans#priority-minutes). `post.priority` is `true` when a video was queued for it. Minutes are charged after the response; if your budget runs out first, the video falls back to standard quality and the post later reports `priority: false`.
+- **Priority streaming:** eligible videos use adaptive streaming and spend [priority minutes](/concepts/plans#priority-minutes), unless `post-priority` is `false`, or is left out while your Adaptive Streaming preference is off. `post.priority` is `true` when a video was queued for it. Minutes are charged after the response; if your budget runs out first, the video falls back to standard quality and the post later reports `priority: false`.
 - **Partial failures:** files that fail are listed in `failed`, each with its zero-based `index` and an `error` object. The stored files are still returned with `200`.
 - **Every file failed:** a one-file request returns that file's error at the top level, with `413` for `file_too_large`, `500` for `internal` and `400` otherwise. A request with several files returns `400` with type `upload_failed` and the same `failed` array. See [Errors](/concepts/errors#partial-upload-failures).
 - **Weekly quota:** a file that would exceed your [weekly usage limit](/concepts/plans#weekly-usage-limit) fails with type `quota_exceeded`, carrying `quota`, `used` and `resets_at`.
 - **Size limits:** a file over your plan's per-file limit fails with type `file_too_large`. A request whose declared `Content-Length` is already larger than your weekly quota (or 50 times the per-file limit) is refused with `413` before any file is read.
-- **Team keys:** posts are always created `private`, whatever `post-privacy` says, and count against the team's quota. A lapsed team returns `403` with type `forbidden`.
+- **Team keys:** posts are always created `private`, whatever `post-privacy` says, and count against the team's quota. No member's preferences apply, so without the headers metadata is stripped and videos use priority streaming. A lapsed team returns `403` with type `forbidden`.
 - New posts are scanned automatically. A flagged post is moderated after the response.
 
 ## Examples

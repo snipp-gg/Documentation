@@ -16,7 +16,7 @@ If you only upload with ShareX, XerahS or iShare, read [What did not change](#wh
 These are frozen so installed uploader configs keep working:
 
 - `POST /upload`, with the file in the multipart `file` field.
-- The `api-key`, `post-privacy` and `include-metadata` headers. `post-type` and `priority` also work as before.
+- The `api-key`, `post-privacy` and `include-metadata` headers. `post-type` also works as before.
 - A missing `post-privacy` header still uploads as `private`.
 - A successful upload still returns `200`.
 - The top-level `url` in the upload response is still the direct file URL.
@@ -35,7 +35,8 @@ So `.sxcu` and `.iscu` configs that read `{json:url}`, `{json:post.url}` or `{js
 | IDs and codes in headers, query strings or bodies | In the path: `/posts/{code}`, `/users/{id}`, `/comments/{id}`. |
 | `offset` and `before` paging, fixed caps | `limit` and `cursor`, with `has_more` and `next_cursor`. See [Pagination](/concepts/pagination). |
 | Over-long titles and descriptions truncated | Rejected with `400`: title over 30 characters, description, reason or comment over 200. |
-| Boolean headers (`include-metadata`, `priority`) | `true` or `false` only (trimmed, case-insensitive). Anything else returns `400`. |
+| `priority` header | `post-priority`, so it cannot be confused with the standard HTTP `Priority` header. |
+| Boolean headers (`include-metadata`, `post-priority`) | `true` or `false` only (trimmed, case-insensitive). Anything else returns `400`. Omitted, they follow your Include Metadata and Adaptive Streaming preferences. |
 | `post-privacy` values | Only `public`, `unlisted` and `private` (trimmed, case-insensitive). Anything else returns `400`. |
 | Wrong HTTP method | `405` with type `method_not_allowed` and an `Allow` header. |
 | Timestamps named `created`, `uploaded` | `created_at`, as ISO 8601 UTC. |

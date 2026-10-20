@@ -108,8 +108,8 @@ Upload a file as a new post. Accepts a file path string, bytes, or a file-like o
 | `title` | `str \| None` | Optional post title (max 30 chars). |
 | `description` | `str \| None` | Optional post description (max 200 chars). |
 | `post_type` | `str \| None` | Sent as the `post-type` header. Has no effect through `upload()`, which sends a single file; use `add_files` to build an album. |
-| `include_metadata` | `bool \| None` | Keep the file's metadata (EXIF, location, and the like). Omitted, the server strips it. |
-| `priority` | `bool \| None` | Use priority (adaptive) streaming for videos. Omitted, the server enables it when your plan is eligible. |
+| `include_metadata` | `bool \| None` | Keep the file's metadata (EXIF, location, and the like). Omitted, follows your Include Metadata preference. |
+| `priority` | `bool \| None` | Use priority (adaptive) streaming for videos. Omitted, follows your Adaptive Streaming preference. |
 
 ```python
 result = client.upload("image.png", privacy="unlisted", title="My screenshot")
@@ -139,8 +139,8 @@ Add one or more files to an existing post, turning it into an album. The post's 
 |-----------|------|-------------|
 | `code` | `str` | Share code of the post. |
 | `files` | `list[str \| bytes \| BinaryIO]` | One or more files. Each item may be a file path, raw bytes, or a file-like object. |
-| `include_metadata` | `bool \| None` | Keep the files' metadata (EXIF, location, and the like). Omitted, the server strips it. |
-| `priority` | `bool \| None` | Use priority (adaptive) streaming for videos. Omitted, the server enables it when your plan is eligible. |
+| `include_metadata` | `bool \| None` | Keep the files' metadata (EXIF, location, and the like). Omitted, follows your Include Metadata preference. |
+| `priority` | `bool \| None` | Use priority (adaptive) streaming for videos. Omitted, follows your Adaptive Streaming preference. |
 
 ```python
 result = client.add_files("AbCd1234", ["photo-a.png", "photo-b.png"], include_metadata=True)

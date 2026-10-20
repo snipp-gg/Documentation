@@ -11,6 +11,7 @@ Read your notification, email, upload and sharing preferences. They follow your 
 - Some notifications cannot be turned off and are not listed: mentions, shared posts, post removals and restrictions, and account changes. The same goes for security and transactional emails.
 - `emails.sign_ins` sends an email every time someone signs in to your account on the website. It is on by default.
 - `uploads.default_privacy` is what upload screens pre-select. The API never applies it: an upload without a `post-privacy` header is always private.
+- `uploads.include_metadata` and `uploads.adaptive_streaming` apply to every upload that leaves out the `include-metadata` or `post-priority` header, through Relay and the API alike. Team keys never use them.
 - `uploads.adaptive_streaming` is on by default. The other upload toggles are off by default.
 - `uploads.auto_blur` is Blur Personal Info, part of Plus and Ultra. Snippy blurs personal details in the pictures you upload from the website, the apps, Relay and the API, and each picture checked uses some of your daily Snippy usage. See [Upload Files](/relay-reference/endpoint/upload).
 - `sharing.share_policy` decides who can give you access to their private posts: `everyone` (default), `following` (only accounts you follow) or `nobody`. Changing it does not remove access you already have.

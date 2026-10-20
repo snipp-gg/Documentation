@@ -389,7 +389,7 @@
             "$ref": "#/components/parameters/IncludeMetadata"
           },
           {
-            "$ref": "#/components/parameters/Priority"
+            "$ref": "#/components/parameters/PostPriority"
           }
         ],
         "requestBody": {
@@ -1215,7 +1215,7 @@
             "$ref": "#/components/parameters/IncludeMetadata"
           },
           {
-            "$ref": "#/components/parameters/Priority"
+            "$ref": "#/components/parameters/PostPriority"
           }
         ],
         "requestBody": {
@@ -3218,20 +3218,18 @@
         "name": "include-metadata",
         "in": "header",
         "required": false,
-        "description": "`true` keeps file metadata. Omitted or `false` strips it.",
+        "description": "`true` keeps file metadata, `false` strips it. Omitted, follows your Include Metadata preference, which is off by default.",
         "schema": {
-          "type": "boolean",
-          "default": false
+          "type": "boolean"
         }
       },
-      "Priority": {
-        "name": "priority",
+      "PostPriority": {
+        "name": "post-priority",
         "in": "header",
         "required": false,
-        "description": "`false` opts videos out of priority (adaptive) streaming.",
+        "description": "`true` puts videos on priority (adaptive) streaming and `false` opts them out. Omitted, follows your Adaptive Streaming preference, which is on by default.",
         "schema": {
-          "type": "boolean",
-          "default": true
+          "type": "boolean"
         }
       }
     },

@@ -99,8 +99,8 @@ Upload a file as a new post. Accepts a `File`, `Blob`, `Buffer`, or `Uint8Array`
 | `title` | `string` | Optional post title (max 30 chars). |
 | `description` | `string` | Optional post description (max 200 chars). |
 | `postType` | `"album" \| "individual"` | Sent as the `post-type` header. Has no effect through `upload()`, which sends a single file; use `addFiles` to build an album. |
-| `includeMetadata` | `boolean` | Keep the file's metadata (EXIF, location, and the like). Omitted, the server strips it. |
-| `priority` | `boolean` | Use priority (adaptive) streaming for videos. Omitted, the server enables it when your plan is eligible. |
+| `includeMetadata` | `boolean` | Keep the file's metadata (EXIF, location, and the like). Omitted, follows your Include Metadata preference. |
+| `priority` | `boolean` | Use priority (adaptive) streaming for videos. Omitted, follows your Adaptive Streaming preference. |
 
 ```javascript
 import { readFileSync } from "node:fs";
@@ -133,8 +133,8 @@ Add one or more files to an existing post, turning it into an album. The post's 
 | `code` | `string` | Share code of the post. |
 | `files` | `Array<File \| Blob \| Buffer \| Uint8Array>` | One or more files to add. |
 | `options.filenames` | `string[]` | Optional filenames (one per file). |
-| `options.includeMetadata` | `boolean` | Keep the files' metadata (EXIF, location, and the like). Omitted, the server strips it. |
-| `options.priority` | `boolean` | Use priority (adaptive) streaming for videos. Omitted, the server enables it when your plan is eligible. |
+| `options.includeMetadata` | `boolean` | Keep the files' metadata (EXIF, location, and the like). Omitted, follows your Include Metadata preference. |
+| `options.priority` | `boolean` | Use priority (adaptive) streaming for videos. Omitted, follows your Adaptive Streaming preference. |
 
 ```javascript
 import { readFileSync } from "node:fs";
