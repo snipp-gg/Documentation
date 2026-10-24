@@ -4861,7 +4861,7 @@
             "additionalProperties": {
               "type": "string"
             },
-            "description": "Keyed by `roblox`, `github`, `spotify`, `youtube`, `tiktok`, `X`, `bluesky`, `discord`.",
+            "description": "Keyed by `roblox`, `steam`, `github`, `spotify`, `youtube`, `twitch`, `kick`, `tiktok`, `instagram`, `X`, `bluesky`, `threads`, `reddit`, `discord`.",
             "nullable": true
           },
           "plan": {
