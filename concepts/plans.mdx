@@ -94,7 +94,7 @@ Call `GET /users/@me` to see your plan, weekly usage and priority minutes. The r
 |-------|-------------|
 | `plan` | Your plan: `free`, `plus` or `ultra` |
 | `upload_count` | Number of files stored in your personal gallery |
-| `limits.max_file_size` | Largest single file in bytes. 50 MB on Free; on Plus and Ultra it equals the weekly quota (`limits.usage.limit`) |
+| `limits.max_file_size` | Largest single file in bytes. 50 MB on Free; on Plus and Ultra it equals the plan's weekly quota, 20 GB on Plus and 50 GB on Ultra |
 | `limits.usage.used` | Bytes uploaded in the current weekly window |
 | `limits.usage.limit` | Bytes allowed per weekly window |
 | `limits.usage.used_percent` | Share of the weekly quota used, rounded to the nearest integer. Can pass 100. |
