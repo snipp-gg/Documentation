@@ -9,7 +9,7 @@ Upload a new avatar. `id` must be `@me` or your own ID.
 
 - Send one image as `multipart/form-data` in the `file` field. More than one file returns `400`.
 - PNG, JPG, WebP or GIF, up to **30 MB**. The type is detected from the file's bytes.
-- The image is cropped to a centered square. GIFs stay animated.
+- The image is cropped to a centered square and scaled down to at most 1024x1024. GIFs stay animated.
 - Metadata is stripped.
 - The new avatar replaces the old one, which is deleted.
 - A suspended account cannot upload a avatar.
