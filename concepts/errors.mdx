@@ -55,6 +55,7 @@ A request body that cannot be parsed at all returns `invalid_request` with the s
 | Type | Field | Description |
 |------|-------|-------------|
 | `suspended` | `username` | On [`GET /users/{id}`](/api-reference/endpoint/users/get) only: the suspended user's username. |
+| `timed_out` | `expires_at` | When the timeout ends, as an ISO 8601 timestamp. |
 | `quota_exceeded` | `quota` | Your weekly quota in bytes. |
 | `quota_exceeded` | `used` | Bytes used in the current window. |
 | `quota_exceeded` | `resets_at` | When the window resets, as an ISO 8601 timestamp. |

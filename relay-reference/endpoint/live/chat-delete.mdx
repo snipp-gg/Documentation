@@ -8,8 +8,8 @@ Remove a chat message.
 ## Behavior
 
 - You can remove your own messages. They disappear for everyone with no placeholder. As on every chat route, a streamer who blocked you gives `403` with type `blocked`.
-- The streamer, their moderators and staff can remove anyone's message. It stays in the chat as removed (`deleted: true`, `body: null`), and its text is gone for good.
-- Anyone else gets `403` with type `forbidden`. A message that does not exist or was already removed gives `404`.
+- The streamer and staff can remove anyone's message, and moderators can remove anyone's except the streamer's or another moderator's. It stays in the chat as removed (`deleted: true`, `body: null`), and its text is gone for good.
+- Anyone else, including a moderator removing the streamer's or another moderator's message, gets `403` with type `forbidden`. A message that does not exist or was already removed gives `404`.
 
 ## Example
 

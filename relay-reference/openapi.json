@@ -5233,6 +5233,11 @@
                         "type": "integer"
                       }
                     },
+                    "last_id": {
+                      "type": "integer",
+                      "description": "The highest message `id` this response read, counting messages left out. Pass it as `after` on your next poll. `null` when the chat is empty.",
+                      "nullable": true
+                    },
                     "now": {
                       "type": "string",
                       "format": "date-time"
@@ -5241,6 +5246,7 @@
                   "required": [
                     "chat_messages",
                     "removed",
+                    "last_id",
                     "now"
                   ]
                 },
@@ -5277,6 +5283,7 @@
                     }
                   ],
                   "removed": [],
+                  "last_id": 128,
                   "now": "2026-11-03T08:05:20.000Z"
                 }
               }
@@ -5430,7 +5437,7 @@
     "/users/{id}/live/chat/{message_id}": {
       "delete": {
         "summary": "Delete Live Chat Message",
-        "description": "Remove a chat message: your own, or anyone's if you moderate the chat.",
+        "description": "Remove a chat message: your own, or anyone else's if you moderate the chat. Moderators cannot remove the streamer's or another moderator's messages.",
         "operationId": "deleteLiveChatMessage",
         "parameters": [
           {
