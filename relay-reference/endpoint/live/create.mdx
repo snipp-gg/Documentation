@@ -1,0 +1,19 @@
+---
+title: "Set Up Live Stream"
+openapi: "relay-reference/openapi.json POST /live"
+---
+
+Create your stream key so you can go live. Safe to call again: if streaming is already set up, the existing stream comes back with `200` instead of `201`.
+
+## Behavior
+
+- Needs Plus or Ultra, otherwise `403` with type `plan_required`.
+- Returns the same object as [Get Your Live Stream](/relay-reference/endpoint/live/get).
+- Streams are not saved after they end, but the chat stays.
+
+## Example
+
+```bash
+curl -X POST "https://relay.snipp.gg/live" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```

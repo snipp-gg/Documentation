@@ -1,0 +1,19 @@
+---
+title: "Regenerate Stream Key"
+openapi: "api-reference/openapi.json POST /live/key"
+---
+
+Replace your stream key, for example if it leaked. The old key stops working immediately, so update your encoder.
+
+## Behavior
+
+- Needs an API key with gallery access, like the gallery endpoints. Other keys get `403` with type `forbidden`. See [Authentication](/authentication).
+- Returns the same object as [Get Your Live Stream](/api-reference/endpoint/live/get) with the new `stream_key`.
+- Returns `404` if streaming is not set up.
+
+## Example
+
+```bash
+curl -X POST "https://api.snipp.gg/live/key" \
+  -H "api-key: YOUR_API_KEY"
+```

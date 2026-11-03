@@ -1,0 +1,19 @@
+---
+title: "Delete Live Stream"
+openapi: "relay-reference/openapi.json DELETE /live"
+---
+
+Turn streaming off: your stream key stops working and any broadcast in progress ends.
+
+## Behavior
+
+- Minutes used by a broadcast in progress are charged before it ends.
+- Your chat history, moderators and timeouts are kept, so setting up again later picks them back up.
+- Returns `404` if streaming is not set up.
+
+## Example
+
+```bash
+curl -X DELETE "https://relay.snipp.gg/live" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```

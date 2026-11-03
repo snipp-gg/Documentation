@@ -48,7 +48,7 @@ A `limit` outside `1` to `100`, or a malformed `cursor`, returns `400` with type
 | [`GET /users/{id}/blocks`](/relay-reference/endpoint/users/blocks) | `blocks` | Relay |
 | [`GET /notifications`](/relay-reference/endpoint/notifications/list) | `notifications` | Relay |
 
-These lists return everything in one response and have no paging fields: [`GET /discover`](/relay-reference/endpoint/discover) (up to 50 random posts), [`GET /posts/{code}/comments`](/relay-reference/endpoint/posts/comments) (at most 500 comments) and [`GET /sessions`](/relay-reference/endpoint/sessions/list).
+These lists return everything in one response and have no paging fields: [`GET /discover`](/relay-reference/endpoint/discover) (up to 50 random posts), [`GET /posts/{code}/comments`](/relay-reference/endpoint/posts/comments) (at most 500 comments) and [`GET /sessions`](/relay-reference/endpoint/sessions/list). [`GET /users/{id}/live/chat`](/api-reference/endpoint/live/chat-list) has no paging fields either: it returns the newest 50 messages, then you poll with `after` and `since`.
 
 ## Short pages
 

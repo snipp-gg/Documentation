@@ -1,0 +1,20 @@
+---
+title: "Set Up Live Stream"
+openapi: "api-reference/openapi.json POST /live"
+---
+
+Create your stream key so you can go live. Safe to call again: if streaming is already set up, the existing stream comes back with `200` instead of `201`.
+
+## Behavior
+
+- Needs an API key with gallery access, like the gallery endpoints. Other keys get `403` with type `forbidden`. See [Authentication](/authentication).
+- Needs Plus or Ultra, otherwise `403` with type `plan_required`.
+- Returns the same object as [Get Your Live Stream](/api-reference/endpoint/live/get).
+- Streams are not saved after they end, but the chat stays.
+
+## Example
+
+```bash
+curl -X POST "https://api.snipp.gg/live" \
+  -H "api-key: YOUR_API_KEY"
+```

@@ -63,6 +63,16 @@ api-key: YOUR_API_KEY
 | `GET` | [`/users/{id}`](/api-reference/endpoint/users/get) | Fetch a user. Use `@me` for your own account. |
 | `GET` | [`/users/{id}/posts`](/api-reference/endpoint/users/posts) | List a user's public posts. |
 | `POST` | [`/users/{id}/report`](/api-reference/endpoint/users/report) | Report a user. |
+| `GET` | [`/live`](/api-reference/endpoint/live/get) | Your live stream: server URL, stream key, minutes and moderators. |
+| `POST` | [`/live`](/api-reference/endpoint/live/create) | Set up live streaming. |
+| `PATCH` | [`/live`](/api-reference/endpoint/live/update) | Change your stream title or chat moderators. |
+| `DELETE` | [`/live`](/api-reference/endpoint/live/delete) | Turn live streaming off. |
+| `POST` | [`/live/key`](/api-reference/endpoint/live/rotate-key) | Regenerate your stream key. |
+| `GET` | [`/users/{id}/live`](/api-reference/endpoint/live/status) | Whether a user is live. |
+| `GET` | [`/users/{id}/live/chat`](/api-reference/endpoint/live/chat-list) | Read a stream's chat. |
+| `POST` | [`/users/{id}/live/chat`](/api-reference/endpoint/live/chat-send) | Send or reply in a stream's chat. |
+| `DELETE` | [`/users/{id}/live/chat/{message_id}`](/api-reference/endpoint/live/chat-delete) | Remove a chat message. |
+| `POST` | [`/users/{id}/live/timeouts/{user_id}`](/api-reference/endpoint/live/timeout) | Time out a user in your chat. |
 | `GET` | [`/gifs`](/api-reference/endpoint/gifs) | Browse public GIFs. No key required. |
 | `POST` | [`/convert`](/api-reference/endpoint/convert) | Convert an image or video. Returns the file and stores nothing. |
 | `GET` | [`/usage-history`](/api-reference/endpoint/usage-history) | Your daily upload activity for the last 365 days. |

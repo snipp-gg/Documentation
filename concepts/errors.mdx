@@ -33,6 +33,7 @@ Successful responses never carry `error`, `message` or `success` keys. Any `2xx`
 | `blocked` | `403` | A block between you and the other user prevents this. |
 | `moderated` | `403` | The post has been moderated. |
 | `plan_required` | `403` | The feature needs Plus or Ultra. |
+| `timed_out` | `403` | You are timed out of a stream's chat. `expires_at` says when you can chat again. |
 | `quota_exceeded` | `400` | The upload would exceed your [weekly usage limit](/concepts/plans#weekly-usage-limit). On Relay, turning on priority streaming with no priority minutes left returns this type with `403`. |
 | `unsupported_type` | `400` | The file type is not supported, or cannot be converted to the requested format. |
 | `upload_failed` | `400` | Every file in a multi-file upload failed. See [Partial upload failures](#partial-upload-failures). |

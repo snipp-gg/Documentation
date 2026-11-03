@@ -127,6 +127,21 @@
             ]
           },
           {
+            "group": "Live",
+            "pages": [
+              "api-reference/endpoint/live/get",
+              "api-reference/endpoint/live/create",
+              "api-reference/endpoint/live/update",
+              "api-reference/endpoint/live/delete",
+              "api-reference/endpoint/live/rotate-key",
+              "api-reference/endpoint/live/status",
+              "api-reference/endpoint/live/chat-list",
+              "api-reference/endpoint/live/chat-send",
+              "api-reference/endpoint/live/chat-delete",
+              "api-reference/endpoint/live/timeout"
+            ]
+          },
+          {
             "group": "Meta",
             "pages": [
               "api-reference/endpoint/region"
@@ -190,6 +205,21 @@
               "relay-reference/endpoint/users/report",
               "relay-reference/endpoint/usage-history",
               "relay-reference/endpoint/analytics"
+            ]
+          },
+          {
+            "group": "Live",
+            "pages": [
+              "relay-reference/endpoint/live/get",
+              "relay-reference/endpoint/live/create",
+              "relay-reference/endpoint/live/update",
+              "relay-reference/endpoint/live/delete",
+              "relay-reference/endpoint/live/rotate-key",
+              "relay-reference/endpoint/live/status",
+              "relay-reference/endpoint/live/chat-list",
+              "relay-reference/endpoint/live/chat-send",
+              "relay-reference/endpoint/live/chat-delete",
+              "relay-reference/endpoint/live/timeout"
             ]
           },
           {

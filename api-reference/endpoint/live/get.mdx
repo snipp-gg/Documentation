@@ -1,0 +1,25 @@
+---
+title: "Get Your Live Stream"
+openapi: "api-reference/openapi.json GET /live"
+---
+
+Read your live stream setup: the RTMPS server URL and stream key for OBS, whether you are live, your monthly live minutes and your chat moderators.
+
+## Behavior
+
+- Needs an API key with gallery access, like the gallery endpoints. Other keys get `403` with type `forbidden`. See [Authentication](/authentication).
+- Streaming needs Plus or Ultra. Free accounts get `403` with type `plan_required`.
+- `live_stream` is `null` until you [set up streaming](/api-reference/endpoint/live/create).
+- `ingest_url` is `rtmps://live.snipp.gg:443/live/`. Paste it and `stream_key` into OBS (Settings, Stream, Custom). Keep `stream_key` secret: anyone with it can stream as you.
+- `ingest_url` and `stream_key` are `null` if the stream service could not be reached; try again.
+- You go live automatically when your encoder connects. `live`, `started_at` and `viewers` reflect the current broadcast; `viewers` refreshes about once a minute.
+- `minutes` is your monthly live streaming budget in whole minutes: 100 on Plus, 300 on Ultra. Minutes only count while you are live and reset together with [priority minutes](/concepts/plans#priority-minutes). When they run out the stream ends.
+- `moderators` lists the users who can remove messages and time people out in your chat.
+- Team keys are not accepted and get `401`.
+
+## Example
+
+```bash
+curl "https://api.snipp.gg/live" \
+  -H "api-key: YOUR_API_KEY"
+```

@@ -97,6 +97,16 @@ Anyone who holds a team key can upload with it, so treat it like any other crede
 | `DELETE` | [`/users/@me/banner`](/relay-reference/endpoint/users/delete-banner) | Remove your banner. |
 | `GET` | [`/users/{id}/posts`](/relay-reference/endpoint/users/posts) | List a user's public posts. |
 | `POST` | [`/users/{id}/report`](/relay-reference/endpoint/users/report) | Report a user. |
+| `GET` | [`/live`](/relay-reference/endpoint/live/get) | Your live stream: server URL, stream key, minutes and moderators. |
+| `POST` | [`/live`](/relay-reference/endpoint/live/create) | Set up live streaming. |
+| `PATCH` | [`/live`](/relay-reference/endpoint/live/update) | Change your stream title or chat moderators. |
+| `DELETE` | [`/live`](/relay-reference/endpoint/live/delete) | Turn live streaming off. |
+| `POST` | [`/live/key`](/relay-reference/endpoint/live/rotate-key) | Regenerate your stream key. |
+| `GET` | [`/users/{id}/live`](/relay-reference/endpoint/live/status) | Whether a user is live. |
+| `GET` | [`/users/{id}/live/chat`](/relay-reference/endpoint/live/chat-list) | Read a stream's chat. |
+| `POST` | [`/users/{id}/live/chat`](/relay-reference/endpoint/live/chat-send) | Send or reply in a stream's chat. |
+| `DELETE` | [`/users/{id}/live/chat/{message_id}`](/relay-reference/endpoint/live/chat-delete) | Remove a chat message. |
+| `POST` | [`/users/{id}/live/timeouts/{user_id}`](/relay-reference/endpoint/live/timeout) | Time out a user in your chat. |
 | `POST` | [`/users/{id}/follow`](/relay-reference/endpoint/users/follow) | Follow a user. |
 | `DELETE` | [`/users/{id}/follow`](/relay-reference/endpoint/users/unfollow) | Unfollow a user. |
 | `DELETE` | [`/users/@me/followers/{id}`](/relay-reference/endpoint/users/remove-follower) | Remove one of your followers. |

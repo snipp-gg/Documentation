@@ -1,0 +1,23 @@
+---
+title: "Send Live Chat Message"
+openapi: "api-reference/openapi.json POST /users/{id}/live/chat"
+---
+
+Send a message to a stream's chat, optionally as a reply to another message.
+
+## Behavior
+
+- `body` is 1 to 200 characters.
+- `reply_to` must be a message in the same chat that has not been removed, otherwise `404`.
+- If you are timed out, the response is `403` with type `timed_out` and `expires_at`, when you can chat again.
+- If the streamer blocked you, or you blocked them, the response is `403` with type `blocked`.
+- The response is the message as other viewers will see it.
+
+## Example
+
+```bash
+curl -X POST "https://api.snipp.gg/users/987654321098765432/live/chat" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"body": "gg", "reply_to": 127}'
+```

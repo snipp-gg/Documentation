@@ -1,0 +1,20 @@
+---
+title: "Get User Live Stream"
+openapi: "api-reference/openapi.json GET /users/{id}/live"
+---
+
+Check whether a user is live and what they are streaming. Use `@me` for yourself.
+
+## Behavior
+
+- `live` is `true` while a broadcast is running. `started_at` and `viewers` are `null` otherwise; `viewers` refreshes about once a minute.
+- `title` and `watch_url` are filled whenever the user has set up streaming, live or not. `watch_url` (`https://snipp.live/{username}`) is where people watch and chat.
+- A user who never set up streaming returns `live: false` with every other field `null`.
+- A suspended user gives `403` with type `suspended`, and a user who blocked you gives `403` with type `blocked`.
+
+## Example
+
+```bash
+curl "https://api.snipp.gg/users/987654321098765432/live" \
+  -H "api-key: YOUR_API_KEY"
+```

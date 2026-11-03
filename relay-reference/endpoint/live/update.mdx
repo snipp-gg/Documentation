@@ -1,0 +1,23 @@
+---
+title: "Update Live Stream"
+openapi: "relay-reference/openapi.json PATCH /live"
+---
+
+Change your stream title or replace your list of chat moderators.
+
+## Behavior
+
+- Send `title`, `moderators` or both. Sending neither is `400`.
+- `title` is up to 140 characters. An empty string or `null` clears it, and the watch page shows a default title instead.
+- `moderators` is the complete list of user IDs, up to 10, and replaces the current list. Send `[]` to remove everyone. You cannot add yourself. A user who does not exist or is suspended gives `404`, and a user who blocked you, or whom you blocked, gives `403` with type `blocked`.
+- Moderators can remove messages and [time people out](/relay-reference/endpoint/live/timeout) in your chat. Only you and staff can time out a moderator.
+- Returns `404` if streaming is not set up.
+
+## Example
+
+```bash
+curl -X PATCH "https://relay.snipp.gg/live" \
+  -H "relay-key: YOUR_RELAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Ranked grind", "moderators": ["987654321098765432"]}'
+```

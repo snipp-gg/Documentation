@@ -2085,6 +2085,942 @@
           }
         }
       }
+    },
+    "/live": {
+      "get": {
+        "summary": "Get Your Live Stream",
+        "description": "Your stream setup, credentials, minutes and moderators.",
+        "operationId": "getLiveStream",
+        "responses": {
+          "200": {
+            "description": "Success. `live_stream` is `null` until streaming is set up.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "live_stream": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/SelfLiveStream"
+                        }
+                      ],
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "live_stream"
+                  ]
+                },
+                "example": {
+                  "live_stream": {
+                    "ingest_url": "rtmps://live.snipp.gg:443/live/",
+                    "stream_key": "a1b2c3d4e5f6",
+                    "live": true,
+                    "title": "Ranked grind",
+                    "started_at": "2026-11-03T08:00:00.000Z",
+                    "viewers": 17,
+                    "watch_url": "https://snipp.live/nitcord",
+                    "minutes": {
+                      "used": 42,
+                      "limit": 300,
+                      "used_percent": 14,
+                      "resets_at": "2026-11-20T19:30:00.000Z"
+                    },
+                    "moderators": [
+                      {
+                        "id": "9876543210",
+                        "username": "snipp",
+                        "nickname": "Snipp",
+                        "avatar": "https://cdn.snipp.gg/avatar.png",
+                        "verified": true,
+                        "plan": "free",
+                        "suspended": false
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "429": {
+            "$ref": "#/components/responses/E429"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
+      },
+      "post": {
+        "summary": "Set Up Live Stream",
+        "description": "Create your live input. Safe to repeat.",
+        "operationId": "createLiveStream",
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "live_stream": {
+                      "$ref": "#/components/schemas/SelfLiveStream"
+                    }
+                  },
+                  "required": [
+                    "live_stream"
+                  ]
+                },
+                "example": {
+                  "live_stream": {
+                    "ingest_url": "rtmps://live.snipp.gg:443/live/",
+                    "stream_key": "a1b2c3d4e5f6",
+                    "live": true,
+                    "title": "Ranked grind",
+                    "started_at": "2026-11-03T08:00:00.000Z",
+                    "viewers": 17,
+                    "watch_url": "https://snipp.live/nitcord",
+                    "minutes": {
+                      "used": 42,
+                      "limit": 300,
+                      "used_percent": 14,
+                      "resets_at": "2026-11-20T19:30:00.000Z"
+                    },
+                    "moderators": [
+                      {
+                        "id": "9876543210",
+                        "username": "snipp",
+                        "nickname": "Snipp",
+                        "avatar": "https://cdn.snipp.gg/avatar.png",
+                        "verified": true,
+                        "plan": "free",
+                        "suspended": false
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "200": {
+            "description": "Already set up.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "live_stream": {
+                      "$ref": "#/components/schemas/SelfLiveStream"
+                    }
+                  },
+                  "required": [
+                    "live_stream"
+                  ]
+                },
+                "example": {
+                  "live_stream": {
+                    "ingest_url": "rtmps://live.snipp.gg:443/live/",
+                    "stream_key": "a1b2c3d4e5f6",
+                    "live": true,
+                    "title": "Ranked grind",
+                    "started_at": "2026-11-03T08:00:00.000Z",
+                    "viewers": 17,
+                    "watch_url": "https://snipp.live/nitcord",
+                    "minutes": {
+                      "used": 42,
+                      "limit": 300,
+                      "used_percent": 14,
+                      "resets_at": "2026-11-20T19:30:00.000Z"
+                    },
+                    "moderators": [
+                      {
+                        "id": "9876543210",
+                        "username": "snipp",
+                        "nickname": "Snipp",
+                        "avatar": "https://cdn.snipp.gg/avatar.png",
+                        "verified": true,
+                        "plan": "free",
+                        "suspended": false
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "429": {
+            "$ref": "#/components/responses/E429"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update Live Stream",
+        "description": "Change the title or the moderator list.",
+        "operationId": "updateLiveStream",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "nullable": true,
+                    "maxLength": 140,
+                    "description": "Up to 140 characters. Empty or `null` clears it."
+                  },
+                  "moderators": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "The full list of moderator user IDs. Replaces the current list."
+                  }
+                }
+              },
+              "example": {
+                "title": "Ranked grind",
+                "moderators": [
+                  "9876543210"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "live_stream": {
+                      "$ref": "#/components/schemas/SelfLiveStream"
+                    }
+                  },
+                  "required": [
+                    "live_stream"
+                  ]
+                },
+                "example": {
+                  "live_stream": {
+                    "ingest_url": "rtmps://live.snipp.gg:443/live/",
+                    "stream_key": "a1b2c3d4e5f6",
+                    "live": true,
+                    "title": "Ranked grind",
+                    "started_at": "2026-11-03T08:00:00.000Z",
+                    "viewers": 17,
+                    "watch_url": "https://snipp.live/nitcord",
+                    "minutes": {
+                      "used": 42,
+                      "limit": 300,
+                      "used_percent": 14,
+                      "resets_at": "2026-11-20T19:30:00.000Z"
+                    },
+                    "moderators": [
+                      {
+                        "id": "9876543210",
+                        "username": "snipp",
+                        "nickname": "Snipp",
+                        "avatar": "https://cdn.snipp.gg/avatar.png",
+                        "verified": true,
+                        "plan": "free",
+                        "suspended": false
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "429": {
+            "$ref": "#/components/responses/E429"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Live Stream",
+        "description": "Turn streaming off and delete your stream key.",
+        "operationId": "deleteLiveStream",
+        "responses": {
+          "200": {
+            "description": "Deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleted": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    }
+                  },
+                  "required": [
+                    "deleted"
+                  ]
+                },
+                "example": {
+                  "deleted": true
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "429": {
+            "$ref": "#/components/responses/E429"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
+      }
+    },
+    "/live/key": {
+      "post": {
+        "summary": "Regenerate Stream Key",
+        "description": "Replace your stream key. The old key stops working.",
+        "operationId": "rotateLiveStreamKey",
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "live_stream": {
+                      "$ref": "#/components/schemas/SelfLiveStream"
+                    }
+                  },
+                  "required": [
+                    "live_stream"
+                  ]
+                },
+                "example": {
+                  "live_stream": {
+                    "ingest_url": "rtmps://live.snipp.gg:443/live/",
+                    "stream_key": "a1b2c3d4e5f6",
+                    "live": true,
+                    "title": "Ranked grind",
+                    "started_at": "2026-11-03T08:00:00.000Z",
+                    "viewers": 17,
+                    "watch_url": "https://snipp.live/nitcord",
+                    "minutes": {
+                      "used": 42,
+                      "limit": 300,
+                      "used_percent": 14,
+                      "resets_at": "2026-11-20T19:30:00.000Z"
+                    },
+                    "moderators": [
+                      {
+                        "id": "9876543210",
+                        "username": "snipp",
+                        "nickname": "Snipp",
+                        "avatar": "https://cdn.snipp.gg/avatar.png",
+                        "verified": true,
+                        "plan": "free",
+                        "suspended": false
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "429": {
+            "$ref": "#/components/responses/E429"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
+      }
+    },
+    "/users/{id}/live": {
+      "get": {
+        "summary": "Get User Live Stream",
+        "description": "Whether a user is live, and what they are streaming.",
+        "operationId": "getUserLiveStream",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "live_stream": {
+                      "$ref": "#/components/schemas/LiveStream"
+                    }
+                  },
+                  "required": [
+                    "live_stream"
+                  ]
+                },
+                "example": {
+                  "live_stream": {
+                    "live": true,
+                    "title": "Ranked grind",
+                    "started_at": "2026-11-03T08:00:00.000Z",
+                    "viewers": 17,
+                    "watch_url": "https://snipp.live/nitcord"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
+      }
+    },
+    "/users/{id}/live/chat": {
+      "get": {
+        "summary": "List Live Chat",
+        "description": "Read a stream's chat, newest page first, then poll for new messages.",
+        "operationId": "listLiveChat",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Only messages with an `id` greater than this, oldest first."
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Pass the previous response's `now` to get the ids of messages removed since then in `removed`."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "chat_messages": {
+                      "type": "array",
+                      "maxItems": 50,
+                      "items": {
+                        "$ref": "#/components/schemas/ChatMessage"
+                      }
+                    },
+                    "removed": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      }
+                    },
+                    "now": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "chat_messages",
+                    "removed",
+                    "now"
+                  ]
+                },
+                "example": {
+                  "chat_messages": [
+                    {
+                      "id": 128,
+                      "body": "gg",
+                      "created_at": "2026-11-03T08:05:12.000Z",
+                      "role": null,
+                      "author": {
+                        "id": "9876543210",
+                        "username": "snipp",
+                        "nickname": "Snipp",
+                        "avatar": "https://cdn.snipp.gg/avatar.png",
+                        "verified": true,
+                        "plan": "free"
+                      },
+                      "reply_to": {
+                        "id": 127,
+                        "author": {
+                          "id": "1234567890",
+                          "username": "nitcord",
+                          "nickname": "nitcord",
+                          "avatar": "https://cdn.snipp.gg/avatar.png",
+                          "verified": true,
+                          "plan": "ultra"
+                        },
+                        "body": "welcome to the stream",
+                        "deleted": false
+                      },
+                      "deleted": false,
+                      "deleted_by": null
+                    }
+                  ],
+                  "removed": [],
+                  "now": "2026-11-03T08:05:20.000Z"
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "429": {
+            "$ref": "#/components/responses/E429"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
+      },
+      "post": {
+        "summary": "Send Live Chat Message",
+        "description": "Send a message to a stream's chat, optionally as a reply.",
+        "operationId": "sendLiveChatMessage",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "body": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "description": "1 to 200 characters."
+                  },
+                  "reply_to": {
+                    "type": "integer",
+                    "nullable": true,
+                    "description": "ID of a message in the same chat to reply to."
+                  }
+                },
+                "required": [
+                  "body"
+                ]
+              },
+              "example": {
+                "body": "gg",
+                "reply_to": 127
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sent.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "chat_message": {
+                      "$ref": "#/components/schemas/ChatMessage"
+                    }
+                  },
+                  "required": [
+                    "chat_message"
+                  ]
+                },
+                "example": {
+                  "chat_message": {
+                    "id": 128,
+                    "body": "gg",
+                    "created_at": "2026-11-03T08:05:12.000Z",
+                    "role": null,
+                    "author": {
+                      "id": "9876543210",
+                      "username": "snipp",
+                      "nickname": "Snipp",
+                      "avatar": "https://cdn.snipp.gg/avatar.png",
+                      "verified": true,
+                      "plan": "free"
+                    },
+                    "reply_to": {
+                      "id": 127,
+                      "author": {
+                        "id": "1234567890",
+                        "username": "nitcord",
+                        "nickname": "nitcord",
+                        "avatar": "https://cdn.snipp.gg/avatar.png",
+                        "verified": true,
+                        "plan": "ultra"
+                      },
+                      "body": "welcome to the stream",
+                      "deleted": false
+                    },
+                    "deleted": false,
+                    "deleted_by": null
+                  }
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "429": {
+            "$ref": "#/components/responses/E429"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
+      }
+    },
+    "/users/{id}/live/chat/{message_id}": {
+      "delete": {
+        "summary": "Delete Live Chat Message",
+        "description": "Remove a chat message: your own, or anyone's if you moderate the chat.",
+        "operationId": "deleteLiveChatMessage",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "name": "message_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Chat message ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Removed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "deleted"
+                  ]
+                },
+                "example": {
+                  "id": 128,
+                  "deleted": true
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "429": {
+            "$ref": "#/components/responses/E429"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
+      }
+    },
+    "/users/{id}/live/timeouts/{user_id}": {
+      "post": {
+        "summary": "Time Out Chat User",
+        "description": "Stop a user from chatting in a stream for a while and remove their messages.",
+        "operationId": "timeOutLiveChatUser",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The user to time out."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "seconds": {
+                    "type": "integer",
+                    "enum": [
+                      60,
+                      600,
+                      3600,
+                      86400
+                    ]
+                  }
+                },
+                "required": [
+                  "seconds"
+                ]
+              },
+              "example": {
+                "seconds": 600
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Timed out.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {
+                      "type": "string"
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "user_id",
+                    "expires_at"
+                  ]
+                },
+                "example": {
+                  "user_id": "9876543210",
+                  "expires_at": "2026-11-03T08:15:00.000Z"
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "429": {
+            "$ref": "#/components/responses/E429"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2099,6 +3035,7 @@
           "blocked",
           "moderated",
           "plan_required",
+          "timed_out",
           "not_found",
           "method_not_allowed",
           "file_too_large",
@@ -2145,6 +3082,11 @@
               "$ref": "#/components/schemas/FailedFile"
             },
             "description": "`upload_failed` only: one entry per file."
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "`timed_out` only: when the timeout ends."
           }
         },
         "required": [
@@ -3158,6 +4100,223 @@
           "totals",
           "series",
           "deltas"
+        ]
+      },
+      "LiveMinutes": {
+        "type": "object",
+        "description": "Your monthly live streaming budget, in whole minutes.",
+        "properties": {
+          "used": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "100 on Plus, 300 on Ultra, scaled by any platform multiplier."
+          },
+          "used_percent": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "resets_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": [
+          "used",
+          "limit",
+          "used_percent",
+          "resets_at"
+        ]
+      },
+      "LiveModerator": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UserRef"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "suspended": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "suspended"
+            ]
+          }
+        ],
+        "description": "A chat moderator you picked."
+      },
+      "LiveStream": {
+        "type": "object",
+        "description": "A user's live stream as anyone can see it.",
+        "properties": {
+          "live": {
+            "type": "boolean"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 140
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When the current broadcast started. `null` unless live."
+          },
+          "viewers": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Concurrent viewers, refreshed about once a minute. `null` unless live."
+          },
+          "watch_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "`https://snipp.live/{username}`. `null` when the user has not set up streaming."
+          }
+        },
+        "required": [
+          "live",
+          "title",
+          "started_at",
+          "viewers",
+          "watch_url"
+        ]
+      },
+      "SelfLiveStream": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "ingest_url": {
+                "type": "string",
+                "nullable": true,
+                "description": "RTMPS server URL for OBS or any RTMP app."
+              },
+              "stream_key": {
+                "type": "string",
+                "nullable": true,
+                "description": "Secret. Anyone with it can stream as you."
+              }
+            },
+            "required": [
+              "ingest_url",
+              "stream_key"
+            ]
+          },
+          {
+            "$ref": "#/components/schemas/LiveStream"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "minutes": {
+                "$ref": "#/components/schemas/LiveMinutes"
+              },
+              "moderators": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LiveModerator"
+                },
+                "maxItems": 10
+              }
+            },
+            "required": [
+              "minutes",
+              "moderators"
+            ]
+          }
+        ],
+        "description": "Your own live stream, including the credentials to go live."
+      },
+      "ChatReply": {
+        "type": "object",
+        "description": "The message this one replies to.",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "author": {
+            "$ref": "#/components/schemas/UserRef"
+          },
+          "body": {
+            "type": "string",
+            "nullable": true,
+            "description": "`null` when the original was removed."
+          },
+          "deleted": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "author",
+          "body",
+          "deleted"
+        ]
+      },
+      "ChatMessage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "body": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 200,
+            "description": "`null` when a moderator removed the message."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "streamer",
+              "moderator"
+            ],
+            "nullable": true
+          },
+          "author": {
+            "$ref": "#/components/schemas/UserRef"
+          },
+          "reply_to": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ChatReply"
+              }
+            ],
+            "nullable": true
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "A moderator, the streamer or staff removed it."
+          },
+          "deleted_by": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserRef"
+              }
+            ],
+            "nullable": true,
+            "description": "Who removed it. Only shown to the streamer, their moderators and staff."
+          }
+        },
+        "required": [
+          "id",
+          "body",
+          "created_at",
+          "role",
+          "author",
+          "reply_to",
+          "deleted",
+          "deleted_by"
         ]
       }
     },

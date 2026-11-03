@@ -1,0 +1,23 @@
+---
+title: "List Live Chat"
+openapi: "relay-reference/openapi.json GET /users/{id}/live/chat"
+---
+
+Read a stream's chat. The chat stays between broadcasts, so it can be read while the user is offline.
+
+## Behavior
+
+- Without `after`, returns the newest 50 messages, oldest first. Poll with `after` set to the highest `id` you have to get only new messages, again oldest first and up to 50 at a time.
+- Pass the previous response's `now` as `since` to learn which messages were removed since then: their ids come back in `removed`, at most 50. Drop them, or fetch the chat again to see them as removed; if 50 came back, fetch the chat again without `after` to catch any beyond that. See [Pagination](/concepts/pagination).
+- A removed message has `deleted: true` and `body: null`. `deleted_by` names who removed it, but only for the streamer, their moderators and staff; everyone else gets `null`. Messages deleted by their own author are left out entirely.
+- `role` is `streamer` or `moderator` for those authors, otherwise `null`.
+- `reply_to` quotes the message being replied to, with `body: null` and `deleted: true` if that message was removed.
+- Messages from users you blocked or who blocked you, and from suspended users, are left out.
+- If the streamer blocked you, the response is `403` with type `blocked`.
+
+## Example
+
+```bash
+curl "https://relay.snipp.gg/users/987654321098765432/live/chat?after=127" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```

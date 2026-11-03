@@ -1,0 +1,23 @@
+---
+title: "Time Out Chat User"
+openapi: "api-reference/openapi.json POST /users/{id}/live/timeouts/{user_id}"
+---
+
+Stop a user from chatting in a stream for a while. Their messages in that chat are removed.
+
+## Behavior
+
+- Only the streamer, their moderators and staff can time people out; anyone else gets `403` with type `forbidden`.
+- `seconds` is `60`, `600`, `3600` or `86400`.
+- Timing out the streamer gives `403` with type `forbidden`, and so does timing out a moderator unless you are the streamer or staff. Timing yourself out is `400`.
+- Timing out someone again replaces their current timeout.
+- While timed out, [sending a message](/api-reference/endpoint/live/chat-send) returns `403` with type `timed_out`.
+
+## Example
+
+```bash
+curl -X POST "https://api.snipp.gg/users/987654321098765432/live/timeouts/123456789012345678" \
+  -H "api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"seconds": 600}'
+```

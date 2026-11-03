@@ -1,0 +1,18 @@
+---
+title: "Regenerate Stream Key"
+openapi: "relay-reference/openapi.json POST /live/key"
+---
+
+Replace your stream key, for example if it leaked. The old key stops working immediately, so update your encoder.
+
+## Behavior
+
+- Returns the same object as [Get Your Live Stream](/relay-reference/endpoint/live/get) with the new `stream_key`.
+- Returns `404` if streaming is not set up.
+
+## Example
+
+```bash
+curl -X POST "https://relay.snipp.gg/live/key" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```
