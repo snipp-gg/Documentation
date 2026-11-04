@@ -1633,7 +1633,7 @@
                       "type": "string",
                       "format": "binary"
                     },
-                    "description": "1 to 50 files. Repeat the `file` field."
+                    "description": "1 to 1000 files. Repeat the `file` field."
                   },
                   "title": {
                     "type": "string",
@@ -2479,7 +2479,7 @@
     "/posts/{code}/files": {
       "post": {
         "summary": "Add Files",
-        "description": "Add files to an existing post. Posts hold up to 1000 files, and one request adds up to 50.",
+        "description": "Add files to an existing post. Posts hold up to 1000 files.",
         "operationId": "addFiles",
         "parameters": [
           {

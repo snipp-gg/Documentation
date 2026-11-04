@@ -3,7 +3,7 @@ title: "Upload Files"
 openapi: "api-reference/openapi.json POST /upload"
 ---
 
-Upload between 1 and 50 files in one request. Every upload creates a post. Two or more files are grouped into one album post unless you ask for individual posts.
+Upload between 1 and 1000 files in one request. Every upload creates a post. Two or more files are grouped into one album post unless you ask for individual posts.
 
 ## Headers
 
@@ -23,7 +23,7 @@ Preferences are set on the website or with [Update Preferences](/relay-reference
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `file` | Yes | The file. Repeat the field for up to 50 files. |
+| `file` | Yes | The file. Repeat the field for up to 1000 files. |
 | `title` | No | Up to 30 characters. Longer titles return `400`. |
 | `description` | No | Up to 200 characters. Longer descriptions return `400`. |
 
@@ -347,7 +347,7 @@ Every file failed:
 
 | Status | Type | When |
 |--------|------|------|
-| `400` | `invalid_request` | Bad header value, no file, more than 50 files, title or description too long, or a corrupt video |
+| `400` | `invalid_request` | Bad header value, no file, more than 1000 files, title or description too long, or a corrupt video |
 | `400` | `unsupported_type` | The only file is not a supported type |
 | `400` | `quota_exceeded` | The only file would exceed your weekly quota |
 | `400` | `upload_failed` | Every file of a multi-file request failed |
