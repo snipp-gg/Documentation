@@ -2479,7 +2479,7 @@
     "/posts/{code}/files": {
       "post": {
         "summary": "Add Files",
-        "description": "Add files to an existing post. Posts hold up to 50 files.",
+        "description": "Add files to an existing post. Posts hold up to 1000 files, and one request adds up to 50.",
         "operationId": "addFiles",
         "parameters": [
           {
