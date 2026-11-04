@@ -1588,7 +1588,7 @@
             "name": "post-privacy",
             "in": "header",
             "required": false,
-            "description": "`public`, `unlisted` or `private`. Omitted means `private`.",
+            "description": "`public`, `unlisted` or `private`. Omitted means `private`. `public` becomes `unlisted` when the request contains an archive, audio or PDF file.",
             "schema": {
               "type": "string",
               "enum": [
@@ -6027,7 +6027,7 @@
           },
           "url": {
             "type": "string",
-            "description": "Direct file URL. Signed for 24 hours on private posts."
+            "description": "Direct file URL. Signed for 24 hours on private posts, and always for archives, audio and PDFs."
           },
           "size": {
             "type": "integer",

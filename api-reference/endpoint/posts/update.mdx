@@ -21,6 +21,7 @@ Change a post's title, description or privacy. Send only the fields you want to 
 - Requires [gallery access](/authentication#api-key-permissions) on the key.
 - Moderated posts cannot be changed and return `403` with type `moderated`.
 - A restricted post cannot be made public and returns `403` with type `forbidden`. It can still switch between `private` and `unlisted`.
+- A post that contains a file (an archive, audio or PDF) cannot be made public either, and returns `403` with type `forbidden` and `Posts with files cannot be made public.`
 - Team posts are always private. Sending `privacy: private` on a team post is accepted and changes nothing; any other value returns `403`.
 - Making a post public runs the same automatic scan as a new upload.
 - The response is the full updated post.

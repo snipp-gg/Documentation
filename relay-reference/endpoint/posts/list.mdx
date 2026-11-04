@@ -10,7 +10,7 @@ List your own posts, newest first.
 - Returns every personal post you own, whatever its privacy, including moderated and restricted ones. Drafts and team posts are not included.
 - Results are [paginated](/concepts/pagination): pass `limit` (1 to 100, default 30) and the previous page's `next_cursor` as `cursor`.
 - Each item is a full post object, with `moderated` and `restricted` since you own it.
-- File URLs on private posts are signed and expire after 24 hours. List again for fresh ones.
+- File URLs on private posts, and for archives, audio and PDFs on any post, are signed and expire after 24 hours. List again for fresh ones.
 - Team keys are not accepted here and get `401`.
 
 ## Examples

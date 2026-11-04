@@ -8,7 +8,7 @@ Fetch a post by its share code.
 ## Behavior
 
 - `files` lists every file in the post, in order. `file_count` is its length; a post with more than one file is an album.
-- `url` is the share page. Each `files[].url` is the direct file. On private posts the file and thumbnail URLs are signed and expire after 24 hours; fetch the post again for fresh ones.
+- `url` is the share page. Each `files[].url` is the direct file. On private posts the file and thumbnail URLs are signed and expire after 24 hours, and file URLs for archives, audio and PDFs always are; fetch the post again for fresh ones.
 - `files[].name` is what [Delete File](/relay-reference/endpoint/posts/delete-file) takes.
 - `files[].thumbnail_url` is a still frame for videos uploaded with [`POST /upload`](/relay-reference/endpoint/upload), and `null` otherwise. `width`, `height`, `size` and `mime_type` are `null` when unknown.
 - `liked` is whether you have liked the post.

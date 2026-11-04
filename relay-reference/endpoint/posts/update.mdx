@@ -22,6 +22,7 @@ Change a post's title, description or privacy, turn priority streaming on or off
 - You must own the post. For a team post, use that team's access key, or your own relay key as a team member who can edit.
 - Moderated posts cannot be changed and return `403` with type `moderated`.
 - A restricted post cannot be made public and returns `403` with type `forbidden`. It can still switch between `private` and `unlisted`.
+- A post that contains a file (an archive, audio or PDF) cannot be made public either, and returns `403` with type `forbidden` and `Posts with files cannot be made public.`
 - Team posts are always private. Sending `privacy: private` on a team post is accepted and changes nothing; any other value returns `403`.
 - Making a post public runs the same automatic scan as a new upload.
 - **`priority: true`** starts adaptive streaming for every video in the post that is not on it yet, spending your [priority minutes](/concepts/plans#priority-minutes). With no minutes left the response is `400` with type `quota_exceeded`, carrying `quota` and `used` in minutes and `resets_at`. On a lapsed team it is `403` with type `forbidden`.

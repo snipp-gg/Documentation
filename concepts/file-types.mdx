@@ -5,7 +5,7 @@ description: "Supported file formats and size limits."
 
 ## Supported Formats
 
-Snipp supports a range of image and video formats for uploading and sharing.
+Snipp supports a range of image and video formats for uploading and sharing. Ultra accounts and team keys can also upload archives, audio and PDFs.
 
 ### Images
 
@@ -31,6 +31,33 @@ Snipp supports a range of image and video formats for uploading and sharing.
   are stored as `.mp4` after processing, and the share URL reflects the
   new extension. If remuxing fails, the file is rejected as corrupt or
   unplayable.
+</Info>
+
+### Files (Ultra)
+
+| Format | Extension | MIME Type |
+|--------|-----------|-----------|
+| ZIP | `.zip` | `application/zip` |
+| 7-Zip | `.7z` | `application/x-7z-compressed` |
+| RAR | `.rar` | `application/x-rar-compressed` |
+| Gzip | `.gz` | `application/gzip` |
+| TAR | `.tar` | `application/x-tar` |
+| XZ | `.xz` | `application/x-xz` |
+| Bzip2 | `.bz2` | `application/x-bzip2` |
+| Zstandard | `.zst` | `application/zstd` |
+| MP3 | `.mp3` | `audio/mpeg` |
+| WAV | `.wav` | `audio/wav` |
+| FLAC | `.flac` | `audio/flac` |
+| Ogg | `.ogg` | `audio/ogg` |
+| Opus | `.opus` | `audio/ogg; codecs=opus` |
+| AAC | `.aac` | `audio/aac` |
+| M4A | `.m4a` | `audio/x-m4a` |
+| PDF | `.pdf` | `application/pdf` |
+
+Files are available on Ultra and with team keys. On other plans they fail with type `unsupported_type`, like any other unsupported format. Executables and app packages (`.exe`, `.msi`, `.dmg`, `.apk`, `.jar` and similar) are never accepted.
+
+<Info>
+  A post that contains a file is never public. If any file in an upload request is one of these, `post-privacy: public` is applied as `unlisted` to every post the request creates, and `post.privacy` in the response says so. [Update Post](/api-reference/endpoint/posts/update) returns `403` with type `forbidden` and `Posts with files cannot be made public.` when you try to make one public, and [Add Files](/api-reference/endpoint/posts/add-files) rejects files on a public post with `unsupported_type`. File URLs are always signed and expire after 24 hours, whatever the post's privacy, and download under the file's original name.
 </Info>
 
 ## Discord Bot Uploads
