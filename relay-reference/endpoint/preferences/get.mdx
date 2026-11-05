@@ -12,8 +12,9 @@ Read your notification, email, upload and sharing preferences. They follow your 
 - `emails.sign_ins` sends an email every time someone signs in to your account on the website. It is on by default.
 - `uploads.default_privacy` is what upload screens pre-select. The API never applies it: an upload without a `post-privacy` header is always private.
 - `uploads.include_metadata` and `uploads.adaptive_streaming` apply to every upload that leaves out the `include-metadata` or `post-priority` header, through Relay and the API alike. Team keys never use them.
-- `uploads.adaptive_streaming` is on by default. The other upload toggles are off by default.
+- `uploads.adaptive_streaming` and `uploads.comments_enabled` are on by default. The other upload toggles are off by default.
 - `uploads.auto_blur` is Blur Personal Info, part of Plus and Ultra. Snippy blurs personal details in the pictures you upload from the website, the apps, Relay and the API, and each picture checked uses some of your daily Snippy usage. See [Upload Files](/relay-reference/endpoint/upload).
+- `uploads.comments_enabled` is whether new posts start with comments on, from every upload path. Changing it leaves your existing posts as they are. Team posts always start with comments on.
 - `sharing.share_policy` decides who can give you access to their private posts: `everyone` (default), `following` (only accounts you follow) or `nobody`. Changing it does not remove access you already have.
 - Shares a rate limit bucket with [Update Preferences](/relay-reference/endpoint/preferences/update): 20 requests per minute.
 
@@ -42,7 +43,8 @@ curl "https://relay.snipp.gg/preferences" \
     "auto_compress": false,
     "include_metadata": false,
     "auto_copy_url": false,
-    "auto_blur": false
+    "auto_blur": false,
+    "comments_enabled": true
   },
   "sharing": {
     "share_policy": "everyone"

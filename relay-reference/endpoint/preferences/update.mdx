@@ -8,7 +8,7 @@ Change any of your notification, email, upload and sharing preferences.
 ## Behavior
 
 - Send a JSON body with only the sections and keys you want to change. Anything you leave out keeps its value.
-- `notifications` accepts `follows`, `likes` and `comments`. `emails` accepts `sign_ins`. `uploads` accepts `default_privacy`, `adaptive_streaming`, `auto_compress`, `include_metadata`, `auto_copy_url` and `auto_blur`. `sharing` accepts `share_policy`.
+- `notifications` accepts `follows`, `likes` and `comments`. `emails` accepts `sign_ins`. `uploads` accepts `default_privacy`, `adaptive_streaming`, `auto_compress`, `include_metadata`, `auto_copy_url`, `auto_blur` and `comments_enabled`. `sharing` accepts `share_policy`.
 - Every toggle must be a boolean. `uploads.default_privacy` must be `public`, `unlisted` or `private`. `sharing.share_policy` must be `everyone`, `following` or `nobody`.
 - An unknown key or a wrong value returns `400` and nothing is saved.
 - Turning `uploads.auto_blur` on without Plus or Ultra returns `403` with type `plan_required`. Turning it off always works.
@@ -42,7 +42,8 @@ curl -X PATCH "https://relay.snipp.gg/preferences" \
     "auto_compress": false,
     "include_metadata": false,
     "auto_copy_url": false,
-    "auto_blur": false
+    "auto_blur": false,
+    "comments_enabled": true
   },
   "sharing": {
     "share_policy": "everyone"

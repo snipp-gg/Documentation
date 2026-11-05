@@ -3816,7 +3816,8 @@
                     "auto_compress": false,
                     "include_metadata": false,
                     "auto_copy_url": false,
-                    "auto_blur": false
+                    "auto_blur": false,
+                    "comments_enabled": true
                   },
                   "sharing": {
                     "share_policy": "everyone"
@@ -3900,6 +3901,9 @@
                       },
                       "auto_blur": {
                         "type": "boolean"
+                      },
+                      "comments_enabled": {
+                        "type": "boolean"
                       }
                     }
                   },
@@ -3957,7 +3961,8 @@
                     "auto_compress": false,
                     "include_metadata": false,
                     "auto_copy_url": false,
-                    "auto_blur": false
+                    "auto_blur": false,
+                    "comments_enabled": true
                   },
                   "sharing": {
                     "share_policy": "everyone"
@@ -6114,7 +6119,8 @@
             "nullable": true
           },
           "comment_count": {
-            "type": "integer"
+            "type": "integer",
+            "description": "`0` while the post's comments are turned off."
           },
           "priority": {
             "type": "boolean",
@@ -6967,6 +6973,10 @@
               },
               "auto_blur": {
                 "type": "boolean"
+              },
+              "comments_enabled": {
+                "type": "boolean",
+                "description": "Whether new posts start with comments on. Changing it leaves existing posts as they are."
               }
             },
             "required": [
@@ -6975,7 +6985,8 @@
               "auto_compress",
               "include_metadata",
               "auto_copy_url",
-              "auto_blur"
+              "auto_blur",
+              "comments_enabled"
             ]
           },
           "sharing": {

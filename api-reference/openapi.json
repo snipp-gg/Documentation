@@ -3474,7 +3474,8 @@
             "nullable": true
           },
           "comment_count": {
-            "type": "integer"
+            "type": "integer",
+            "description": "`0` while the post's comments are turned off."
           },
           "priority": {
             "type": "boolean",

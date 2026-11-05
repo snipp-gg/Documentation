@@ -17,6 +17,7 @@ Comment on a post.
 - A post holds at most **500 comments**.
 - The post's owner gets a `comment` notification. Every `@username` in the comment gets a `mention` notification.
 - Moderated posts return `403` with type `moderated`. If the author has blocked you, the response is `403` with type `blocked`.
+- Posts with comments turned off return `403` with type `forbidden`, for the owner too.
 - Drafts, private posts you do not own, team posts you are not a member of, and posts by suspended users return `404`.
 - The response is the new comment.
 - Shares a rate limit bucket with [Delete Comment](/relay-reference/endpoint/comments/delete): 5 requests per minute.
@@ -60,6 +61,7 @@ curl -X POST "https://relay.snipp.gg/posts/AbCd1234/comments" \
 | `401` | `unauthorized` | Missing or invalid key |
 | `403` | `moderated` | The post is moderated |
 | `403` | `blocked` | The author has blocked you |
+| `403` | `forbidden` | The post's comments are turned off |
 | `403` | `suspended` | Your account is suspended |
 | `404` | `not_found` | No such post, or you cannot see it |
 | `429` | `rate_limited` | More than 5 requests per minute |
