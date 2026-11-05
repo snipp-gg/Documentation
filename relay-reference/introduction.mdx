@@ -48,7 +48,7 @@ Generate, regenerate, or delete your relay key from [snipp.gg/settings/relay](ht
 
 A missing, empty, or unrecognized relay key returns `401`.
 
-### Team Access Keys
+### Team access keys
 
 [Teams](/concepts/plans#teams) (an Ultra feature) each have a dedicated **access key**. Pass it in the `relay-key` header in place of a personal relay key, and uploads go to the team's shared gallery instead of a personal account. It works on `POST /upload`, `PATCH /posts/{code}`, `DELETE /posts/{code}`, `POST /posts/{code}/files`, `DELETE /posts/{code}/files/{name}` and `POST /convert`; every other endpoint is personal only and returns `401` for a team key.
 
@@ -131,7 +131,7 @@ Anyone who holds a team key can upload with it, so treat it like any other crede
 
 Wherever a user ID goes in the path, `@me` works too.
 
-## View Counting
+## View counting
 
 Relay does not expose a dedicated view endpoint. Views increment automatically when a viewer hits `GET /posts/{code}` or `GET /discover`.
 
@@ -156,7 +156,7 @@ Errors return a non-`2xx` status and an `error` object with a stable `type` and 
 
 See [Errors](/concepts/errors) for every type and status.
 
-## Rate Limits
+## Rate limits
 
 Rate limits apply per endpoint, not per account. See [Rate Limits](/concepts/rate-limits) for the full table and how to handle `429` responses.
 

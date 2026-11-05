@@ -7,7 +7,7 @@ description: "Understand request limits across the API and Relay, and how to han
 
 Rate limits protect Snipp from abuse and keep performance consistent for everyone. Limits apply per user, per endpoint, except where endpoints are marked as sharing a bucket below.
 
-## API Limits
+## API limits
 
 | Endpoint | Limit | Window |
 |----------|-------|--------|
@@ -34,7 +34,7 @@ Rate limits protect Snipp from abuse and keep performance consistent for everyon
 | `POST /users/{id}/live/chat` and `DELETE /users/{id}/live/chat/{message_id}` | 30 requests combined | Per minute |
 | `POST /users/{id}/live/timeouts/{user_id}` | 20 requests | Per minute |
 
-## Relay Limits
+## Relay limits
 
 Relay has the same limits for the endpoints above, plus these Relay-only endpoints:
 
@@ -61,7 +61,7 @@ Relay has the same limits for the endpoints above, plus these Relay-only endpoin
 
 See the [Relay Reference](/relay-reference/introduction) for what Relay covers and how to authenticate.
 
-## Rate Limit Headers
+## Rate limit headers
 
 Rate-limited responses include headers to help you track your usage:
 
@@ -74,7 +74,7 @@ Rate-limited responses include headers to help you track your usage:
 
 Endpoints with no limit do not include these headers.
 
-## Rate Limit Responses
+## Rate limit responses
 
 When you exceed the limit, the API returns HTTP status `429` with type `rate_limited` and a `Retry-After` header:
 
@@ -89,7 +89,7 @@ When you exceed the limit, the API returns HTTP status `429` with type `rate_lim
 
 The rate limit headers are still included on `429` responses so you know when to retry.
 
-## Weekly Usage Limit Responses
+## Weekly usage limit responses
 
 Separate from per-endpoint rate limits, every account has a [weekly usage limit](/concepts/plans#weekly-usage-limit). A file that would push you over it is rejected before it is stored, with type `quota_exceeded` and three context fields:
 
@@ -112,7 +112,7 @@ Separate from per-endpoint rate limits, every account has a [weekly usage limit]
 
 Check your remaining usage anytime via `GET /users/@me` (`limits.usage`).
 
-## Handling Rate Limits
+## Handling rate limits
 
 <Steps>
   <Step title="Check the headers">
@@ -129,7 +129,7 @@ Check your remaining usage anytime via `GET /users/@me` (`limits.usage`).
   </Step>
 </Steps>
 
-## Best Practices
+## Best practices
 
 - **Space out bulk uploads.** When uploading multiple files, add a short delay between each request rather than sending them all at once.
 - **Cache user data.** Avoid calling `/users/@me` repeatedly. Fetch it once and reuse the result for the duration of your session.

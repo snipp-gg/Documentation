@@ -3,7 +3,7 @@ title: "Authentication"
 description: "Authenticate all API requests using your API key."
 ---
 
-## API Key Authentication
+## API key authentication
 
 All Snipp API endpoints require authentication. Include your API key in the `api-key` header with every request.
 
@@ -11,7 +11,7 @@ All Snipp API endpoints require authentication. Include your API key in the `api
 api-key: YOUR_API_KEY
 ```
 
-### Where to Find Your API Key
+### Where to find your API key
 
 API keys belong to **apps**. Each app is a named key, such as one for ShareX and one for a script, so you can revoke one without breaking the others. You can create up to 10 apps, and every app uploads to your own gallery and counts against your own quota.
 
@@ -45,7 +45,7 @@ data = res.json()
 ```
 </CodeGroup>
 
-### API Key Permissions
+### API key permissions
 
 Every key can upload. Reaching the uploads already in your gallery is a separate permission, set per app and off by default:
 
@@ -58,7 +58,7 @@ Without gallery access, `GET /posts`, `PATCH /posts/{code}`, `DELETE /posts/{cod
 
 You can check whether gallery access is enabled by calling `GET /users/@me` and reviewing the `key_has_uploads_access` field, which reports the key used for that request. The field name is historical and reports gallery access.
 
-### Team Access Keys
+### Team access keys
 
 [Teams](/concepts/plans#teams) (an Ultra feature) each have a dedicated **access key**. A team key is passed in the same `api-key` header as a personal API key, and uploads made with it go to the team's shared gallery instead of a personal account. It is only accepted on `POST /upload`, `PATCH /posts/{code}`, `DELETE /posts/{code}`, `POST /posts/{code}/files`, `DELETE /posts/{code}/files/{name}` and `POST /convert`. Every other endpoint, including `GET /users/@me`, `GET /posts` and `GET /posts/{code}`, returns `401` for a team key. Read team posts with a member's personal key.
 
@@ -79,7 +79,7 @@ The same key also works on the [Relay API](/relay-reference/introduction), passe
 
 Anyone who holds a team key can upload with it, so treat it like any other credential and share it only with trusted team members.
 
-### Security Best Practices
+### Security best practices
 
 - **Never expose your API key** in client-side code, public repositories, or shared documents.
 - **Use environment variables** in production (for example, `process.env.SNIPP_API_KEY`).
@@ -87,7 +87,7 @@ Anyone who holds a team key can upload with it, so treat it like any other crede
 - **Rotate your key** immediately if you suspect it has been compromised. You can regenerate it, or delete the app, under **Apps** in settings.
 - **Limit upload access** if your integration only needs read access.
 
-### Error Responses
+### Error responses
 
 | Status | Type | Cause |
 |--------|------|-------|

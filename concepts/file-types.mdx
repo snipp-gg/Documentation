@@ -3,7 +3,7 @@ title: "File Types"
 description: "Supported file formats and size limits."
 ---
 
-## Supported Formats
+## Supported formats
 
 Snipp supports a range of image and video formats for uploading and sharing. Ultra accounts and team keys can also upload archives, audio and PDFs.
 
@@ -60,13 +60,13 @@ Files are available on Ultra and with team keys. On other plans they fail with t
   A post that contains a file is never public. If any file in an upload request is one of these, `post-privacy: public` is applied as `unlisted` to every post the request creates, and `post.privacy` in the response says so. [Update Post](/api-reference/endpoint/posts/update) returns `403` with type `forbidden` and `Posts with files cannot be made public.` when you try to make one public, and [Add Files](/api-reference/endpoint/posts/add-files) rejects files on a public post with `unsupported_type`. File URLs are always signed and expire after 24 hours, whatever the post's privacy, and download under the file's original name.
 </Info>
 
-## Discord Bot Uploads
+## Discord bot uploads
 
 The Snipp Discord bot is invite-only. Add it to your server or as a user app from [snipp.gg/bot](https://snipp.gg/bot). There is no HTTP endpoint for the bot.
 
 The bot accepts images only (`.png`, `.jpg`, `.webp`, `.gif`). Videos are **not supported** through the bot. Upload those from the [web uploader](https://snipp.gg/upload) or the [`/upload` endpoint](/api-reference/endpoint/upload).
 
-## File Size Limits
+## File size limits
 
 Maximum file size depends on your plan:
 
@@ -87,7 +87,7 @@ Plus and Ultra have no per-file cap beyond your weekly quota: a single file can 
   Upgrading to [Plus](https://snipp.gg/pricing) removes the 50 MB per-file cap. Upload anything up to your full weekly quota in a single file.
 </Info>
 
-## Unsupported Files
+## Unsupported files
 
 The type is detected from the file's own bytes, not its name or the declared content type. If you upload a file with an unsupported format, the API returns `400` with type `unsupported_type`:
 
@@ -102,6 +102,6 @@ The type is detected from the file's own bytes, not its name or the declared con
 
 In a multi-file upload the file is listed in `failed` instead, and the other files are still stored. See [Partial upload failures](/concepts/errors#partial-upload-failures).
 
-## Reserved Marker
+## Reserved marker
 
 Files that begin with an internal encryption marker are rejected by the upload endpoint with type `unsupported_type` and `File starts with a reserved marker.` If you encounter this error, the file may be corrupted or use a reserved byte sequence. Try re-exporting the file from its original source.

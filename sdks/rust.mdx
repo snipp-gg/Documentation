@@ -20,7 +20,7 @@ snipp = "3"
 tokio = { version = "1", features = ["full"] }
 ```
 
-## Getting Started
+## Getting started
 
 ```rust
 use snipp::SnippClient;
@@ -183,7 +183,7 @@ Report a user, with an optional reason (max 200 chars).
 client.report_user("987654321098765432", Some("Impersonation")).await?;
 ```
 
-## Error Handling
+## Error handling
 
 All errors are returned as `SnippError`, which covers API errors, HTTP errors, local input validation, deserialization failures, and IO errors.
 
