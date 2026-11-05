@@ -11,7 +11,7 @@ Snipp offers three tiers to suit different needs. All plans include full API acc
 |--|------|------|------------|
 | **Price** | Free | $4.99/mo | $49/mo |
 | **Max File Size** | 50 MB | 20 GB (your weekly quota) | 50 GB (your weekly quota) |
-| **Files per Upload** | 10 | 50 | 1000 |
+| **Files per Upload** | 10 | 50 | Unlimited |
 | **Weekly Usage Limit** | 2 GB | 20 GB | 50 GB |
 | **Upload Rate** | 20 uploads / 30 seconds | 20 uploads / 30 seconds | 20 uploads / 30 seconds |
 | **Priority Streaming** | 10 min/month | 100 min/month | 300 min/month |
@@ -98,7 +98,7 @@ Call `GET /users/@me` to see your plan, weekly usage and priority minutes. The r
 | `plan` | Your plan: `free`, `plus` or `ultra` |
 | `upload_count` | Number of files stored in your personal gallery |
 | `limits.max_file_size` | Largest single file in bytes. 50 MB on Free; on Plus and Ultra it equals the weekly quota (`limits.usage.limit`), up to 50 GB |
-| `limits.max_files` | Files you can send in one upload, and files one post can hold: 10 on Free, 50 on Plus, 1000 on Ultra |
+| `limits.max_files` | Files you can send in one upload, and files one post can hold: 10 on Free, 50 on Plus, `null` (no limit) on Ultra |
 | `limits.usage.used` | Bytes uploaded in the current weekly window |
 | `limits.usage.limit` | Bytes allowed per weekly window |
 | `limits.usage.used_percent` | Share of the weekly quota used, rounded to the nearest integer. Can pass 100. |
@@ -116,7 +116,7 @@ Ultra accounts can create **Teams**: shared workspaces with their own gallery, u
 - Each team holds up to **10 members** by default, including the owner. Ultra plans can be issued with a different seat count.
 - Only **Ultra** users can create a team. Members can be on any plan, including Free: the team's subscription covers every seat, and uploads to a team use the team's limits rather than the member's own.
 - A user can belong to at most **10 teams**, and each team can hold at most **5** active invite links at a time.
-- Uploads to a team take up to 1000 files per upload and per post, whatever the member's plan.
+- Uploads to a team have no file limit per upload or per post, whatever the member's plan.
 - Each team has its own 7-day quota, separate from any member's personal quota: **20 GB per member**, with a floor of **50 GB**. A team of 3 gets 60 GB per week, a full team of 10 gets 200 GB. It follows the same fixed-schedule model: the team has its own reset day and time, and the full quota returns at that moment every week. Uploads to a team never count against a member's personal limit.
 - Team posts are always **private**, and their privacy cannot be changed afterward. They never appear on Discover, and have no likes or views.
 - Only members of a team can view or comment on that team's posts.

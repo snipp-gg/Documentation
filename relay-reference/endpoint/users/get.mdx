@@ -15,7 +15,7 @@ Fetch your own account (`@me`) or another user's profile.
 - `following` and `blocking` are from your point of view: whether you follow or block that user. Both are `false` on your own profile.
 - `limits.usage` is your weekly upload quota in bytes. `limits.priority_minutes` is your 30-day [priority minutes](/concepts/plans#priority-minutes) budget in minutes. `resets_at` is `null` if no window has been assigned yet.
 - `limits.max_file_size` is the largest single file you can upload, in bytes.
-- `limits.max_files` is how many files you can send in one upload, and how many one post can hold: 10 on Free, 50 on Plus, 1000 on Ultra.
+- `limits.max_files` is how many files you can send in one upload, and how many one post can hold: 10 on Free, 50 on Plus, and `null` on Ultra, which has no limit.
 - `upload_count` counts the files stored in your personal gallery.
 - `theme` is your accent theme, or `null`. It is only returned on your own profile. Change it with [Update Profile](/relay-reference/endpoint/users/update).
 - `subscription` is only returned on your own profile. See the table below.

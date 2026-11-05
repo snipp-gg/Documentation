@@ -3,7 +3,7 @@ title: "Upload Files"
 openapi: "api-reference/openapi.json POST /upload"
 ---
 
-Upload between 1 and 10 files in one request on Free, up to 50 on Plus, and up to 1000 on Ultra or with a team access key. Every upload creates a post. Two or more files are grouped into one album post unless you ask for individual posts.
+Upload between 1 and 10 files in one request on Free or up to 50 on Plus. Ultra and team access keys have no file limit. Every upload creates a post. Two or more files are grouped into one album post unless you ask for individual posts.
 
 ## Headers
 
@@ -23,7 +23,7 @@ Preferences are set on the website or with [Update Preferences](/relay-reference
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `file` | Yes | The file. Repeat the field for up to `limits.max_files` files: 10 on Free, 50 on Plus, 1000 on Ultra and team keys. |
+| `file` | Yes | The file. Repeat the field for up to `limits.max_files` files: 10 on Free, 50 on Plus, no limit on Ultra and team keys. |
 | `title` | No | Up to 30 characters. Longer titles return `400`. |
 | `description` | No | Up to 200 characters. Longer descriptions return `400`. |
 
@@ -42,7 +42,7 @@ Preferences are set on the website or with [Update Preferences](/relay-reference
 - **Partial failures:** files that fail are listed in `failed`, each with its zero-based `index` and an `error` object. The stored files are still returned with `200`.
 - **Every file failed:** a one-file request returns that file's error at the top level, with `413` for `file_too_large`, `500` for `internal` and `400` otherwise. A request with several files returns `400` with type `upload_failed` and the same `failed` array. See [Errors](/concepts/errors#partial-upload-failures).
 - **Weekly quota:** a file that would exceed your [weekly usage limit](/concepts/plans#weekly-usage-limit) fails with type `quota_exceeded`, carrying `quota`, `used` and `resets_at`.
-- **Size limits:** a file over your plan's per-file limit fails with type `file_too_large`. A request whose declared `Content-Length` is already larger than your weekly quota (or 50 times the per-file limit) is refused with `413` before any file is read.
+- **Size limits:** a file over your plan's per-file limit fails with type `file_too_large`. A request whose declared `Content-Length` is already larger than your weekly quota (or `limits.max_files` times the per-file limit) is refused with `413` before any file is read.
 - **Team keys:** posts are always created `private`, whatever `post-privacy` says, and count against the team's quota. No member's preferences apply, so without the headers metadata is stripped and videos use priority streaming. A lapsed team returns `403` with type `forbidden`.
 - New posts are scanned automatically. A flagged post is moderated after the response.
 

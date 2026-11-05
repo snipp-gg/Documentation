@@ -134,7 +134,7 @@ client.update_post("AbCd1234", opts).await?;
 
 ### `add_files(code, file_paths, options)`
 
-Add one or more files to an existing post, turning it into an album. The post's share code, privacy, title, and description are preserved. A post holds up to 10 files on Free, 50 on Plus, and 1000 on Ultra and in a team. Requests that would exceed the cap are rejected. New files inherit the post's privacy. `AddFilesOptions` takes `include_metadata` and `priority`, which work as on `upload()`. Returns `post`, plus `failed` when some files were rejected, each with its `index` and `error`.
+Add one or more files to an existing post, turning it into an album. The post's share code, privacy, title, and description are preserved. A post holds up to 10 files on Free and 50 on Plus, with no limit on Ultra and in a team. Requests that would exceed the cap are rejected. New files inherit the post's privacy. `AddFilesOptions` takes `include_metadata` and `priority`, which work as on `upload()`. Returns `post`, plus `failed` when some files were rejected, each with its `index` and `error`.
 
 ```rust
 use snipp::AddFilesOptions;

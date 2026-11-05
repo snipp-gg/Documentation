@@ -406,7 +406,7 @@
                       "type": "string",
                       "format": "binary"
                     },
-                    "description": "1 to `limits.max_files` files: 10 on Free, 50 on Plus, 1000 on Ultra and team keys. Repeat the `file` field."
+                    "description": "1 to `limits.max_files` files: 10 on Free, 50 on Plus, no limit on Ultra and team keys. Repeat the `file` field."
                   },
                   "title": {
                     "type": "string",
@@ -1206,7 +1206,7 @@
     "/posts/{code}/files": {
       "post": {
         "summary": "Add Files",
-        "description": "Add files to an existing post. A post holds up to `limits.max_files` files: 10 on Free, 50 on Plus, 1000 on Ultra and in a team.",
+        "description": "Add files to an existing post. A post holds up to `limits.max_files` files: 10 on Free and 50 on Plus, with no limit on Ultra and in a team.",
         "operationId": "addFiles",
         "parameters": [
           {
@@ -3338,7 +3338,8 @@
           },
           "max_files": {
             "type": "integer",
-            "description": "Files per upload and per post: 10 on Free, 50 on Plus, 1000 on Ultra."
+            "nullable": true,
+            "description": "Files per upload and per post: 10 on Free, 50 on Plus, null on Ultra, which has no limit."
           },
           "usage": {
             "$ref": "#/components/schemas/LimitWindow"
