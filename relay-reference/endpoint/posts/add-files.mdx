@@ -19,7 +19,7 @@ Send the files as `multipart/form-data`, repeating the `file` field.
 
 - You must own the post. A team post needs that team's access key, and a lapsed team returns `403`.
 - Moderated posts cannot be changed and return `403` with type `moderated`.
-- A post holds at most **1000 files**. A full post, or a request that would go past 1000, returns `400`.
+- A post holds at most `limits.max_files` files: **10** on Free, **50** on Plus, **1000** on Ultra and in a team. A full post, or a request that would go past the cap, returns `400`.
 - New files take the post's privacy. On a private post their URLs are signed and expire after 24 hours.
 - Ultra accounts and team keys can add archives, audio and PDFs, except to a public post, where they fail with `unsupported_type`. See [File Types](/concepts/file-types#files-ultra).
 - Videos are remuxed to MP4, metadata and priority streaming follow the headers or your preferences, and Blur Personal Info checks pictures, exactly as in [Upload Files](/relay-reference/endpoint/upload). Videos added here do not get a thumbnail.

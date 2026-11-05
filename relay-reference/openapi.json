@@ -100,6 +100,7 @@
                         "upload_count": 42,
                         "limits": {
                           "max_file_size": 21474836480,
+                          "max_files": 50,
                           "usage": {
                             "used": 1073741824,
                             "limit": 21474836480,
@@ -284,6 +285,7 @@
                     "upload_count": 42,
                     "limits": {
                       "max_file_size": 21474836480,
+                      "max_files": 50,
                       "usage": {
                         "used": 1073741824,
                         "limit": 21474836480,
@@ -592,6 +594,7 @@
                     "upload_count": 42,
                     "limits": {
                       "max_file_size": 21474836480,
+                      "max_files": 50,
                       "usage": {
                         "used": 1073741824,
                         "limit": 21474836480,
@@ -701,6 +704,7 @@
                     "upload_count": 42,
                     "limits": {
                       "max_file_size": 21474836480,
+                      "max_files": 50,
                       "usage": {
                         "used": 1073741824,
                         "limit": 21474836480,
@@ -826,6 +830,7 @@
                     "upload_count": 42,
                     "limits": {
                       "max_file_size": 21474836480,
+                      "max_files": 50,
                       "usage": {
                         "used": 1073741824,
                         "limit": 21474836480,
@@ -935,6 +940,7 @@
                     "upload_count": 42,
                     "limits": {
                       "max_file_size": 21474836480,
+                      "max_files": 50,
                       "usage": {
                         "used": 1073741824,
                         "limit": 21474836480,
@@ -1633,7 +1639,7 @@
                       "type": "string",
                       "format": "binary"
                     },
-                    "description": "1 to 1000 files. Repeat the `file` field."
+                    "description": "1 to `limits.max_files` files: 10 on Free, 50 on Plus, 1000 on Ultra and team keys. Repeat the `file` field."
                   },
                   "title": {
                     "type": "string",
@@ -2479,7 +2485,7 @@
     "/posts/{code}/files": {
       "post": {
         "summary": "Add Files",
-        "description": "Add files to an existing post. Posts hold up to 1000 files.",
+        "description": "Add files to an existing post. A post holds up to `limits.max_files` files: 10 on Free, 50 on Plus, 1000 on Ultra and in a team.",
         "operationId": "addFiles",
         "parameters": [
           {
@@ -5921,6 +5927,10 @@
             "type": "integer",
             "description": "Largest single file in bytes."
           },
+          "max_files": {
+            "type": "integer",
+            "description": "Files per upload and per post: 10 on Free, 50 on Plus, 1000 on Ultra."
+          },
           "usage": {
             "$ref": "#/components/schemas/LimitWindow"
           },
@@ -5930,6 +5940,7 @@
         },
         "required": [
           "max_file_size",
+          "max_files",
           "usage",
           "priority_minutes"
         ],
