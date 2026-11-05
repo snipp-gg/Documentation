@@ -10,7 +10,7 @@ Snipp offers three tiers to suit different needs. All plans include full API acc
 | | Free | Plus | Ultra |
 |--|------|------|------------|
 | **Price** | Free | $4.99/mo | $49/mo |
-| **Max File Size** | 50 MB | 20 GB (your weekly quota) | 50 GB (your weekly quota) |
+| **Max File Size** | 50 MB | No limit (your weekly quota) | No limit (your weekly quota) |
 | **Files per Upload** | 10 | 50 | Unlimited |
 | **Weekly Usage Limit** | 2 GB | 20 GB | 50 GB |
 | **Upload Rate** | 20 uploads / 30 seconds | 20 uploads / 30 seconds | 20 uploads / 30 seconds |
@@ -97,7 +97,7 @@ Call `GET /users/@me` to see your plan, weekly usage and priority minutes. The r
 |-------|-------------|
 | `plan` | Your plan: `free`, `plus` or `ultra` |
 | `upload_count` | Number of files stored in your personal gallery |
-| `limits.max_file_size` | Largest single file in bytes. 50 MB on Free; on Plus and Ultra it equals the weekly quota (`limits.usage.limit`), up to 50 GB |
+| `limits.max_file_size` | Largest single file in bytes. 50 MB on Free; on Plus and Ultra it equals the weekly quota (`limits.usage.limit`), at most 50 GB through the API and Relay |
 | `limits.max_files` | Files you can send in one upload, and files one post can hold: 10 on Free, 50 on Plus, `null` (no limit) on Ultra |
 | `limits.usage.used` | Bytes uploaded in the current weekly window |
 | `limits.usage.limit` | Bytes allowed per weekly window |
