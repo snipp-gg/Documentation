@@ -7,7 +7,7 @@ description: "Upload, manage, and check usage on Snipp directly from Discord."
 
 The Snipp Discord bot mirrors core upload features of the website. Once your Discord account is linked, you can upload files, browse your gallery, and check your weekly usage from any server or DM.
 
-## Linking your account
+## Linking Your Account
 
 Before using the bot, link your Discord account at [snipp.gg](https://snipp.gg/api/auth/discord). The bot looks up your Snipp profile by Discord ID. Without a linked account, `/gallery` and `/usage` return a "No Snipp Account Found" prompt, and `/upload` shows it after you submit the modal.
 
@@ -54,7 +54,7 @@ Monthly Priority Minutes: 35 / 300 min
 Resets October 22, 2026 8:30 PM
 ```
 
-## Limits and restrictions
+## Limits and Restrictions
 
 The bot enforces the same per-file and weekly-usage caps as the API. Uploads counted via the bot decrement the same weekly window shown on the website and in `GET /users/@me`.
 
@@ -66,6 +66,6 @@ A few bot-specific notes:
 - Discord caps attachments at 10 MB for free users and higher for Nitro. Larger files must be uploaded via the website or API.
 - The bot has its own rate limit, checked per submission: more than 15 in a minute is rejected.
 
-## Suspended accounts
+## Suspended Accounts
 
 If your account is suspended, the bot blocks `/upload` and surfaces a message linking to account settings, where you can delete your data. Contact `support@snipp.gg` to appeal.

@@ -18,7 +18,7 @@ pip install snipp
 
 Requires Python 3.9 or later. Depends on `requests`.
 
-## Getting started
+## Getting Started
 
 ```python
 from snipp import SnippClient
@@ -29,7 +29,7 @@ me = client.get_user("@me")
 print(me["user"]["username"])
 ```
 
-### Regional endpoints
+### Regional Endpoints
 
 Pass `region` to pin the client to a specific regional host. Uploads run at the same speed either way; this controls which region stores your files.
 
@@ -180,7 +180,7 @@ Report a user, with an optional reason (max 200 chars).
 client.report_user("987654321098765432", "Impersonation")
 ```
 
-## Error handling
+## Error Handling
 
 All API errors raise a `SnippError` with these attributes:
 

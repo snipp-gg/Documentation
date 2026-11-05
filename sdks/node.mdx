@@ -18,7 +18,7 @@ npm install @snipp-gg/snipp
 
 Requires Node.js 18 or later. Zero dependencies. Uses native `fetch` and `FormData`.
 
-## Getting started
+## Getting Started
 
 ```javascript
 import { SnippClient } from "@snipp-gg/snipp";
@@ -29,7 +29,7 @@ const { user } = await client.getUser("@me");
 console.log(user.username);
 ```
 
-### Regional endpoints
+### Regional Endpoints
 
 Pass `region` to pin the client to a specific regional host. Uploads run at the same speed either way; this controls which region stores your files.
 
@@ -182,7 +182,7 @@ Report a user, with an optional reason (max 200 chars).
 await client.reportUser("987654321098765432", "Impersonation");
 ```
 
-## Error handling
+## Error Handling
 
 All API errors throw a `SnippError` with these properties:
 

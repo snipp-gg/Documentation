@@ -24,7 +24,7 @@ These are frozen so installed uploader configs keep working:
 
 So `.sxcu` and `.iscu` configs that read `{json:url}`, `{json:post.url}` or `{json:post.code}` need no changes. If you added a custom error field that reads `{json:error}`, change it to `{json:error.message}`, because `error` is now an object.
 
-## Global changes
+## Global Changes
 
 | Before | Now |
 |--------|-----|
@@ -45,7 +45,7 @@ So `.sxcu` and `.iscu` configs that read `{json:url}`, `{json:post.url}` or `{js
 | `plus` and `ultra` booleans | One `plan` field: `free`, `plus` or `ultra`. |
 | No request ID | Every response has a `request-id` header. |
 
-## API paths
+## API Paths
 
 | Removed | Replacement |
 |---------|-------------|
@@ -58,7 +58,7 @@ So `.sxcu` and `.iscu` configs that read `{json:url}`, `{json:post.url}` or `{js
 | `GET /users/{id}` with `include_posts` and `posts_limit` | [`GET /users/{id}/posts`](/api-reference/endpoint/users/posts) lists public posts, paginated. |
 | `GET /gifs` with `offset` | [`GET /gifs`](/api-reference/endpoint/gifs) with `cursor`. `limit` now goes up to 100. |
 
-## Relay paths
+## Relay Paths
 
 All of the API changes above apply to Relay too. Relay also replaced these:
 
@@ -90,7 +90,7 @@ All of the API changes above apply to Relay too. Relay also replaced these:
 | `POST /sessions` with `id` | [`DELETE /sessions/{id}`](/relay-reference/endpoint/sessions/delete) |
 | `POST /sessions` with `all: true` | [`DELETE /sessions`](/relay-reference/endpoint/sessions/delete-all) |
 
-## Upload responses
+## Upload Responses
 
 | Before | Now |
 |--------|-----|
@@ -145,7 +145,7 @@ New on every post: `like_count`, `comment_count`, `liked` and `team_id`. On team
 
 Every profile now has `follower_count`, `following_count`, `following` and `blocking`, on the API as well as Relay. Wherever a user appears inside another object (post authors, comment authors, notification actors, follower lists, blocks, access lists) it is the same reference: `{id, username, nickname, avatar, verified, plan}`.
 
-## Relay responses
+## Relay Responses
 
 | Endpoint | Before | Now |
 |----------|--------|-----|
@@ -168,7 +168,7 @@ Every profile now has `follower_count`, `following_count`, `following` and `bloc
 | Theme | `{message, theme}` | `{user}` from `PATCH /users/@me` |
 | Get post | `access` entries `{id, username, nickname, avatar, verified}` | Still owner-only; entries are user references, which add `plan` |
 
-## Other responses
+## Other Responses
 
 | Endpoint | Before | Now |
 |----------|--------|-----|

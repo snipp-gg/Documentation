@@ -3,7 +3,7 @@ title: "Errors"
 description: "Error body shape, every error type and its status, request IDs, and partial upload failures."
 ---
 
-## Error shape
+## Error Shape
 
 Every error response from the API and Relay has the same JSON body: an `error` object with a `type` and a `message`.
 
@@ -22,7 +22,7 @@ Every error response from the API and Relay has the same JSON body: an `error` o
 
 Successful responses never carry `error`, `message` or `success` keys. Any `2xx` status means the request worked.
 
-## Error types
+## Error Types
 
 | Type | Status | Meaning |
 |------|--------|---------|
@@ -50,7 +50,7 @@ A request body that cannot be parsed at all returns `invalid_request` with the s
   Private posts, drafts and team posts you cannot see return `404`, not `403`, so the response never confirms that something you have no access to exists.
 </Note>
 
-## Context fields
+## Context Fields
 
 | Type | Field | Description |
 |------|-------|-------------|
@@ -83,7 +83,7 @@ request-id: 0f8e2c6a-3b1d-4e7f-9a2c-5d6e8f0a1b3c
 
 Log it alongside failures. When you contact [support](https://snipp.gg/support) about a specific request, include the `request-id` so it can be traced.
 
-## Partial upload failures
+## Partial Upload Failures
 
 [`POST /upload`](/api-reference/endpoint/upload) and [`POST /posts/{code}/files`](/api-reference/endpoint/posts/add-files) accept several files at once, and each file succeeds or fails on its own.
 
@@ -127,7 +127,7 @@ When every file fails:
 
 Per-file error types are `file_too_large`, `unsupported_type`, `quota_exceeded`, `invalid_request` (a corrupt or unplayable video) and `internal`.
 
-## Handling errors
+## Handling Errors
 
 <Steps>
   <Step title="Check the status">

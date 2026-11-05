@@ -19,7 +19,7 @@ api.snipp.gg
 
 `api.snipp.gg` is a load balancer sitting in front of the upload servers. It resolves to the nearest healthy region and connects straight to it, with no per-request size cap, so your file size limit is whatever your plan allows. It is the right default for everything, including uploads.
 
-### Regional endpoints
+### Regional Endpoints
 
 | Region | Host |
 |--------|------|
@@ -34,7 +34,7 @@ To see which region you are being routed to, call [`GET /region`](/api-reference
 curl -s https://api.snipp.gg/region
 ```
 
-### Alternative endpoint
+### Alternative Endpoint
 
 `flux.snipp.gg` serves the same API over a separate network path. Requests are buffered before they reach the server, so uploads there are capped at **100 MB per request** and large uploads are several times slower.
 
@@ -104,7 +104,7 @@ Errors return a non-`2xx` status and an `error` object with a stable `type` and 
 
 See [Errors](/concepts/errors) for every type and status.
 
-## Rate limits
+## Rate Limits
 
 Rate limits apply per endpoint, not per account. See [Rate Limits](/concepts/rate-limits) for the full table and how to handle `429` responses.
 

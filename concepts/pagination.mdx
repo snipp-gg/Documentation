@@ -36,7 +36,7 @@ A `limit` outside `1` to `100`, or a malformed `cursor`, returns `400` with type
 - Cursors do not expire, and a cursor from one endpoint is not meant for another.
 - Keep the same filters (such as `search` or `tab`) for every page of one listing. `limit` can change between pages.
 
-## Paginated endpoints
+## Paginated Endpoints
 
 | Endpoint | Key | Available on |
 |----------|-----|--------------|
@@ -50,11 +50,11 @@ A `limit` outside `1` to `100`, or a malformed `cursor`, returns `400` with type
 
 These lists return everything in one response and have no paging fields: [`GET /discover`](/relay-reference/endpoint/discover) (up to 50 random posts), [`GET /posts/{code}/comments`](/relay-reference/endpoint/posts/comments) (at most 500 comments) and [`GET /sessions`](/relay-reference/endpoint/sessions/list). [`GET /users/{id}/live/chat`](/api-reference/endpoint/live/chat-list) has no paging fields either: it returns the newest 50 messages, then you poll with `after` and `since`.
 
-## Short pages
+## Short Pages
 
 A page can hold fewer than `limit` items while `has_more` is still `true`. This happens when items are filtered after the page is read: `GET /gifs` with a narrow `search`, follower lists that skip suspended users, and notifications that group several events into one entry. Always loop on `has_more`, never on the page length.
 
-## Fetching every page
+## Fetching Every Page
 
 <CodeGroup>
 ```javascript JavaScript

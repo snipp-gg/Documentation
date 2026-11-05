@@ -3,11 +3,11 @@ title: "Quickstart"
 description: "Get your API key and make your first upload in under five minutes."
 ---
 
-## Get started in three steps
+## Get Started in Three Steps
 
 Make your first API call and upload a file to Snipp.
 
-### Step 1: Get your API key
+### Step 1: Get Your API Key
 
 1. Sign in to your account.
 2. Open **Settings**, go to **Apps** and create an app.
@@ -17,7 +17,7 @@ Make your first API call and upload a file to Snipp.
   Never share your API key or commit it to version control. Store it in an environment variable in production.
 </Warning>
 
-### Step 2: Verify your setup
+### Step 2: Verify Your Setup
 
 Test your API key by fetching your own profile:
 
@@ -61,7 +61,7 @@ A successful response returns your account. It is trimmed here; see [Get User](/
 }
 ```
 
-### Step 3: Upload a file
+### Step 3: Upload a File
 
 Upload an image or video to your account:
 
@@ -140,7 +140,7 @@ curl -X POST "https://api.snipp.gg/upload" \
 
 Albums are the default when sending two or more files. To create separate posts instead, add `-H "post-type: individual"`.
 
-### Privacy options
+### Privacy Options
 
 Control who can see your uploads by setting the `post-privacy` header:
 
@@ -150,7 +150,7 @@ Control who can see your uploads by setting the `post-privacy` header:
 | `unlisted` | Anyone with the share link can view it. |
 | `public` | Visible to everyone and eligible for the Discover feed. |
 
-## Next steps
+## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Authentication" icon="key" href="/authentication">
