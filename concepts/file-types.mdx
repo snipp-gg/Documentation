@@ -5,7 +5,7 @@ description: "Supported file formats and size limits."
 
 ## Supported formats
 
-Snipp supports a range of image and video formats for uploading and sharing. Ultra accounts and team keys can also upload archives, audio and PDFs.
+Snipp supports a range of image and video formats for uploading and sharing. Ultra accounts and teams can also upload archives, audio and PDFs.
 
 ### Images
 
@@ -54,7 +54,7 @@ Snipp supports a range of image and video formats for uploading and sharing. Ult
 | M4A | `.m4a` | `audio/x-m4a` |
 | PDF | `.pdf` | `application/pdf` |
 
-Files are available on Ultra and with team keys. On other plans they fail with type `unsupported_type`, like any other unsupported format. Executables and app packages (`.exe`, `.msi`, `.dmg`, `.apk`, `.jar` and similar) are never accepted.
+Files are available on Ultra and in teams. On other plans they fail with type `unsupported_type`, like any other unsupported format. Executables and app packages (`.exe`, `.msi`, `.dmg`, `.apk`, `.jar` and similar) are never accepted.
 
 <Info>
   A post that contains a file is never public. If any file in an upload request is one of these, `post-privacy: public` is applied as `unlisted` to every post the request creates, and `post.privacy` in the response says so. [Update Post](/api-reference/endpoint/posts/update) returns `403` with type `forbidden` and `Posts with files cannot be made public.` when you try to make one public, and [Add Files](/api-reference/endpoint/posts/add-files) rejects files on a public post with `unsupported_type`. File URLs are always signed and expire after 24 hours, whatever the post's privacy, and download under the file's original name.
@@ -75,12 +75,12 @@ Maximum file size depends on your plan:
 | Free | 50 MB |
 | Plus | 20 GB |
 | Ultra | 50 GB |
-| Team keys | 50 GB |
+| Teams | 50 GB |
 
-Plus and Ultra have no per-file cap beyond your weekly quota: a single file can use the whole week's allowance (20 GB on Plus, 50 GB on Ultra). Team keys are capped at **50 GB per file**. A file larger than your plan's limit fails with type `file_too_large` and `File size exceeds the 50 MB limit.` (20 GB on Plus, 50 GB on Ultra and team keys), like any other per-file failure. When it is the only file in the request the status is `413`. When the whole request's declared size already exceeds your weekly quota, it is refused up front with `413` and the same message.
+Plus and Ultra have no per-file cap beyond your weekly quota: a single file can use the whole week's allowance (20 GB on Plus, 50 GB on Ultra). Uploads to a team are capped at **50 GB per file**. A file larger than your plan's limit fails with type `file_too_large` and `File size exceeds the 50 MB limit.` (20 GB on Plus, 50 GB on Ultra and team keys), like any other per-file failure. When it is the only file in the request the status is `413`. When the whole request's declared size already exceeds your weekly quota, it is refused up front with `413` and the same message.
 
 <Info>
-  Videos have a hard ceiling of **30 GB** per file. It only applies on Ultra and team keys, since Plus is already capped at 20 GB and Free at 50 MB. A larger video fails with type `file_too_large` and `Video exceeds the 30 GB limit.`, with status `413` when it is the only file.
+  Videos have a hard ceiling of **30 GB** per file. It only applies on Ultra and in teams, since Plus is already capped at 20 GB and Free at 50 MB. A larger video fails with type `file_too_large` and `Video exceeds the 30 GB limit.`, with status `413` when it is the only file.
 </Info>
 
 <Info>
