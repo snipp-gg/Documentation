@@ -794,7 +794,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
+                  "anyOf": [
                     {
                       "$ref": "#/components/schemas/UploadStatus",
                       "description": "Still uploading or processing."
@@ -815,6 +815,18 @@
                         "post"
                       ],
                       "description": "Finished. The same body `POST /upload` returns for one file."
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "post": {
+                          "$ref": "#/components/schemas/Post"
+                        }
+                      },
+                      "required": [
+                        "post"
+                      ],
+                      "description": "Finished, for pieces sent to `POST /posts/{code}/files`. The same body that endpoint returns."
                     }
                   ]
                 },
@@ -1422,6 +1434,36 @@
           },
           {
             "$ref": "#/components/parameters/PostPriority"
+          },
+          {
+            "name": "chunk-index",
+            "in": "header",
+            "required": false,
+            "description": "Chunked uploads only. Zero-based index of the piece in `file`. Its presence switches the request into piece mode.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "file-size",
+            "in": "header",
+            "required": false,
+            "description": "Chunked uploads, first piece only. Size of the whole file in bytes.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "upload-id",
+            "in": "header",
+            "required": false,
+            "description": "Chunked uploads, every piece after the first. The `upload.id` returned for the first piece.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
           }
         ],
         "requestBody": {
@@ -1458,20 +1500,28 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "post": {
-                      "$ref": "#/components/schemas/Post"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "post": {
+                          "$ref": "#/components/schemas/Post"
+                        },
+                        "failed": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/FailedFile"
+                          }
+                        }
+                      },
+                      "required": [
+                        "post"
+                      ]
                     },
-                    "failed": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/FailedFile"
-                      }
+                    {
+                      "$ref": "#/components/schemas/UploadStatus",
+                      "description": "A piece was stored (`chunk-index` sent and more pieces are expected)."
                     }
-                  },
-                  "required": [
-                    "post"
                   ]
                 },
                 "examples": {
@@ -1597,6 +1647,28 @@
               }
             }
           },
+          "202": {
+            "description": "The last piece of a chunked upload arrived and the file is being processed. Poll `GET /upload/{id}` for the result.",
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadStatus"
+                },
+                "example": {
+                  "upload": {
+                    "id": "9f86d081884c7d659a2feaa0c55ad015",
+                    "status": "processing",
+                    "region": "eu-west-1"
+                  }
+                }
+              }
+            }
+          },
           "400": {
             "$ref": "#/components/responses/E400"
           },
@@ -1620,6 +1692,16 @@
           },
           "500": {
             "$ref": "#/components/responses/E500"
+          },
+          "503": {
+            "description": "Uploads are paused, or the server has no room for a chunked upload right now. Try again shortly.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }

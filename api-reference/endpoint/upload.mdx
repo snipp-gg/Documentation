@@ -58,6 +58,7 @@ One request carries at most 50 GB. For bigger files, or to resend one piece inst
 - Every piece except the last is exactly 50 MiB (52,428,800 bytes), and the last is the rest. Any other length returns `400` with `Invalid chunk length.`
 - Send every piece after the first, and every status check, to `https://{region}.api.snipp.gg` from `upload.region`, so they reach the server holding the earlier pieces.
 - A chunked upload always creates one post with one file. `post-type` has no effect.
+- The same pieces add a large file to an existing post through [`POST /posts/{code}/files`](/api-reference/endpoint/posts/add-files), ending with that endpoint's `{post}` body.
 - Pieces have their own [rate limit](/concepts/rate-limits) of 600 per minute, separate from whole-file uploads.
 - An upload with no new piece for an hour expires: its pieces are deleted and the held quota is returned.
 

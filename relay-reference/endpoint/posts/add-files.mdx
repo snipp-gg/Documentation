@@ -27,6 +27,7 @@ Send the files as `multipart/form-data`, repeating the `file` field.
 - Failures work like uploads: stored files come back with `200` and the rest are listed in `failed`. If every file fails, a one-file request returns that file's error and a multi-file request returns `400` with type `upload_failed`. See [Errors](/concepts/errors#partial-upload-failures).
 - New files are scanned automatically. If any file, or the post's text, is flagged, the whole post is moderated.
 - The response is the full updated post.
+- A file of any size can also be added in pieces, sent to this endpoint exactly as in [Large Files](/relay-reference/endpoint/upload#large-files), with `include-metadata` and `post-priority` on the first piece. The post is checked when the first piece arrives and again after the last, and [`GET /upload/{id}`](/relay-reference/endpoint/get-upload) ends with this same `{post}` body.
 
 ## Examples
 

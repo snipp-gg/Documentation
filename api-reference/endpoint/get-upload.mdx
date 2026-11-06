@@ -8,7 +8,7 @@ Status of an upload sent in pieces (see [Large Files](/api-reference/endpoint/up
 ## Behavior
 
 - While pieces are still arriving, `200` with `upload.status: uploading`. After the last piece, `upload.status: processing` until the file is stored.
-- When processing finishes, `200` with the same `{url, post}` body `POST /upload` returns for one file, or the error the upload failed with, at the status `POST /upload` would have returned it.
+- When processing finishes, `200` with the same `{url, post}` body `POST /upload` returns for one file, or the `{post}` body of `POST /posts/{code}/files` when the pieces went there. A failed upload returns its error at the status that endpoint would have used.
 - The result is kept for 10 minutes after processing finishes. After that, and for an id that is unknown, expired or belongs to another account or team, the response is `404`.
 - Send it to `https://{region}.api.snipp.gg` from `upload.region`.
 - 20 requests per 30 seconds. Polling every 2 seconds stays under it.
