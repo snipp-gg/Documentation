@@ -77,7 +77,7 @@ Maximum file size depends on your plan:
 | Ultra | No limit, up to your weekly quota |
 | Teams | No limit, up to the team's weekly quota |
 
-Plus, Ultra and teams have no per-file limit: a single file can use everything left of the week's allowance. Through the API and Relay, a single file is capped at **50 GB**, the largest request those servers accept. A file larger than your limit fails with type `file_too_large` and `File size exceeds the 50 MB limit.` (with your own limit in place of 50 MB), like any other per-file failure. When it is the only file in the request the status is `413`. When the whole request's declared size already exceeds your weekly quota, it is refused up front with `413` and the same message.
+Plus, Ultra and teams have no per-file limit: a single file can use everything left of the week's allowance. Through the API and Relay, one request carries at most **50 GB**, and bigger files go up in pieces ([Large Files](/api-reference/endpoint/upload#large-files)), so they have no cap either. A file larger than your limit fails with type `file_too_large` and `File size exceeds the 50 MB limit.` (with your own limit in place of 50 MB), like any other per-file failure. When it is the only file in the request the status is `413`. When the whole request's declared size already exceeds your weekly quota, it is refused up front with `413` and the same message.
 
 <Info>
   Videos larger than **30 GB** upload like any other file but always play in standard quality, without [priority streaming](/concepts/plans#priority-minutes).

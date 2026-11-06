@@ -92,6 +92,8 @@ console.log(post.url, post.files[0].url);
 
 Upload a file as a new post. Accepts a `File`, `Blob`, `Buffer`, or `Uint8Array`. Resolves to `{ url, post }`, where `url` is the direct file URL and `post.url` is the share page, `https://snipp.gg/p/{code}` or `https://{domain}/{code}` on your link domain.
 
+A file of 100 MiB or more is sent in 50 MiB pieces, 3 at a time, each retried on its own, and the call resolves once the server has finished processing it, so file size is limited only by your plan's per-file limit, `limits.max_file_size`. For a large file on disk, pass `await fs.openAsBlob(path)` (Node 19.8 or later) so it is read one piece at a time instead of loaded into memory.
+
 | Option | Type | Description |
 |--------|------|-------------|
 | `privacy` | `"public" \| "unlisted" \| "private"` | Visibility of the post. Defaults to `private` when omitted. |

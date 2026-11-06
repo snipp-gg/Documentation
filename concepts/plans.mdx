@@ -97,7 +97,7 @@ Call `GET /users/@me` to see your plan, weekly usage and priority minutes. The r
 |-------|-------------|
 | `plan` | Your plan: `free`, `plus` or `ultra` |
 | `upload_count` | Number of files stored in your personal gallery |
-| `limits.max_file_size` | Largest single file in bytes. 50 MB on Free; on Plus and Ultra it equals the weekly quota (`limits.usage.limit`), at most 50 GB through the API and Relay |
+| `limits.max_file_size` | Largest single file in bytes. 50 MB on Free; on Plus and Ultra it equals the weekly quota (`limits.usage.limit`). One request through the API or Relay carries at most 50 GB; bigger files go up in pieces |
 | `limits.max_files` | Files you can send in one upload, and files one post can hold: 10 on Free, 50 on Plus, `null` (no limit) on Ultra |
 | `limits.usage.used` | Bytes uploaded in the current weekly window |
 | `limits.usage.limit` | Bytes allowed per weekly window |

@@ -42,9 +42,24 @@ Preferences are set on the website or with [Update Preferences](/relay-reference
 - **Partial failures:** files that fail are listed in `failed`, each with its zero-based `index` and an `error` object. The stored files are still returned with `200`.
 - **Every file failed:** a one-file request returns that file's error at the top level, with `413` for `file_too_large`, `500` for `internal` and `400` otherwise. A request with several files returns `400` with type `upload_failed` and the same `failed` array. See [Errors](/concepts/errors#partial-upload-failures).
 - **Weekly quota:** a file that would exceed your [weekly usage limit](/concepts/plans#weekly-usage-limit) fails with type `quota_exceeded`, carrying `quota`, `used` and `resets_at`.
-- **Size limits:** a file over your plan's per-file limit fails with type `file_too_large`. Through Relay a single file is at most 50 GB, even when your weekly quota is larger. A request whose declared `Content-Length` is already larger than your weekly quota (or `limits.max_files` times the per-file limit) is refused with `413` before any file is read.
+- **Size limits:** a file over your plan's per-file limit fails with type `file_too_large`. One request carries at most 50 GB, even when your weekly quota is larger; send bigger files in pieces (see [Large Files](#large-files)). A request whose declared `Content-Length` is already larger than your weekly quota (or `limits.max_files` times the per-file limit) is refused with `413` before any file is read.
 - **Team keys:** posts are always created `private`, whatever `post-privacy` says, and count against the team's quota. No member's preferences apply, so without the headers metadata is stripped and videos use priority streaming. A lapsed team returns `403` with type `forbidden`.
 - New posts are scanned automatically. A flagged post is moderated after the response.
+
+## Large Files
+
+One request carries at most 50 GB. For bigger files, or to resend one piece instead of the whole file when a connection drops, send the file in pieces to the same `POST /upload`:
+
+1. **First piece:** the first 50 MiB in `file`, with `chunk-index: 0` and `file-size` set to the size of the whole file, plus any of `post-privacy`, `include-metadata` and `post-priority`, and the `title` and `description` fields. The response is `200` with `upload.id` and `upload.region`, or `202` as for the last piece when the whole file fits in this one. The file type, your weekly quota and the server's free space are checked here, so a file that cannot be stored is refused before you send the rest. The whole size is held against your weekly quota until the upload finishes, and anything it did not use is returned.
+2. **Middle pieces:** each 50 MiB piece with its `chunk-index` and `upload-id`, in any order and several at a time. Each returns `200`, and a failed piece can be sent again.
+3. **Last piece:** send it once every other piece has returned `200`. The response is `202` with `upload.status: processing`. If a piece is missing, it is `400` with `Missing chunks.` and their indexes in `missing`: send those, then the last piece again.
+4. **Result:** poll [`GET /upload/{id}`](/relay-reference/endpoint/get-upload) every few seconds until it returns the usual `{url, post}`, or the error the upload ended with.
+
+- Every piece except the last is exactly 50 MiB (52,428,800 bytes), and the last is the rest. Any other length returns `400` with `Invalid chunk length.`
+- Send every piece after the first, and every status check, to `https://{region}.relay.snipp.gg` from `upload.region`, so they reach the server holding the earlier pieces.
+- A chunked upload always creates one post with one file. `post-type` has no effect.
+- Pieces have their own [rate limit](/concepts/rate-limits) of 600 per minute, separate from whole-file uploads.
+- An upload with no new piece for an hour expires: its pieces are deleted and the held quota is returned.
 
 ## Examples
 

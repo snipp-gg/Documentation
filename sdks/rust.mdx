@@ -105,6 +105,8 @@ println!("{} {}", post.url, post.files[0].url);
 
 Upload a file from disk as a new post. `UploadOptions` takes `privacy` (defaults to `private` when omitted), `title` (max 30 chars), `description` (max 200 chars), `post_type` (sent as the `post-type` header; it has no effect through `upload()`, which sends a single file, so use `add_files` to build an album), `include_metadata` (keep the file's metadata such as EXIF and location; `None` follows your Include Metadata preference), and `priority` (priority adaptive streaming for videos; `None` follows your Adaptive Streaming preference). Returns `url` (the direct file URL) and `post`, whose `url` is the share page, `https://snipp.gg/p/{code}` or `https://{domain}/{code}` on your link domain.
 
+A file of 100 MiB or more is sent in 50 MiB pieces, 3 at a time, each read from disk and retried on its own, and the call returns once the server has finished processing it, so file size is limited only by your plan's per-file limit, `limits.max_file_size`.
+
 ```rust
 use snipp::{Privacy, UploadOptions};
 

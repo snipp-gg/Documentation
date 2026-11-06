@@ -15,6 +15,8 @@ Rate limits protect Snipp from abuse and keep performance consistent for everyon
 | `GET /users/{id}/posts` | 20 requests | Per 30 seconds, shared with `GET /posts/{code}` |
 | `GET /posts/{code}` | 20 requests | Per 30 seconds, shared with `GET /users/{id}/posts` |
 | `POST /upload` | 20 requests | Per 30 seconds |
+| `POST /upload` pieces (with `chunk-index`) | 600 requests | Per minute |
+| `GET /upload/{id}` | 20 requests | Per 30 seconds |
 | `GET /posts` | 20 requests | Per 30 seconds |
 | `PATCH /posts/{code}` | 20 requests | Per 30 seconds |
 | `DELETE /posts/{code}` | 20 requests | Per 30 seconds, shared with `DELETE /posts/{code}/files/{name}` |

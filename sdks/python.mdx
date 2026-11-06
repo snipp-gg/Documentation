@@ -101,6 +101,8 @@ print(post["url"], post["files"][0]["url"])
 
 Upload a file as a new post. Accepts a file path string, bytes, or a file-like object. Returns `url` (the direct file URL) and `post`, whose `url` is the share page, `https://snipp.gg/p/{code}` or `https://{domain}/{code}` on your link domain.
 
+A file of 100 MiB or more is sent in 50 MiB pieces, 3 at a time, each retried on its own, and the call returns once the server has finished processing it, so file size is limited only by your plan's per-file limit, `limits.max_file_size`. A file path is read one piece at a time instead of loaded into memory. A file object that cannot seek is always sent in one request.
+
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `file` | `str \| bytes \| BinaryIO` | File path, raw bytes, or file object. |

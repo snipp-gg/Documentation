@@ -1,0 +1,21 @@
+---
+title: "Get Upload"
+openapi: "api-reference/openapi.json GET /upload/{id}"
+---
+
+Status of an upload sent in pieces (see [Large Files](/api-reference/endpoint/upload#large-files)), then its result.
+
+## Behavior
+
+- While pieces are still arriving, `200` with `upload.status: uploading`. After the last piece, `upload.status: processing` until the file is stored.
+- When processing finishes, `200` with the same `{url, post}` body `POST /upload` returns for one file, or the error the upload failed with, at the status `POST /upload` would have returned it.
+- The result is kept for 10 minutes after processing finishes. After that, and for an id that is unknown, expired or belongs to another account or team, the response is `404`.
+- Send it to `https://{region}.api.snipp.gg` from `upload.region`.
+- 20 requests per 30 seconds. Polling every 2 seconds stays under it.
+
+## Example
+
+```bash
+curl "https://eu-west-1.api.snipp.gg/upload/9f86d081884c7d659a2feaa0c55ad015" \
+  -H "api-key: YOUR_API_KEY"
+```
