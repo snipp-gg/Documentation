@@ -374,6 +374,7 @@
                       "view_count": 311,
                       "like_count": 17,
                       "comment_count": 2,
+                      "comments_enabled": true,
                       "priority": false,
                       "file_count": 1,
                       "files": [
@@ -1732,6 +1733,7 @@
                         "view_count": 0,
                         "like_count": 0,
                         "comment_count": 0,
+                        "comments_enabled": true,
                         "priority": false,
                         "file_count": 1,
                         "files": [
@@ -1774,6 +1776,7 @@
                         "view_count": 0,
                         "like_count": 0,
                         "comment_count": 0,
+                        "comments_enabled": true,
                         "priority": false,
                         "file_count": 2,
                         "files": [
@@ -1825,6 +1828,7 @@
                           "view_count": 0,
                           "like_count": 0,
                           "comment_count": 0,
+                          "comments_enabled": true,
                           "priority": false,
                           "file_count": 1,
                           "files": [
@@ -1861,6 +1865,7 @@
                           "view_count": 0,
                           "like_count": 0,
                           "comment_count": 0,
+                          "comments_enabled": true,
                           "priority": false,
                           "file_count": 1,
                           "files": [
@@ -1968,6 +1973,7 @@
                       "view_count": 128,
                       "like_count": 42,
                       "comment_count": 3,
+                      "comments_enabled": true,
                       "priority": false,
                       "file_count": 1,
                       "files": [
@@ -2004,6 +2010,7 @@
                       "view_count": 0,
                       "like_count": 0,
                       "comment_count": 0,
+                      "comments_enabled": true,
                       "priority": true,
                       "file_count": 1,
                       "files": [
@@ -2103,6 +2110,7 @@
                         "view_count": 0,
                         "like_count": 0,
                         "comment_count": 0,
+                        "comments_enabled": true,
                         "priority": false,
                         "file_count": 1,
                         "files": [
@@ -2155,6 +2163,7 @@
                         "view_count": 311,
                         "like_count": 17,
                         "comment_count": 2,
+                        "comments_enabled": true,
                         "priority": false,
                         "file_count": 1,
                         "files": [
@@ -2194,6 +2203,7 @@
                         "view_count": 0,
                         "like_count": null,
                         "comment_count": 1,
+                        "comments_enabled": true,
                         "priority": false,
                         "file_count": 1,
                         "files": [
@@ -2251,7 +2261,7 @@
       },
       "patch": {
         "summary": "Update Post",
-        "description": "Change a post's title, description or privacy. Relay also accepts `priority` and `access`.",
+        "description": "Change a post's title, description or privacy. Relay also accepts `priority`, `access` and `comments_enabled`.",
         "operationId": "updatePost",
         "parameters": [
           {
@@ -2296,6 +2306,10 @@
                     },
                     "maxItems": 10,
                     "description": "Usernames who can open the post while private. Replaces the list."
+                  },
+                  "comments_enabled": {
+                    "type": "boolean",
+                    "description": "`false` hides the post's comments and blocks new comments and comment likes. Not allowed on team posts."
                   }
                 }
               },
@@ -2341,6 +2355,7 @@
                     "view_count": 0,
                     "like_count": 0,
                     "comment_count": 0,
+                    "comments_enabled": true,
                     "priority": false,
                     "file_count": 1,
                     "files": [
@@ -2562,6 +2577,7 @@
                         "view_count": 128,
                         "like_count": 42,
                         "comment_count": 3,
+                        "comments_enabled": true,
                         "priority": false,
                         "file_count": 3,
                         "files": [
@@ -2621,6 +2637,7 @@
                         "view_count": 128,
                         "like_count": 42,
                         "comment_count": 3,
+                        "comments_enabled": true,
                         "priority": false,
                         "file_count": 2,
                         "files": [
@@ -3495,6 +3512,7 @@
                       "view_count": 312,
                       "like_count": 17,
                       "comment_count": 2,
+                      "comments_enabled": true,
                       "priority": false,
                       "file_count": 1,
                       "files": [
@@ -3919,6 +3937,13 @@
                         ]
                       }
                     }
+                  },
+                  "apply_comments_to_posts": {
+                    "type": "boolean",
+                    "enum": [
+                      true
+                    ],
+                    "description": "Also set `uploads.comments_enabled` on all of your existing personal posts. Requires `uploads.comments_enabled` in the same request."
                   }
                 }
               },
@@ -4218,6 +4243,7 @@
                       "view_count": 128,
                       "like_count": 9,
                       "comment_count": 0,
+                      "comments_enabled": true,
                       "priority": false,
                       "file_count": 1,
                       "files": [
@@ -6122,6 +6148,10 @@
             "type": "integer",
             "description": "`0` while the post's comments are turned off."
           },
+          "comments_enabled": {
+            "type": "boolean",
+            "description": "Whether people can comment. While `false`, the post's comments are hidden and `comment_count` is `0`."
+          },
           "priority": {
             "type": "boolean",
             "description": "At least one video is on priority (adaptive) streaming."
@@ -6191,6 +6221,7 @@
           "view_count",
           "like_count",
           "comment_count",
+          "comments_enabled",
           "priority",
           "file_count",
           "files",

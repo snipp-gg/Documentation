@@ -3,7 +3,7 @@ title: "Update Post"
 openapi: "relay-reference/openapi.json PATCH /posts/{code}"
 ---
 
-Change a post's title, description or privacy, turn priority streaming on or off, or set who a private post is shared with. Send only the fields you want to change.
+Change a post's title, description or privacy, turn priority streaming or comments on or off, or set who a private post is shared with. Send only the fields you want to change.
 
 ## Body
 
@@ -14,6 +14,7 @@ Change a post's title, description or privacy, turn priority streaming on or off
 | `privacy` | string | `public`, `unlisted` or `private`. |
 | `priority` | boolean | `true` puts the post's videos on priority (adaptive) streaming; `false` takes them off. |
 | `access` | array of strings | Usernames who can open the post while it is private, up to 10. Replaces the current list; `[]` clears it. |
+| `comments_enabled` | boolean | `false` turns comments off: existing comments are hidden from everyone, and nobody can comment or like a comment, until it is `true` again. |
 
 ## Behavior
 
@@ -32,6 +33,7 @@ Change a post's title, description or privacy, turn priority streaming on or off
   - Sharing with yourself returns `400`.
   - Sharing with someone you block, who blocks you, or whose sharing settings refuse you returns `403` with type `forbidden`.
   - Each newly added user gets a `post_shared` notification.
+- **`comments_enabled`** cannot be changed on team posts, which always allow comments; sending it returns `403` with type `forbidden`.
 - Newly @-mentioned users in a changed `description` get a `mention` notification.
 - The response includes `access` for personal posts.
 - The response is the full updated post.
@@ -88,6 +90,7 @@ curl -X PATCH "https://relay.snipp.gg/posts/ViDe0042" \
     "view_count": 0,
     "like_count": 0,
     "comment_count": 0,
+    "comments_enabled": true,
     "priority": false,
     "file_count": 1,
     "files": [
@@ -141,9 +144,9 @@ curl -X PATCH "https://relay.snipp.gg/posts/ViDe0042" \
 
 | Status | Type | When |
 |--------|------|------|
-| `400` | `invalid_request` | No fields, a field of the wrong type, text over the limit, or an invalid `privacy`, `priority` or `access` |
+| `400` | `invalid_request` | No fields, a field of the wrong type, text over the limit, or an invalid `privacy`, `priority`, `access` or `comments_enabled` |
 | `401` | `unauthorized` | Missing or invalid key |
-| `403` | `forbidden` | Not your post, no gallery access, a restricted post made public, a team post made non-private, or an `access` user you block, who blocks you, or whose sharing settings refuse you |
+| `403` | `forbidden` | Not your post, no gallery access, a restricted post made public, a team post made non-private, `comments_enabled` on a team post, or an `access` user you block, who blocks you, or whose sharing settings refuse you |
 | `403` | `moderated` | The post is moderated |
 | `403` | `suspended` | Your account is suspended |
 | `400` | `quota_exceeded` | `priority: true` with no priority minutes left |

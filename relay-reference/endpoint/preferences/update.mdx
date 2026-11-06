@@ -12,6 +12,7 @@ Change any of your notification, email, upload and sharing preferences.
 - Every toggle must be a boolean. `uploads.default_privacy` must be `public`, `unlisted` or `private`. `sharing.share_policy` must be `everyone`, `following` or `nobody`.
 - An unknown key or a wrong value returns `400` and nothing is saved.
 - Turning `uploads.auto_blur` on without Plus or Ultra returns `403` with type `plan_required`. Turning it off always works.
+- Changing `uploads.comments_enabled` only sets what new posts start with. Add `"apply_comments_to_posts": true` to the same request to set it on all of your existing personal posts too. `apply_comments_to_posts` must be `true`, and sending it without `uploads.comments_enabled` returns `400`.
 - The response is the full set of preferences after the change. See [Get Preferences](/relay-reference/endpoint/preferences/get) for what each one does.
 - Shares a rate limit bucket with Get Preferences: 20 requests per minute.
 
