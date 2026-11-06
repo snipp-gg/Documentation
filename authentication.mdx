@@ -54,7 +54,7 @@ Every key can upload. Reaching the uploads already in your gallery is a separate
 | **Base** | Upload files, convert files, fetch users and posts, report. Always enabled. |
 | **Gallery** | List, edit, add files to, and delete posts you already have. Off by default. Turn it on with the **Gallery Access** switch on the app's page under **Apps** in settings. |
 
-Without gallery access, `GET /posts`, `PATCH /posts/{code}`, `DELETE /posts/{code}`, `POST /posts/{code}/files`, `DELETE /posts/{code}/files/{name}`, and `GET`, `POST`, `PATCH` and `DELETE /live` plus `POST /live/key` return `403` with type `forbidden`. `POST /upload` is unaffected.
+Without gallery access, `GET /posts`, `PATCH /posts/{code}`, `DELETE /posts/{code}`, `POST /posts/{code}/files`, `DELETE /posts/{code}/files/{name}`, and `GET`, `POST`, `PATCH` and `DELETE /live` plus `POST /live/key` and `GET /live/bans` return `403` with type `forbidden`. `POST /upload` is unaffected.
 
 You can check whether gallery access is enabled by calling `GET /users/@me` and reviewing the `key_has_uploads_access` field, which reports the key used for that request. The field name is historical and reports gallery access.
 

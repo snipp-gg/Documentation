@@ -5224,6 +5224,21 @@
                       "type": "string"
                     },
                     "description": "The full list of moderator user IDs. Replaces the current list."
+                  },
+                  "chat_enabled": {
+                    "type": "boolean",
+                    "description": "Turn the chat on or off. Off hides every message until it is back on."
+                  },
+                  "chat_slow_seconds": {
+                    "type": "integer",
+                    "enum": [
+                      0,
+                      5,
+                      10,
+                      30,
+                      60
+                    ],
+                    "description": "Seconds each viewer waits between messages. `0` turns slow mode off."
                   }
                 }
               },
@@ -5231,7 +5246,8 @@
                 "title": "Ranked grind",
                 "moderators": [
                   "9876543210"
-                ]
+                ],
+                "chat_slow_seconds": 10
               }
             }
           }
@@ -5444,6 +5460,93 @@
         }
       }
     },
+    "/live/bans": {
+      "get": {
+        "summary": "List Banned Chat Users",
+        "description": "People banned from your stream's chat, newest first.",
+        "operationId": "listLiveBans",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Cursor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bans": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LiveBan"
+                      }
+                    },
+                    "has_more": {
+                      "type": "boolean"
+                    },
+                    "next_cursor": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "bans",
+                    "has_more",
+                    "next_cursor"
+                  ]
+                },
+                "example": {
+                  "bans": [
+                    {
+                      "user": {
+                        "id": "9876543210",
+                        "username": "snipp",
+                        "nickname": "Snipp",
+                        "avatar": "https://cdn.snipp.gg/avatar.png",
+                        "verified": true,
+                        "plan": "free"
+                      },
+                      "banned_at": "2026-11-06T08:15:00.000Z"
+                    }
+                  ],
+                  "has_more": false,
+                  "next_cursor": null
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "429": {
+            "$ref": "#/components/responses/E429"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
+      }
+    },
     "/users/{id}/live": {
       "get": {
         "summary": "Get User Live Stream",
@@ -5566,13 +5669,38 @@
                     "now": {
                       "type": "string",
                       "format": "date-time"
+                    },
+                    "restriction": {
+                      "type": "object",
+                      "nullable": true,
+                      "description": "Whether you are timed out or banned from this chat. `null` when you can chat.",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "timed_out",
+                            "banned"
+                          ]
+                        },
+                        "expires_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true,
+                          "description": "When the timeout ends. `null` for a ban."
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "expires_at"
+                      ]
                     }
                   },
                   "required": [
                     "chat_messages",
                     "removed",
                     "last_id",
-                    "now"
+                    "now",
+                    "restriction"
                   ]
                 },
                 "example": {
@@ -5609,7 +5737,8 @@
                   ],
                   "removed": [],
                   "last_id": 128,
-                  "now": "2026-11-03T08:05:20.000Z"
+                  "now": "2026-11-03T08:05:20.000Z",
+                  "restriction": null
                 }
               }
             },
@@ -5840,7 +5969,7 @@
     "/users/{id}/live/timeouts/{user_id}": {
       "post": {
         "summary": "Time Out Chat User",
-        "description": "Stop a user from chatting in a stream for a while and remove their messages.",
+        "description": "Stop a user from chatting in a stream for a while and remove their messages. Replaces a timeout or ban they already have.",
         "operationId": "timeOutLiveChatUser",
         "parameters": [
           {
@@ -5938,6 +6067,236 @@
             "$ref": "#/components/responses/E500"
           }
         }
+      },
+      "delete": {
+        "summary": "Remove Chat Timeout",
+        "description": "Let a timed-out user chat again before their timeout ends.",
+        "operationId": "removeLiveChatTimeout",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The timed-out user."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Timeout removed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {
+                      "type": "string"
+                    },
+                    "timed_out": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    }
+                  },
+                  "required": [
+                    "user_id",
+                    "timed_out"
+                  ]
+                },
+                "example": {
+                  "user_id": "9876543210",
+                  "timed_out": false
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "429": {
+            "$ref": "#/components/responses/E429"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
+      }
+    },
+    "/users/{id}/live/bans/{user_id}": {
+      "post": {
+        "summary": "Ban Chat User",
+        "description": "Stop a user from chatting in a stream until they are unbanned, and remove their messages. They can still watch.",
+        "operationId": "banLiveChatUser",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The user to ban."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Banned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {
+                      "type": "string"
+                    },
+                    "banned": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    }
+                  },
+                  "required": [
+                    "user_id",
+                    "banned"
+                  ]
+                },
+                "example": {
+                  "user_id": "9876543210",
+                  "banned": true
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "429": {
+            "$ref": "#/components/responses/E429"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Unban Chat User",
+        "description": "Let a banned user chat again.",
+        "operationId": "unbanLiveChatUser",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The banned user."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Unbanned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {
+                      "type": "string"
+                    },
+                    "banned": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    }
+                  },
+                  "required": [
+                    "user_id",
+                    "banned"
+                  ]
+                },
+                "example": {
+                  "user_id": "9876543210",
+                  "banned": false
+                }
+              }
+            },
+            "headers": {
+              "request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "403": {
+            "$ref": "#/components/responses/E403"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "405": {
+            "$ref": "#/components/responses/E405"
+          },
+          "429": {
+            "$ref": "#/components/responses/E429"
+          },
+          "500": {
+            "$ref": "#/components/responses/E500"
+          }
+        }
       }
     }
   },
@@ -5954,6 +6313,9 @@
           "moderated",
           "plan_required",
           "timed_out",
+          "banned",
+          "chat_off",
+          "slow_mode",
           "not_found",
           "method_not_allowed",
           "file_too_large",
@@ -6005,6 +6367,11 @@
             "type": "string",
             "format": "date-time",
             "description": "`timed_out` only: when the timeout ends."
+          },
+          "retry_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "`slow_mode` only: when you can send your next message."
           },
           "missing": {
             "type": "array",
@@ -7452,6 +7819,21 @@
             "nullable": true,
             "description": "Concurrent viewers, refreshed about once a minute. `null` unless live."
           },
+          "chat_enabled": {
+            "type": "boolean",
+            "description": "`false` when the streamer turned the chat off. Nobody can read or send messages until it is back on."
+          },
+          "chat_slow_seconds": {
+            "type": "integer",
+            "enum": [
+              0,
+              5,
+              10,
+              30,
+              60
+            ],
+            "description": "Slow mode: how many seconds each viewer waits between messages. `0` is off. The streamer, their moderators and staff are exempt."
+          },
           "watch_url": {
             "type": "string",
             "nullable": true,
@@ -7463,6 +7845,8 @@
           "title",
           "started_at",
           "viewers",
+          "chat_enabled",
+          "chat_slow_seconds",
           "watch_url"
         ]
       },
@@ -7585,6 +7969,15 @@
             ],
             "nullable": true,
             "description": "Who removed it. Only shown to the streamer, their moderators and staff."
+          },
+          "restricted": {
+            "type": "string",
+            "enum": [
+              "timed_out",
+              "banned"
+            ],
+            "nullable": true,
+            "description": "Whether the author is timed out or banned from this chat right now. Only included for the streamer, their moderators and staff."
           }
         },
         "required": [
@@ -7638,6 +8031,23 @@
             "region": "eu-west-1"
           }
         }
+      },
+      "LiveBan": {
+        "type": "object",
+        "description": "Someone banned from your stream's chat.",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserRef"
+          },
+          "banned_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "user",
+          "banned_at"
+        ]
       }
     },
     "parameters": {

@@ -13,6 +13,9 @@ Read a stream's chat. The chat stays between broadcasts, so it can be read while
 - `role` is `streamer` or `moderator` for those authors, otherwise `null`.
 - `reply_to` quotes the message being replied to, with `body: null` and `deleted: true` if that message was removed. It is `null` if that message's author deleted it.
 - Messages from users you blocked or who blocked you, and from suspended users, are left out.
+- `restricted` is `timed_out` or `banned` while that author is timed out or banned from this chat, otherwise `null`. It is only included for the streamer, their moderators and staff.
+- `restriction` says whether you yourself are timed out or banned here, with `expires_at` for a timeout and `null` for a ban. It is `null` when you can chat.
+- While the streamer has the chat turned off, `chat_messages` and `removed` are empty.
 - If the streamer blocked you, the response is `403` with type `blocked`.
 
 ## Example

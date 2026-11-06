@@ -10,7 +10,8 @@ Stop a user from chatting in a stream for a while. Their messages in that chat a
 - Only the streamer, their moderators and staff can time people out; anyone else gets `403` with type `forbidden`.
 - `seconds` is `60`, `600`, `3600` or `86400`.
 - Timing out the streamer gives `403` with type `forbidden`, and so does timing out a moderator unless you are the streamer or staff. Timing yourself out is `400`.
-- Timing out someone again replaces their current timeout.
+- Timing out someone again replaces their current timeout, and timing out someone who is banned replaces the ban.
+- [Remove the timeout](/api-reference/endpoint/live/timeout-remove) to let them chat again early, or [ban them](/api-reference/endpoint/live/ban) to stop them for good.
 - While timed out, [sending a message](/api-reference/endpoint/live/chat-send) returns `403` with type `timed_out`.
 
 ## Example

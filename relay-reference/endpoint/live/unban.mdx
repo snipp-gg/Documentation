@@ -1,0 +1,18 @@
+---
+title: "Unban Chat User"
+openapi: "relay-reference/openapi.json DELETE /users/{id}/live/bans/{user_id}"
+---
+
+Let a banned user chat again. Their removed messages stay removed.
+
+## Behavior
+
+- Only the streamer, their moderators and staff can unban people; anyone else gets `403` with type `forbidden`. A banned moderator can only be unbanned by the streamer or staff.
+- Returns `404` if the user is not banned. A timeout is lifted with [Remove Chat Timeout](/relay-reference/endpoint/live/timeout-remove) instead.
+
+## Example
+
+```bash
+curl -X DELETE "https://relay.snipp.gg/users/987654321098765432/live/bans/123456789012345678" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```

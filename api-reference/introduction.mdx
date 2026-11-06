@@ -65,14 +65,18 @@ api-key: YOUR_API_KEY
 | `POST` | [`/users/{id}/report`](/api-reference/endpoint/users/report) | Report a user. |
 | `GET` | [`/live`](/api-reference/endpoint/live/get) | Your live stream: server URL, stream key, minutes and moderators. |
 | `POST` | [`/live`](/api-reference/endpoint/live/create) | Set up live streaming. |
-| `PATCH` | [`/live`](/api-reference/endpoint/live/update) | Change your stream title or chat moderators. |
+| `PATCH` | [`/live`](/api-reference/endpoint/live/update) | Change your stream title, chat settings or chat moderators. |
 | `DELETE` | [`/live`](/api-reference/endpoint/live/delete) | Turn live streaming off. |
 | `POST` | [`/live/key`](/api-reference/endpoint/live/rotate-key) | Regenerate your stream key. |
+| `GET` | [`/live/bans`](/api-reference/endpoint/live/bans) | People banned from your chat. |
 | `GET` | [`/users/{id}/live`](/api-reference/endpoint/live/status) | Whether a user is live. |
 | `GET` | [`/users/{id}/live/chat`](/api-reference/endpoint/live/chat-list) | Read a stream's chat. |
 | `POST` | [`/users/{id}/live/chat`](/api-reference/endpoint/live/chat-send) | Send or reply in a stream's chat. |
 | `DELETE` | [`/users/{id}/live/chat/{message_id}`](/api-reference/endpoint/live/chat-delete) | Remove a chat message. |
 | `POST` | [`/users/{id}/live/timeouts/{user_id}`](/api-reference/endpoint/live/timeout) | Time out a user in your chat. |
+| `DELETE` | [`/users/{id}/live/timeouts/{user_id}`](/api-reference/endpoint/live/timeout-remove) | Let a timed-out user chat again. |
+| `POST` | [`/users/{id}/live/bans/{user_id}`](/api-reference/endpoint/live/ban) | Ban a user from your chat. |
+| `DELETE` | [`/users/{id}/live/bans/{user_id}`](/api-reference/endpoint/live/unban) | Unban a user from your chat. |
 | `GET` | [`/gifs`](/api-reference/endpoint/gifs) | Browse public GIFs. No key required. |
 | `POST` | [`/convert`](/api-reference/endpoint/convert) | Convert an image or video. Returns the file and stores nothing. |
 | `GET` | [`/usage-history`](/api-reference/endpoint/usage-history) | Your daily upload activity for the last 365 days. |

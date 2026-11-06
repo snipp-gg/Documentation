@@ -1,0 +1,19 @@
+---
+title: "List Banned Chat Users"
+openapi: "relay-reference/openapi.json GET /live/bans"
+---
+
+List the people banned from your stream's chat, newest ban first.
+
+## Behavior
+
+- Needs Plus or Ultra, like the other endpoints for your own stream; otherwise `403` with type `plan_required`.
+- Paginated with `limit` and `cursor`. See [Pagination](/concepts/pagination).
+- Timeouts are not listed, only bans.
+
+## Example
+
+```bash
+curl "https://relay.snipp.gg/live/bans?limit=20" \
+  -H "relay-key: YOUR_RELAY_KEY"
+```

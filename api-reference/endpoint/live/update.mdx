@@ -3,15 +3,17 @@ title: "Update Live Stream"
 openapi: "api-reference/openapi.json PATCH /live"
 ---
 
-Change your stream title or replace your list of chat moderators.
+Change your stream title, your chat settings, or replace your list of chat moderators.
 
 ## Behavior
 
 - Needs an API key with gallery access, like the gallery endpoints. Other keys get `403` with type `forbidden`. See [Authentication](/authentication).
-- Send `title`, `moderators` or both. Sending neither is `400`.
+- Send any of `title`, `moderators`, `chat_enabled` and `chat_slow_seconds`. Sending none is `400`.
 - `title` is up to 140 characters. An empty string or `null` clears it, and the watch page shows a default title instead.
 - `moderators` is the complete list of user IDs, up to 10, and replaces the current list. Send `[]` to remove everyone. You cannot add yourself. A user who does not exist or is suspended gives `404`, and a user who blocked you, or whom you blocked, gives `403` with type `blocked`.
-- Moderators can remove messages and [time people out](/api-reference/endpoint/live/timeout) in your chat. Only you and staff can time out a moderator.
+- Moderators can remove messages, [time people out](/api-reference/endpoint/live/timeout) and [ban people](/api-reference/endpoint/live/ban) in your chat. Only you and staff can time out or ban a moderator.
+- `chat_enabled: false` turns the chat off: nobody, you included, can read or send messages until you turn it back on. Nothing is deleted.
+- `chat_slow_seconds` is `0` (off), `5`, `10`, `30` or `60`: how long each viewer waits between messages. You, your moderators and staff are exempt.
 - Returns `404` if streaming is not set up.
 
 ## Example

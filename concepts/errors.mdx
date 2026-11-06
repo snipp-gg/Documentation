@@ -34,6 +34,9 @@ Successful responses never carry `error`, `message` or `success` keys. Any `2xx`
 | `moderated` | `403` | The post has been moderated. |
 | `plan_required` | `403` | The feature needs Plus or Ultra. |
 | `timed_out` | `403` | You are timed out of a stream's chat. `expires_at` says when you can chat again. |
+| `banned` | `403` | You are banned from a stream's chat. You can still watch. |
+| `chat_off` | `403` | The streamer turned their chat off. |
+| `slow_mode` | `403` | The chat is in slow mode and you sent a message too soon. `retry_at` says when you can send the next one. |
 | `quota_exceeded` | `400` | The upload would exceed your [weekly usage limit](/concepts/plans#weekly-usage-limit). On Relay, turning on priority streaming with no priority minutes left returns this type with `403`. |
 | `unsupported_type` | `400` | The file type is not supported, or cannot be converted to the requested format. |
 | `upload_failed` | `400` | Every file in a multi-file upload failed. See [Partial upload failures](#partial-upload-failures). |
@@ -56,6 +59,7 @@ A request body that cannot be parsed at all returns `invalid_request` with the s
 |------|-------|-------------|
 | `suspended` | `username` | On [`GET /users/{id}`](/api-reference/endpoint/users/get) only: the suspended user's username. |
 | `timed_out` | `expires_at` | When the timeout ends, as an ISO 8601 timestamp. |
+| `slow_mode` | `retry_at` | When you can send your next message, as an ISO 8601 timestamp. |
 | `quota_exceeded` | `quota` | Your weekly quota in bytes. |
 | `quota_exceeded` | `used` | Bytes used in the current window. |
 | `quota_exceeded` | `resets_at` | When the window resets, as an ISO 8601 timestamp. |

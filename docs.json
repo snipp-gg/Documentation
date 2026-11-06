@@ -135,11 +135,15 @@
               "api-reference/endpoint/live/update",
               "api-reference/endpoint/live/delete",
               "api-reference/endpoint/live/rotate-key",
+              "api-reference/endpoint/live/bans",
               "api-reference/endpoint/live/status",
               "api-reference/endpoint/live/chat-list",
               "api-reference/endpoint/live/chat-send",
               "api-reference/endpoint/live/chat-delete",
-              "api-reference/endpoint/live/timeout"
+              "api-reference/endpoint/live/timeout",
+              "api-reference/endpoint/live/timeout-remove",
+              "api-reference/endpoint/live/ban",
+              "api-reference/endpoint/live/unban"
             ]
           },
           {
@@ -217,11 +221,15 @@
               "relay-reference/endpoint/live/update",
               "relay-reference/endpoint/live/delete",
               "relay-reference/endpoint/live/rotate-key",
+              "relay-reference/endpoint/live/bans",
               "relay-reference/endpoint/live/status",
               "relay-reference/endpoint/live/chat-list",
               "relay-reference/endpoint/live/chat-send",
               "relay-reference/endpoint/live/chat-delete",
-              "relay-reference/endpoint/live/timeout"
+              "relay-reference/endpoint/live/timeout",
+              "relay-reference/endpoint/live/timeout-remove",
+              "relay-reference/endpoint/live/ban",
+              "relay-reference/endpoint/live/unban"
             ]
           },
           {

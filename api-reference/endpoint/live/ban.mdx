@@ -1,0 +1,21 @@
+---
+title: "Ban Chat User"
+openapi: "api-reference/openapi.json POST /users/{id}/live/bans/{user_id}"
+---
+
+Stop a user from chatting in a stream until they are unbanned. Their messages in that chat are removed. They can still watch.
+
+## Behavior
+
+- Only the streamer, their moderators and staff can ban people; anyone else gets `403` with type `forbidden`.
+- Banning the streamer gives `403` with type `forbidden`, and so does banning a moderator unless you are the streamer or staff. Banning yourself is `400`.
+- Banning someone who is timed out replaces the timeout. Banning someone again refreshes their `banned_at`.
+- While banned, [sending a message](/api-reference/endpoint/live/chat-send) returns `403` with type `banned`.
+- The streamer can list everyone banned with [List Banned Chat Users](/api-reference/endpoint/live/bans).
+
+## Example
+
+```bash
+curl -X POST "https://api.snipp.gg/users/987654321098765432/live/bans/123456789012345678" \
+  -H "api-key: YOUR_API_KEY"
+```

@@ -28,13 +28,13 @@ Rate limits protect Snipp from abuse and keep performance consistent for everyon
 | `GET /gifs` | 60 requests per IP | Per minute |
 | `POST /convert` | 10 requests | Per minute |
 | `GET /region` | No limit | |
-| `GET /live` | 20 requests | Per 30 seconds |
+| `GET /live` and `GET /live/bans` | 20 requests combined | Per 30 seconds |
 | `POST`, `PATCH` and `DELETE /live` | 3 requests combined | Per 30 seconds |
 | `POST /live/key` | 3 requests | Per 30 seconds |
 | `GET /users/{id}/live` | No limit | |
 | `GET /users/{id}/live/chat` | 30 requests | Per minute |
 | `POST /users/{id}/live/chat` and `DELETE /users/{id}/live/chat/{message_id}` | 30 requests combined | Per minute |
-| `POST /users/{id}/live/timeouts/{user_id}` | 20 requests | Per minute |
+| `POST` and `DELETE /users/{id}/live/timeouts/{user_id}`, `POST` and `DELETE /users/{id}/live/bans/{user_id}` | 20 requests combined | Per minute |
 
 ## Relay Limits
 

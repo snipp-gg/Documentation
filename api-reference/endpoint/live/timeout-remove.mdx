@@ -1,0 +1,18 @@
+---
+title: "Remove Chat Timeout"
+openapi: "api-reference/openapi.json DELETE /users/{id}/live/timeouts/{user_id}"
+---
+
+Let a timed-out user chat again before their timeout ends. Their removed messages stay removed.
+
+## Behavior
+
+- Only the streamer, their moderators and staff can remove a timeout; anyone else gets `403` with type `forbidden`. A moderator's timeout can only be removed by the streamer or staff.
+- Returns `404` if the user is not timed out. A ban is lifted with [Unban Chat User](/api-reference/endpoint/live/unban) instead.
+
+## Example
+
+```bash
+curl -X DELETE "https://api.snipp.gg/users/987654321098765432/live/timeouts/123456789012345678" \
+  -H "api-key: YOUR_API_KEY"
+```
