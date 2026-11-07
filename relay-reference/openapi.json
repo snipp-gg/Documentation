@@ -1588,7 +1588,7 @@
     "/upload": {
       "post": {
         "summary": "Upload Files",
-        "description": "Upload 1 to 50 images or videos. Every upload creates a post. Two or more files form one album unless `post-type: individual` is sent. Files of any size can also be sent in 50 MiB pieces with `chunk-index`; see Large Files.",
+        "description": "Upload between 1 and 10 files in one request on Free or up to 50 on Plus. Ultra and team access keys have no file limit. Archives, audio and PDFs need Ultra or a team key. Every upload creates a post. Two or more files form one album unless `post-type: individual` is sent. Files of any size can also be sent in 50 MiB pieces with `chunk-index`; see Large Files.",
         "operationId": "upload",
         "parameters": [
           {

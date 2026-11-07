@@ -12,8 +12,8 @@ Read your live stream setup: the RTMPS server URL and stream key for OBS, whethe
 - `live_stream` is `null` until you [set up streaming](/api-reference/endpoint/live/create).
 - `ingest_url` is `rtmps://live.snipp.gg:443/live/`. Paste it and `stream_key` into OBS (Settings, Stream, Custom). Keep `stream_key` secret: anyone with it can stream as you.
 - `ingest_url` and `stream_key` are `null` if the stream service could not be reached; try again.
-- You go live automatically when your encoder connects. `live`, `started_at` and `viewers` reflect the current broadcast; `viewers` refreshes about once a minute.
-- `minutes` is your monthly live streaming budget in whole minutes: 100 on Plus, 300 on Ultra. Minutes only count while you are live and reset together with [priority minutes](/concepts/plans#priority-minutes). When they run out the stream ends.
+- You go live automatically when your encoder connects, unless Preview Before Going Live is turned on in your streaming settings on the website. Then the stream waits in preview, reported as not live, until you press Go Live on your stream page. `live`, `started_at` and `viewers` reflect the current broadcast; `viewers` refreshes about once a minute.
+- `minutes` is your monthly live streaming budget in whole minutes: 100 on Plus, 300 on Ultra. Minutes count while you are live or in preview and reset together with [priority minutes](/concepts/plans#priority-minutes). When they run out the stream ends.
 - `moderators` lists the users who can remove messages, time people out and ban people in your chat.
 - `chat_enabled` and `chat_slow_seconds` are your chat settings. Change them with [Update Live Stream](/api-reference/endpoint/live/update).
 - Team keys are not accepted and get `401`.

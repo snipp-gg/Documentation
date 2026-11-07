@@ -72,7 +72,8 @@ Anyone who holds a team key can upload with it, so treat it like any other crede
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `POST` | [`/upload`](/relay-reference/endpoint/upload) | Upload 1 to 50 images or videos. Creates a post. |
+| `POST` | [`/upload`](/relay-reference/endpoint/upload) | Upload images, videos or files. Creates a post. |
+| `GET` | [`/upload/{id}`](/relay-reference/endpoint/get-upload) | Status of an upload sent in pieces, then its result. |
 | `GET` | [`/posts`](/relay-reference/endpoint/posts/list) | List your posts. |
 | `GET` | [`/posts/{code}`](/relay-reference/endpoint/posts/get) | Fetch a post. Counts a view. |
 | `PATCH` | [`/posts/{code}`](/relay-reference/endpoint/posts/update) | Change a post's text, privacy, priority streaming or access list. |
