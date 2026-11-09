@@ -8,7 +8,7 @@ Browse public posts from the community. Returns up to 50 of the most recent publ
 ## Behavior
 
 - Only public posts appear. Unlisted, private, draft, team, moderated and restricted posts never do.
-- Posts by suspended users are left out, as are posts by users you block or who block you.
+- Posts by suspended users and by accounts Snipp keeps out of Discover are left out, as are posts by users you block or who block you.
 - Each item is a full post object with every file. `liked` is whether you have liked it; use [Like Post](/relay-reference/endpoint/posts/like) to change it.
 - Each request counts a view on every returned post. Views are deduplicated per IP and post: up to 3 counted views per IP per post per hour.
 - There is no pagination. Call it again for a new shuffle.
